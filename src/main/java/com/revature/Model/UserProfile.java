@@ -1,5 +1,7 @@
 /**
- * This class represents User Profiles within the application. 
+ * This class represents User Profiles within the application.
+ * It does not do any verification of the data it is given; that should be
+ * done before creating an object of this class. 
  * 
  * @Author Andrew Curry
  */
@@ -7,7 +9,7 @@ package com.revature.Model;
 
 public class UserProfile {
     
-    // enums
+    // enums ---------------------
 
     /**
      * Enumerates the user roles.
@@ -37,20 +39,20 @@ public class UserProfile {
         }
     } // end enum Role
 
-    // class/static variables
+    // class/static variables ---------------------
 
-    // instance variables
-    private int id;
+    // instance variables ---------------------
+    private int ID;
     private Role role;
     private String username;
     private String firstName;
     private String lastName;
     private String emailAddress;
 
-    // constructor(s)
-    public UserProfile(int id, Role role){
+    // constructor(s) ---------------------
+    public UserProfile(int ID, Role role){
 
-        this.id = id;
+        this.ID = ID;
         this.role = role;
         username = "";
         firstName = "";
@@ -59,14 +61,14 @@ public class UserProfile {
     }
 
     public UserProfile(
-            int id, 
+            int ID, 
             Role role, 
             String username, 
             String firstName, 
             String lastName, 
             String emailAddress) {
 
-        this.id = id;
+        this.ID = ID;
         this.role = role;
         this.username = username;
         this.firstName = firstName;
@@ -74,11 +76,11 @@ public class UserProfile {
         this.emailAddress = emailAddress;
     }
 
-    // getters and setters
-    // (currently no way to set ID or Role outside of constructor)
+    // getters and setters ---------------------
+    // (currently no way to set ID or Role outsIDe of constructor)
 
-    public int getId() {
-        return this.id;
+    public int getID() {
+        return this.ID;
     }
 
     public Role getRole() {
@@ -90,7 +92,7 @@ public class UserProfile {
     }
 
     /**
-     * Does NOT check to make sure the username is in the valid format.
+     * Does NOT check to make sure the username is in the valID format.
      * @param username
      */
     public void setUsername(String username) {
@@ -102,7 +104,7 @@ public class UserProfile {
     }
 
     /**
-     * Does NOT check to make sure the firstName is in the valid format.
+     * Does NOT check to make sure the firstName is in the valID format.
      * @param firstName
      */
     public void setFirstName(String firstName) {
@@ -114,7 +116,7 @@ public class UserProfile {
     }
 
     /**
-     * Does NOT check to make sure the lastName is in the valid format.
+     * Does NOT check to make sure the lastName is in the valID format.
      * @param lastName
      */
     public void setLastName(String lastName) {
