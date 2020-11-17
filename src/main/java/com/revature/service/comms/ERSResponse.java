@@ -81,7 +81,7 @@ public class ERSResponse {
     public ERSResponse(
             ERSResponseType type, 
             String message, 
-            List returnedList) {
+            List<Object> returnedList) {
 
         this.type = type;
         this.message = message;
@@ -93,7 +93,7 @@ public class ERSResponse {
         }
         else if (returnedList.get(0).getClass() == UserProfile.class){
 
-            this.returnedUserProfiles = (List<UserProfile>)returnedList;
+            this.returnedUserProfiles = returnedList;
             this.returnedReimbursementRequests = new ArrayList<ReimbursementRequest>();
         }
         else{ // assume it must be a list of reimb-reqs

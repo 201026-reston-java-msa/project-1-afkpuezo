@@ -12,14 +12,22 @@
  */
 package com.revature.service;
 
+import com.revature.model.ReimbursementRequest;
+import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO;
 import com.revature.repository.DAO.interfaces.UserProfileDAO;
+import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO.SearchType;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSResponse;
+import com.revature.service.comms.ERSResponse.ERSResponseType;
+
+import java.util.List;
 
 public class ViewRequestHandler {
     
     // enums -------------------------------
+
+    // constants ---------------------------
 
     // static / class variables ------------
 
@@ -39,14 +47,33 @@ public class ViewRequestHandler {
 
     /**
      * Allows an employee to view all of their own pending reimb-reqs.
+     * If there are no such requests, succeeds and returns a response with an empty list.
+     * Fails if the employee doesnt exist.
+     * Fails if there is a DAOException.
      * 
      * @param req
      * @return
      */
     public ERSResponse handleEmployeeViewPending(ERSRequest req){
 
-        
-        return null;
+        ERSResponse res;
+        int userID = req.getUserID();
+
+        try{
+            if (!updao.checkExists(userID)) return userDoesNotExist(userID);
+
+            List<ReimbursementRequest> reimbs = 
+                    rrdao.getReimbursementRequests(userID, SearchType.ALL);
+            
+            return new ERSResponse(
+                    ERSResponseType.SUCCESS,
+                    (List)reimbs);
+        }
+        catch(DAOException e){
+
+        }
+
+        return null; // shouldn't be reached? but satisfies compiler
     }
 
     public ERSResponse handleEmployeeViewResolved(ERSRequest req) {
@@ -75,5 +102,17 @@ public class ViewRequestHandler {
 
     public ERSResponse handleManagerViewByEmployee(ERSRequest req) {
         return null;
+    }
+
+    // helper methods ----------------------
+
+    /**
+     * Returns a response indicating that a user was not found.
+     */
+    private ERSResponse userDoesNotExist(int userID) {
+
+        return new ERSResponse(
+            ERSResponseType.INVALID_PARAMETER, 
+            String.format("No user profile with ID %d was found.", userID));
     }
 }
