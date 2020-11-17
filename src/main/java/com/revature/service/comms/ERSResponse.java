@@ -34,7 +34,9 @@ public class ERSResponse {
     private ERSResponseType type;
     private List<UserProfile> returnedUserProfiles;
     private List<ReimbursementRequest> returnedReimbursementRequests;
-    private String message; // error text to explain problem, eg which ID wasn't found
+    private String message;
+
+    // error text to explain problem, eg which ID wasn't found
 
     // constructor(s) ------------------
 
@@ -101,7 +103,48 @@ public class ERSResponse {
         }
     }
 
-    
+    public ERSResponse(
+            ERSResponseType type, 
+            String message, 
+            List<UserProfile> returnedUserProfiles,
+            List<ReimbursementRequest> returnedReimbursementRequests){
 
-    )
+        this.type = type;
+        this.message = "";
+        this.returnedUserProfiles = returnedUserProfiles;
+        this.returnedReimbursementRequests = returnedReimbursementRequests;
+    }
+
+    // getters (no setters?)
+    
+    public ERSResponseType getType() {
+        return this.type;
+    }
+
+    /**
+     * Returns a reference to the list, not a copy
+     * 
+     * @return 
+     */
+    public List<UserProfile> getReturnedUserProfiles() {
+        return this.returnedUserProfiles;
+    }
+
+    /**
+     * Returns a reference to the list, not a copy
+     * 
+     * @return
+     */
+    public List<ReimbursementRequest> getReturnedReimbursementRequests() {
+        return this.returnedReimbursementRequests;
+    }
+
+    /**
+     * If no message was given, returns the empty string
+     * 
+     * @return
+     */
+    public String getMessage() {
+        return this.message;
+    }
 }
