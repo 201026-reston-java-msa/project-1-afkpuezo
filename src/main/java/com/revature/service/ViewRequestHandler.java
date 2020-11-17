@@ -1,10 +1,14 @@
 /**
  * This class is for handling view-requests, that is, requests to view something, rather
- * than a 'view of the request handler'.
+ * than a 'get a look at the request handler'.
  * 
  * It is used by the ServiceFront; it contains handle methods for those request types
  * whose (primary) purpose is to retrieve information from the database and display it to
  * the user.
+ * 
+ * Each handler method assumes that the ServiceFront has checked to make sure the user's
+ * role is one that is permitted to take that action. Other permission/possibility checks
+ * may still occur.
  */
 package com.revature.service;
 
@@ -33,7 +37,15 @@ public class ViewRequestHandler {
 
     // handler methods ---------------------------------------------
 
+    /**
+     * Allows an employee to view all of their own pending reimb-reqs.
+     * 
+     * @param req
+     * @return
+     */
     public ERSResponse handleEmployeeViewPending(ERSRequest req){
+
+        
         return null;
     }
 
