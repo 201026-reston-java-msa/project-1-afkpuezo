@@ -1,4 +1,4 @@
 notes.txt
 log.txt
-project-1/target/*
-!project-1/target/.gitkeep
+/target/*
+!/target/.gitkeep
