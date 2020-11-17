@@ -5,9 +5,11 @@
  */
 package com.revature.service.comms;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.revature.model.UserProfile;
+import com.revature.model.UserProfile.UserRole;
 
 public class ERSRequest {
     
@@ -43,6 +45,20 @@ public class ERSRequest {
 
     // instance variables
     private Type type;
-    private UserProfile currentUser; // i'm still iffy on how to represent this
+    //private UserProfile currentUser; // i'm still iffy on how to represent this
+    private int currentUserID;
+    private UserRole currentUserRole;
     private Map<String, String> params;
+
+    // constructor(s)
+    
+    /**
+     * Defaults to NONE type and LOGGED_OUT user
+     */
+    public ERSRequest(){
+
+        this.type = Type.NONE;
+        //this.currentUser = new UserProfile(-1, Role.LOGGED_OUT);
+        this.params = new HashMap<String, String>();
+    }
 }

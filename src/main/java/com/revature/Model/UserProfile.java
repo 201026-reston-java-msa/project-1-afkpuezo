@@ -15,7 +15,7 @@ public class UserProfile {
      * Enumerates the user roles.
      * I'm experimenting with this more advanced enum syntax.
      */
-    public enum Role{
+    public enum UserRole{
 
         NONE(0, "NONE"), // never used?
         LOGGED_OUT(1, "LOGGEDOUT"), // used if there is no user currently logged in
@@ -25,7 +25,7 @@ public class UserProfile {
         private int ID;
         private String name;
 
-        private Role(int ID, String name){
+        private UserRole(int ID, String name){
             this.ID = ID;
             this.name = name;
         }
@@ -43,14 +43,14 @@ public class UserProfile {
 
     // instance variables ---------------------
     private int ID;
-    private Role role;
+    private UserRole role;
     private String username;
     private String firstName;
     private String lastName;
     private String emailAddress;
 
     // constructor(s) ---------------------
-    public UserProfile(int ID, Role role){
+    public UserProfile(int ID, UserRole role){
 
         this.ID = ID;
         this.role = role;
@@ -62,7 +62,7 @@ public class UserProfile {
 
     public UserProfile(
             int ID, 
-            Role role, 
+            UserRole role, 
             String username, 
             String firstName, 
             String lastName, 
@@ -83,7 +83,7 @@ public class UserProfile {
         return this.ID;
     }
 
-    public Role getRole() {
+    public UserRole getRole() {
         return this.role;
     }
 

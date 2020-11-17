@@ -14,7 +14,7 @@ public class ReimbursementRequest {
     /**
      * Describes what kind of expense
      */
-    public enum Type{
+    public enum ReimbursementType{
 
         NONE(0, "NONE"), // never used?
         LODGING(1, "LODGING"),
@@ -25,7 +25,7 @@ public class ReimbursementRequest {
         private int ID;
         private String name;
 
-        private Type(int ID, String name){
+        private ReimbursementType(int ID, String name){
             this.ID = ID;
             this.name = name;
         }
@@ -42,7 +42,7 @@ public class ReimbursementRequest {
     /**
      * Describes whether the request has been approved or not
      */
-    public enum Status{
+    public enum ReimbursementStatus{
 
         NONE(0, "NONE"), // never used?
         PENDING(1, "PENDING"),
@@ -52,7 +52,7 @@ public class ReimbursementRequest {
         private int ID;
         private String name;
 
-        private Status(int ID, String name){
+        private ReimbursementStatus(int ID, String name){
             this.ID = ID;
             this.name = name;
         }
@@ -72,8 +72,8 @@ public class ReimbursementRequest {
     private int ID;
     private int authorID; // user who submitted this req
     private long moneyAmount;
-    private Type type; // what kind of expense
-    private Status status; // has it been approved or not
+    private ReimbursementType type; // what kind of expense
+    private ReimbursementStatus status; // has it been approved or not
     private String description;
     private String timeSubmitted;
     private int resolverID; // manager
@@ -90,13 +90,14 @@ public class ReimbursementRequest {
      * @param moneyAmount
      * @param type
      */
-    public ReimbursementRequest(int ID, int authorID, long moneyAmount, Type type){
+    public ReimbursementRequest(
+            int ID, int authorID, long moneyAmount, ReimbursementType type){
 
         this.ID = ID;
         this.authorID = authorID;
         this.moneyAmount = moneyAmount;
         this.type = type;
-        this.status = Status.PENDING;
+        this.status = ReimbursementStatus.PENDING;
         this.description = "";
         this.timeSubmitted = "PLACEHOLDER";
         this.resolverID = -1;
@@ -119,8 +120,8 @@ public class ReimbursementRequest {
             int ID, 
             int authorID, 
             long moneyAmount, 
-            Type type,
-            Status status,
+            ReimbursementType type,
+            ReimbursementStatus status,
             String description,
             String timeSubmitted,
             int resolverID,
@@ -152,15 +153,15 @@ public class ReimbursementRequest {
         return this.moneyAmount;
     }
 
-    public Type getType() {
+    public ReimbursementType getType() {
         return this.type;
     }
 
-    public Status getStatus() {
+    public ReimbursementStatus getStatus() {
         return this.status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(ReimbursementStatus status) {
         this.status = status;
     }
 
