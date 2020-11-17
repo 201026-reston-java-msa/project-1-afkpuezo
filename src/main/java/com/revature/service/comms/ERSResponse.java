@@ -67,31 +67,41 @@ public class ERSResponse {
     }
 
     /**
-     * Sets the list of reimb-reqs to be an empty list.
+     * (Attempts to) determine the type of objects contained in the given List, and 
+     * assigns it to the correct instance variable. The other list is set to be empty.
+     * If the given list is empty, both lists will be set to be empty.
+     * Assumes that lists will only contain ALL user profiles, or ALL reimb-reqs.
      * 
      * @param type
      * @param message
-     * @param returnedUserProfiles
+     * @param returnedList : must be a List of all UserProfiles, or ReimbReqs
      */
     public ERSResponse(
             ERSResponseType type, 
             String message, 
-            List<UserProfile> returnedUserProfiles) {
+            List returnedList) {
 
         this.type = type;
         this.message = message;
-        this.returnedUserProfiles = returnedUserProfiles;
-        this.returnedReimbursementRequests = new ArrayList<ReimbursementRequest>();
+
+        if (returnedList.isEmpty()){
+
+            this.returnedUserProfiles = new ArrayList<UserProfile>();
+            this.returnedReimbursementRequests = new ArrayList<ReimbursementRequest>();
+        }
+        else if (returnedList.get(0).getClass() == UserProfile.class){
+
+            this.returnedUserProfiles = (List<UserProfile>)returnedList;
+            this.returnedReimbursementRequests = new ArrayList<ReimbursementRequest>();
+        }
+        else{ // assume it must be a list of reimb-reqs
+
+            this.returnedUserProfiles = new ArrayList<UserProfile>();
+            this.returnedReimbursementRequests = (List<ReimbursementRequest>)returnedList;
+        }
     }
 
-    /*
-    public ERSResponse(
-            ERSResponseType type, 
-            String message, 
-            List<ReimbursementRequest> returnedReimbursementRequests) {
-
-    }
-    */
+    
 
     )
 }
