@@ -45,20 +45,85 @@ public class ERSRequest {
 
     // instance variables
     private Type type;
-    //private UserProfile currentUser; // i'm still iffy on how to represent this
-    private int currentUserID;
-    private UserRole currentUserRole;
+    private int userID; // still not sure if this is the right way to do this
+    private UserRole userRole;
+
     private Map<String, String> params;
 
     // constructor(s)
     
+    // removed this no-args constructor because I think it's not correct to change any of
+    // these properties after initialization
     /**
-     * Defaults to NONE type and LOGGED_OUT user
+     * Defaults to NONE type, -1 userID, and LOGGED_OUT UserRole
      */
+    /*
     public ERSRequest(){
 
         this.type = Type.NONE;
-        //this.currentUser = new UserProfile(-1, Role.LOGGED_OUT);
+        this.userID = -1;
+        this.userRole = UserRole.LOGGED_OUT;
         this.params = new HashMap<String, String>();
+    }
+    */
+
+    public ERSRequest(Type type, int userID, UserRole userRole){
+
+        this.type = type;
+        this.userID = userID;
+        this.userRole = userRole;
+        this.params = new HashMap<String, String>();
+    }
+
+    // getters and setters - mostly just getters
+
+    public Type getType() {
+        return this.type;
+    }
+
+    public int getUserID() {
+        return this.userID;
+    }
+
+    public UserRole getUserRole() {
+        return this.userRole;
+    }
+
+    // methods for getting and putting params
+
+    /**
+     * Adds the given parameter to the Request.
+     * If the given key is already used, the old param will be thrown away.
+     * 
+     * @param key
+     * @param param
+     */
+    public void putParameter(String key, String param){
+
+        params.put(key, param);
+    }
+
+    /**
+     * Returns the parameter associated with the given key. Returns null if the key
+     * has not been added to the map.
+     * 
+     * @param key
+     * @return the param, or null if the key has not been added to the map
+     */
+    public String getParameter(String key){
+
+        if (hasParameter(key)) return params.get(key);
+        else return null;
+    }
+
+    /**
+     * Determines whether or not this ERSreq has a param associated with the given key.
+     * 
+     * @param key
+     * @return
+     */
+    public boolean hasParameter(String key){
+
+        return params.containsKey(key);
     }
 }
