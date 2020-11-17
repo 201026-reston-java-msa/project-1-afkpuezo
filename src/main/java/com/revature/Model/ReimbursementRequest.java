@@ -5,7 +5,7 @@
  * 
  * @Author Andrew Curry
  */
-package com.revature.Model;
+package com.revature.model;
 
 public class ReimbursementRequest {
     
