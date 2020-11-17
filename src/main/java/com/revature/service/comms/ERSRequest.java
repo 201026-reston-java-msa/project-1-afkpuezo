@@ -22,7 +22,7 @@ public class ERSRequest {
      * Hopefully the names aren't too inconsistent. I tried to only use EMPLOYEE or
      * MANAGER as a prefix when there was a risk of ambiguity.
      */
-    public enum Type{
+    public enum ERSRequestType{
 
         NONE,
         LOGIN,
@@ -44,7 +44,7 @@ public class ERSRequest {
     // class/static variables
 
     // instance variables
-    private Type type;
+    private ERSRequestType type;
     private int userID; // still not sure if this is the right way to do this
     private UserRole userRole;
 
@@ -60,14 +60,14 @@ public class ERSRequest {
     /*
     public ERSRequest(){
 
-        this.type = Type.NONE;
+        this.type = ERSRequestType.NONE;
         this.userID = -1;
         this.userRole = UserRole.LOGGED_OUT;
         this.params = new HashMap<String, String>();
     }
     */
 
-    public ERSRequest(Type type, int userID, UserRole userRole){
+    public ERSRequest(ERSRequestType type, int userID, UserRole userRole){
 
         this.type = type;
         this.userID = userID;
@@ -77,7 +77,7 @@ public class ERSRequest {
 
     // getters and setters - mostly just getters
 
-    public Type getType() {
+    public ERSRequestType getType() {
         return this.type;
     }
 
