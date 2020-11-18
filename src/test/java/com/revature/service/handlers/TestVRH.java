@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import com.revature.model.ReimbursementRequest;
 import com.revature.model.UserProfile;
+import com.revature.model.ReimbursementRequest.ReimbursementStatus;
 import com.revature.model.ReimbursementRequest.ReimbursementType;
 import com.revature.model.UserProfile.UserRole;
 import com.revature.repository.DAO.exceptions.DAOException;
@@ -48,6 +49,16 @@ public class TestVRH extends TestRequestHandler{
         vrh = new ViewRequestHandler(updao, rrdao);
     }
     
+    // --------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
+    // Tests
+    // --------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
+    // handleEmployeeViewPending
+    // --------------------------------------------------------------------------
+
     @Test
     public void testHandleEmployeeViewPending() throws DAOException {
 
@@ -113,6 +124,75 @@ public class TestVRH extends TestRequestHandler{
         when (updao.checkExists(userID)).thenReturn(true);
 
         ERSResponse res = vrh.handleEmployeeViewPending(req);
+        ensureDatabaseErrorResponse(res);
+    }
+
+    // --------------------------------------------------------------------------
+    // handleEmployeeViewResolved
+    // --------------------------------------------------------------------------
+
+    @Test
+    public void testHandleEmployeeViewResolved() throws DAOException {
+
+        int userID = 1;
+        int rrID = 2;
+        long moneyAmount = 12345;
+        ReimbursementType type = ReimbursementType.LODGING;
+
+        List<ReimbursementRequest> rrlist = new ArrayList<>();
+        ReimbursementRequest reimb = 
+                new ReimbursementRequest(rrID, userID, moneyAmount, type);
+        reimb.setStatus(ReimbursementStatus.APPROVED);
+        rrlist.add(reimb);
+
+        ERSRequest req = new ERSRequest(
+                ERSRequestType.EMPLOYEE_VIEW_RESOLVED, userID, UserRole.EMPLOYEE);
+        when (rrdao.getReimbursementRequests(userID, SearchType.RESOLVED))
+                .thenReturn(rrlist);
+        when (updao.checkExists(userID)).thenReturn(true); // forgot to do this!
+
+        ERSResponse res = vrh.handleEmployeeViewResolved(req);
+        assertNotNull(res);
+
+        List<UserProfile> returnedUserList = res.getReturnedUserProfiles();
+        assertTrue(returnedUserList.isEmpty());
+
+        List<ReimbursementRequest> returnedReimbList 
+                = res.getReturnedReimbursementRequests();
+        assertEquals(rrlist.size(), returnedReimbList.size());
+    }
+
+    @Test
+    public void testHandleEmployeeViewResolvedUserNotFound() throws DAOException {
+
+        int userID = 1;
+
+        ERSRequest req = new ERSRequest(
+                ERSRequestType.EMPLOYEE_VIEW_RESOLVED, userID, UserRole.EMPLOYEE);
+        when(updao.checkExists(userID)).thenReturn(false);
+
+        ERSResponse res = vrh.handleEmployeeViewResolved(req);
+        ensureInvalidParameterResponse(res);
+    }
+
+    @Test
+    public void testHandleEmployeeViewResolvedDAOException() throws DAOException {
+
+        int userID = 1;
+        int rrID = 2;
+        long moneyAmount = 12345;
+        ReimbursementType type = ReimbursementType.LODGING;
+
+        List<ReimbursementRequest> rrlist = new ArrayList<>();
+        rrlist.add(new ReimbursementRequest(rrID, userID, moneyAmount, type));
+
+        ERSRequest req = new ERSRequest(
+                ERSRequestType.EMPLOYEE_VIEW_RESOLVED, userID, UserRole.EMPLOYEE);
+        when (rrdao.getReimbursementRequests(userID, SearchType.RESOLVED))
+                .thenThrow(new DAOException(""));
+        when (updao.checkExists(userID)).thenReturn(true);
+
+        ERSResponse res = vrh.handleEmployeeViewResolved(req);
         ensureDatabaseErrorResponse(res);
     }
 

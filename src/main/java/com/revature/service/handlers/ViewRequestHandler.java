@@ -72,7 +72,20 @@ public class ViewRequestHandler extends RequestHandler {
     }
 
     public ERSResponse handleEmployeeViewResolved(ERSRequest req) {
-        return null;
+        
+        int userID = req.getUserID();
+
+        try{
+            if (!updao.checkExists(userID)) return getUserDoesNotExistResponse(userID);
+            
+            ERSResponse res = new ERSResponse(ERSResponseType.SUCCESS);
+            res.setReturnedReimbursementRequests(
+                    rrdao.getReimbursementRequests(userID, SearchType.RESOLVED));
+            return res;
+        }
+        catch(DAOException e){
+            return getGenericDAOExceptionResponse();
+        }
     }
 
     public ERSResponse handleEmployeeViewSelf(ERSRequest req) {

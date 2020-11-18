@@ -23,6 +23,8 @@ public abstract class RequestHandler {
 
     protected ERSResponse getGenericDAOExceptionResponse() {
 
-        return new ERSResponse(ERSResponseType.DATABASE_ERROR, "There was a problem communicating with the database.");
+        return new ERSResponse(
+                ERSResponseType.DATABASE_ERROR, 
+                "There was a problem communicating with the database.");
     }
 }
