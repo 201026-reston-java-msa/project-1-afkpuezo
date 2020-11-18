@@ -2,5 +2,5 @@ notes.txt
 log.txt
 /target/*
 /target
-.vscode
-.vscode/*
+/.vscode
+/.vscode/*
