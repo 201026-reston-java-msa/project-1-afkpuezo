@@ -196,6 +196,70 @@ public class TestVRH extends TestRequestHandler{
         ensureDatabaseErrorResponse(res);
     }
 
+    // --------------------------------------------------------------------------
+    // handleEmployeeViewResolved
+    // --------------------------------------------------------------------------
+
+    @Test
+    public void handleEmployeeViewSelf() throws DAOException {
+
+        int userID = 1;
+        UserRole role = UserRole.EMPLOYEE;
+        UserProfile emp = new UserProfile(
+                userID, 
+                role, 
+                "empuser", 
+                "empfirst",
+                "emplast",
+                "empemail");
+
+        ERSRequest req = new ERSRequest(ERSRequestType.EMPLOYEE_VIEW_SELF, userID, role);
+        when(updao.checkExists(userID)).thenReturn(true);
+        when(updao.getUserProfile(userID)).thenReturn(emp);
+
+        ERSResponse res = vrh.handleEmployeeViewSelf(req);
+        assertNotNull(res);
+        assertEquals(ERSResponseType.SUCCESS, res.getType());
+        assertTrue(res.getReturnedReimbursementRequests().isEmpty());
+
+        List<UserProfile> returnedUsers = res.getReturnedUserProfiles();
+        assertEquals(1, returnedUsers.size());
+        UserProfile returnedEmp = returnedUsers.get(0);
+
+        // I don't know how necessary all of this is, there's not really any way this
+        // could change
+        assertNotNull(returnedEmp);
+        assertEquals(emp.getID(), returnedEmp.getID());
+        assertEquals(emp.getRole(), returnedEmp.getRole());
+        assertEquals(emp.getUsername(), returnedEmp.getUsername());
+        assertEquals(emp.getFirstName(), returnedEmp.getFirstName());
+        assertEquals(emp.getLastName(), returnedEmp.getLastName());
+        assertEquals(emp.getEmailAddress(), returnedEmp.getEmailAddress());
+    }
+
+    @Test
+    public void handleEmployeeViewSelfNotFound() throws DAOException {
+
+        int userID = 1;
+        UserRole role = UserRole.EMPLOYEE;
+
+        ERSRequest req = new ERSRequest(ERSRequestType.EMPLOYEE_VIEW_SELF, userID, role);
+        when(updao.checkExists(userID)).thenReturn(false);
+
+        ensureInvalidParameterResponse(vrh.handleEmployeeViewSelf(req));
+    }
+
+    @Test
+    public void handleEmployeeViewSelfDAOException() throws DAOException {
+
+        int userID = 1;
+        UserRole role = UserRole.EMPLOYEE;
+
+        ERSRequest req = new ERSRequest(ERSRequestType.EMPLOYEE_VIEW_SELF, userID, role);
+        when(updao.checkExists(userID)).thenThrow(new DAOException(""));
+
+        ensureDatabaseErrorResponse(vrh.handleEmployeeViewSelf(req));
+    }
     // helper methods --------------------
 
 }
