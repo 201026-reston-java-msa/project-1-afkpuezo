@@ -149,8 +149,27 @@ public class ViewRequestHandler extends RequestHandler {
         }
     }
 
+    /**
+     * Only called by managers, returns an response with every resolved reimb-req.
+     * The response's list is empty if there are no pending reqs.
+     * Fails if there is a DAOException.
+     * 
+     * @param req
+     * @return
+     */
     public ERSResponse handleViewAllResolved(ERSRequest req) {
-        return null;
+        
+        // ? no need to check if the manager actually exists
+
+        try{
+            ERSResponse res = new ERSResponse(ERSResponseType.SUCCESS);
+            res.setReturnedReimbursementRequests(
+                    rrdao.getReimbursementRequests(-1, SearchType.RESOLVED));
+            return res;
+        }
+        catch (DAOException e){
+            return getGenericDAOExceptionResponse();
+        }
     }
 
     public ERSResponse handleViewAllEmployees(ERSRequest req) {

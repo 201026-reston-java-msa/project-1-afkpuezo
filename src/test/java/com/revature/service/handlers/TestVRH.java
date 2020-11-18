@@ -301,6 +301,46 @@ public class TestVRH extends TestRequestHandler{
         ensureDatabaseErrorResponse(vrh.handleViewAllPending(req));
     }
 
+    // --------------------------------------------------------------------------
+    // handleViewAllResolved
+    // --------------------------------------------------------------------------
+
+    @Test
+    public void handleViewAllResolved() throws DAOException {
+
+        int userID = 1;
+        UserRole role = UserRole.MANAGER;
+        int rrID = 2;
+        long moneyAmount = 12345;
+        ReimbursementType type = ReimbursementType.LODGING;
+
+        List<ReimbursementRequest> rrlist = new ArrayList<>();
+        rrlist.add(new ReimbursementRequest(rrID, userID, moneyAmount, type));
+        ERSRequest req = new ERSRequest(ERSRequestType.VIEW_ALL_RESOLVED, userID, role);
+
+        when(rrdao.getReimbursementRequests(-1, SearchType.RESOLVED)).thenReturn(rrlist);
+        ERSResponse res = vrh.handleViewAllResolved(req);
+        assertNotNull(res);
+        assertEquals(ERSResponseType.SUCCESS, res.getType());
+        assertTrue(res.getReturnedUserProfiles().isEmpty());
+
+        List<ReimbursementRequest> returnedReimbs 
+                = res.getReturnedReimbursementRequests();
+        assertEquals(rrlist, returnedReimbs); // should use List's equals()
+    }
+
+    @Test
+    public void handleViewAllResolvedDAOException() throws DAOException {
+
+        int userID = 1;
+        UserRole role = UserRole.MANAGER;
+        ERSRequest req = new ERSRequest(ERSRequestType.VIEW_ALL_RESOLVED, userID, role);
+        when(rrdao.getReimbursementRequests(-1, SearchType.RESOLVED))
+                .thenThrow(new DAOException(""));
+        
+        ensureDatabaseErrorResponse(vrh.handleViewAllResolved(req));
+    }
+
     // helper methods --------------------
 
 }
