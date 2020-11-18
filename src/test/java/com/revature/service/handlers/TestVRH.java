@@ -29,7 +29,7 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestVRH {
+public class TestVRH extends TestRequestHandler{
 
     // rules
     @Rule
@@ -118,44 +118,4 @@ public class TestVRH {
 
     // helper methods --------------------
 
-    /**
-     * Ensures that the given response is in the correct format to indicate that
-     * there was an invalid parameter in the original request (EG, a user that did
-     * not exist). 
-     * Currently, does not check the message.
-     * 
-     * @param res
-     */
-    private void ensureInvalidParameterResponse(ERSResponse res){
-
-        assertNotNull(res);
-        assertEquals(ERSResponseType.INVALID_PARAMETER, res.getType());
-        ensureResponseListsAreEmpty(res);
-    }
-
-    /**
-     * Ensures that the given response is in the correct format to indicate that
-     * there was a DAOException thrown while handling the original request (EG, could not
-     * make a connection with the database).
-     * Currently, does not check the message.
-     * 
-     * @param res
-     */
-    private void ensureDatabaseErrorResponse(ERSResponse res) {
-
-        assertNotNull(res);
-        assertEquals(ERSResponseType.DATABASE_ERROR, res.getType());
-        ensureResponseListsAreEmpty(res);
-    }
-
-    /**
-     * Ensures that both returned-lists are empty.
-     * 
-     * @param res
-     */
-    private void ensureResponseListsAreEmpty(ERSResponse res){
-
-        assertTrue(res.getReturnedUserProfiles().isEmpty());
-        assertTrue(res.getReturnedReimbursementRequests().isEmpty());
-    }
 }
