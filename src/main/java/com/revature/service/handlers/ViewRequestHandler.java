@@ -172,8 +172,26 @@ public class ViewRequestHandler extends RequestHandler {
         }
     }
 
+    /**
+     * Only called by managers, returns an response with every employee's UserProfile.
+     * The response's list is empty if there are no employees.
+     * Fails if there is a DAOException.
+     * 
+     * @param req
+     * @return
+     */
     public ERSResponse handleViewAllEmployees(ERSRequest req) {
-        return null;
+        
+        // ? no need to check if the manager actually exists
+
+        try{
+            ERSResponse res = new ERSResponse(ERSResponseType.SUCCESS);
+            res.setReturnedUserProfiles(updao.getAllEmployeeProfiles());
+            return res;
+        }
+        catch (DAOException e){
+            return getGenericDAOExceptionResponse();
+        }
     }
 
     public ERSResponse handleManagerViewByEmployee(ERSRequest req) {

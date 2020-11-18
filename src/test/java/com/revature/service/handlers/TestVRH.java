@@ -201,7 +201,7 @@ public class TestVRH extends TestRequestHandler{
     // --------------------------------------------------------------------------
 
     @Test
-    public void handleEmployeeViewSelf() throws DAOException {
+    public void testHandleEmployeeViewSelf() throws DAOException {
 
         int userID = 1;
         UserRole role = UserRole.EMPLOYEE;
@@ -238,7 +238,7 @@ public class TestVRH extends TestRequestHandler{
     }
 
     @Test
-    public void handleEmployeeViewSelfNotFound() throws DAOException {
+    public void testHandleEmployeeViewSelfNotFound() throws DAOException {
 
         int userID = 1;
         UserRole role = UserRole.EMPLOYEE;
@@ -250,7 +250,7 @@ public class TestVRH extends TestRequestHandler{
     }
 
     @Test
-    public void handleEmployeeViewSelfDAOException() throws DAOException {
+    public void testHandleEmployeeViewSelfDAOException() throws DAOException {
 
         int userID = 1;
         UserRole role = UserRole.EMPLOYEE;
@@ -266,7 +266,7 @@ public class TestVRH extends TestRequestHandler{
     // --------------------------------------------------------------------------
 
     @Test
-    public void handleViewAllPending() throws DAOException {
+    public void testHandleViewAllPending() throws DAOException {
 
         int userID = 1;
         UserRole role = UserRole.MANAGER;
@@ -290,7 +290,7 @@ public class TestVRH extends TestRequestHandler{
     }
 
     @Test
-    public void handleViewAllPendingDAOException() throws DAOException {
+    public void testHandleViewAllPendingDAOException() throws DAOException {
 
         int userID = 1;
         UserRole role = UserRole.MANAGER;
@@ -306,7 +306,7 @@ public class TestVRH extends TestRequestHandler{
     // --------------------------------------------------------------------------
 
     @Test
-    public void handleViewAllResolved() throws DAOException {
+    public void testHandleViewAllResolved() throws DAOException {
 
         int userID = 1;
         UserRole role = UserRole.MANAGER;
@@ -330,7 +330,7 @@ public class TestVRH extends TestRequestHandler{
     }
 
     @Test
-    public void handleViewAllResolvedDAOException() throws DAOException {
+    public void testHandleViewAllResolvedDAOException() throws DAOException {
 
         int userID = 1;
         UserRole role = UserRole.MANAGER;
@@ -341,6 +341,47 @@ public class TestVRH extends TestRequestHandler{
         ensureDatabaseErrorResponse(vrh.handleViewAllResolved(req));
     }
 
-    // helper methods --------------------
+    // --------------------------------------------------------------------------
+    // handleViewAllEmployees
+    // --------------------------------------------------------------------------
+
+    @Test
+    public void testHandleViewAllEmployees() throws DAOException {
+
+        int userID = 1; // manager triggering request
+        UserRole role = UserRole.MANAGER;
+
+        int empID = 2; // employee retrieved by search
+        UserRole empRole = UserRole.EMPLOYEE;
+        UserProfile emp = new UserProfile(
+                empID, 
+                empRole, 
+                "empuser", 
+                "empfirst",
+                "emplast",
+                "empemail");
+        List<UserProfile> uplist = new ArrayList<>();
+        uplist.add(emp);
+
+        when(updao.getAllEmployeeProfiles()).thenReturn(uplist);
+        ERSRequest req = new ERSRequest(ERSRequestType.VIEW_ALL_EMPLOYEES, userID, role);
+        ERSResponse res = vrh.handleViewAllEmployees(req);
+
+        assertNotNull(res);
+        assertEquals(ERSResponseType.SUCCESS, res.getType());
+        assertTrue(res.getReturnedReimbursementRequests().isEmpty());
+        assertEquals(uplist, res.getReturnedUserProfiles());
+    }
+
+    @Test
+    public void testHandleViewAllEmployeesDAOException() throws DAOException {
+
+        int userID = 1; // manager triggering request
+        UserRole role = UserRole.MANAGER;
+
+        when(updao.getAllEmployeeProfiles()).thenThrow(new DAOException(""));
+        ERSRequest req = new ERSRequest(ERSRequestType.VIEW_ALL_EMPLOYEES, userID, role);
+        ensureDatabaseErrorResponse(vrh.handleViewAllEmployees(req));
+    }
 
 }
