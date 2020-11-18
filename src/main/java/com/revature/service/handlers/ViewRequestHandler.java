@@ -12,6 +12,7 @@
  */
 package com.revature.service.handlers;
 
+import com.revature.model.UserProfile;
 import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO;
 import com.revature.repository.DAO.interfaces.UserProfileDAO;
@@ -20,6 +21,7 @@ import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSResponse;
 import com.revature.service.comms.ERSResponse.ERSResponseType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ViewRequestHandler extends RequestHandler {
@@ -71,6 +73,15 @@ public class ViewRequestHandler extends RequestHandler {
 
     }
 
+    /**
+     * Allows an employee to view all of their own pending reimb-reqs.
+     * If there are no such requests, succeeds and returns a response with an empty list.
+     * Fails if the employee doesnt exist.
+     * Fails if there is a DAOException.
+     * 
+     * @param req
+     * @return
+     */
     public ERSResponse handleEmployeeViewResolved(ERSRequest req) {
         
         int userID = req.getUserID();
@@ -88,8 +99,31 @@ public class ViewRequestHandler extends RequestHandler {
         }
     }
 
+    /**
+     * Allows an employee to see their own personal/account info
+     * Fails if the employee doesnt exist.
+     * Fails if there is a DAOException.
+     * 
+     * @param req
+     * @param return
+     */
     public ERSResponse handleEmployeeViewSelf(ERSRequest req) {
-        return null;
+        
+        int userID = req.getUserID();
+
+        try{
+            if (!updao.checkExists(userID)) return getUserDoesNotExistResponse(userID);
+
+            List<UserProfile> uplist = new ArrayList<>();
+            uplist.add(updao.getUserProfile(userID));
+            ERSResponse res = new ERSResponse(ERSResponseType.SUCCESS);
+            res.setReturnedUserProfiles(uplist);
+
+            return res;
+        }
+        catch(DAOException e){
+            return getGenericDAOExceptionResponse();
+        }
     }
 
     public ERSResponse handleAllRequests(ERSRequest req) {
