@@ -118,7 +118,7 @@ public class ERSResponse {
      * 
      * @param returnedUserProfiles
      */
-    public void setReturnedReimbursementRequest(
+    public void setReturnedReimbursementRequests(
             List<ReimbursementRequest> returnedReimbursementRequests) {
         this.returnedReimbursementRequests = returnedReimbursementRequests;
     }

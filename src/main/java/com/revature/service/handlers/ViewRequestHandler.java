@@ -61,8 +61,8 @@ public class ViewRequestHandler extends RequestHandler {
             if (!updao.checkExists(userID)) return getUserDoesNotExistResponse(userID);
             
             ERSResponse res = new ERSResponse(ERSResponseType.SUCCESS);
-            res.setReturnedReimbursementRequest(
-                    rrdao.getReimbursementRequests(userID, SearchType.ALL));
+            res.setReturnedReimbursementRequests(
+                    rrdao.getReimbursementRequests(userID, SearchType.PENDING));
             return res;
         }
         catch(DAOException e){
@@ -100,24 +100,4 @@ public class ViewRequestHandler extends RequestHandler {
     }
 
     // helper methods ----------------------
-
-    /**
-     * Returns a response indicating that a user was not found.
-     * 
-     * @param userID : included in the message
-     * @return
-     */
-    private ERSResponse getUserDoesNotExistResponse(int userID) {
-
-        return new ERSResponse(
-                ERSResponseType.INVALID_PARAMETER, 
-                String.format("No user profile with ID %d was found.", userID));
-    }
-
-    private ERSResponse getGenericDAOExceptionResponse(){
-
-        return new ERSResponse(
-                ERSResponseType.DATABASE_ERROR,
-                "There was a problem communicating with the database.");
-    }
 }
