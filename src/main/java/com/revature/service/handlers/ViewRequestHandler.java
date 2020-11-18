@@ -194,9 +194,36 @@ public class ViewRequestHandler extends RequestHandler {
         }
     }
 
+    /**
+     * Only called by managers, returns an response with all of the reimb-reqs authored
+     * by a single particular employee.
+     * The response's list is empty if there are no such requests.
+     * Fails if the employee does not exist.
+     * Fails if there is a DAOException.
+     * 
+     * ? should it also return the targeted employee's UserProfile? stretch goal I suppose
+     * 
+     * @param req
+     * @return
+     */
     public ERSResponse handleManagerViewByEmployee(ERSRequest req) {
-        return null;
-    }
+        
+        try{
+            // IMPORTANT - this is the targeted employee, NOT the manager triggering
+            // this request.
+            if (!req.hasParameter(ERSRequest.EMPLOYEE_ID_KEY))
+                return getMalformedRequestResponse();
 
-    // helper methods ----------------------
+            int empID = Integer.parseInt(req.getParameter(ERSRequest.EMPLOYEE_ID_KEY));
+            if (!updao.checkExists(empID)) return getUserDoesNotExistResponse(empID);
+
+            ERSResponse res = new ERSResponse(ERSResponseType.SUCCESS);
+            res.setReturnedReimbursementRequests(
+                    rrdao.getReimbursementRequests(empID, SearchType.ALL));
+            return res;
+        }
+        catch (DAOException e){
+            return getGenericDAOExceptionResponse();
+        }
+    }
 }

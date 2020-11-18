@@ -384,4 +384,83 @@ public class TestVRH extends TestRequestHandler{
         ensureDatabaseErrorResponse(vrh.handleViewAllEmployees(req));
     }
 
+    // --------------------------------------------------------------------------
+    // handleManagerViewByEmployee
+    // --------------------------------------------------------------------------
+
+    @Test
+    public void testHandleManagerViewByEmployee() throws DAOException {
+
+        int manID = 1;
+        UserRole manRole = UserRole.MANAGER;
+
+        int empID = 2; // don't need to make UserProfile for the employee...currently
+
+        int reimbID = 1;
+        int authorID = empID; // overkill i guess
+        long moneyAmount = 6564321L;
+        ReimbursementType reimbType = ReimbursementType.FOOD;
+        ReimbursementRequest reimb 
+                = new ReimbursementRequest(reimbID, authorID, moneyAmount, reimbType);
+        List<ReimbursementRequest> rrList = new ArrayList<>();
+        rrList.add(reimb);
+
+        when(updao.checkExists(empID)).thenReturn(true);
+        when(rrdao.getReimbursementRequests(empID, SearchType.ALL)).thenReturn(rrList);
+        ERSRequest req 
+                = new ERSRequest(ERSRequestType.MANAGER_VIEW_BY_EMPLOYEE, manID, manRole);
+        req.putParameter(ERSRequest.EMPLOYEE_ID_KEY, "" + empID);
+        ERSResponse res = vrh.handleManagerViewByEmployee(req);
+
+        ensureSuccessfulResponse(res); // helper I should have added sooner
+        assertTrue(res.getReturnedUserProfiles().isEmpty()); // ? could change in future
+        assertEquals(rrList, res.getReturnedReimbursementRequests());
+    }
+
+    @Test
+    public void testHandleManagerViewByEmployeeNotFound() throws DAOException {
+
+        int manID = 1;
+        UserRole manRole = UserRole.MANAGER;
+        int empID = 2; // don't need to make UserProfile for the employee...currently
+
+        when(updao.checkExists(empID)).thenReturn(false);
+        ERSRequest req 
+                = new ERSRequest(ERSRequestType.MANAGER_VIEW_BY_EMPLOYEE, manID, manRole);
+        req.putParameter(ERSRequest.EMPLOYEE_ID_KEY, "" + empID);
+        ERSResponse res = vrh.handleManagerViewByEmployee(req);
+
+        ensureInvalidParameterResponse(res);
+    }
+
+    @Test
+    public void testHandleManagerViewByEmployeeDAOException() throws DAOException {
+
+        int manID = 1;
+        UserRole manRole = UserRole.MANAGER;
+        int empID = 2; // don't need to make UserProfile for the employee...currently
+
+        when(updao.checkExists(empID)).thenThrow(new DAOException(""));
+        ERSRequest req 
+                = new ERSRequest(ERSRequestType.MANAGER_VIEW_BY_EMPLOYEE, manID, manRole);
+        req.putParameter(ERSRequest.EMPLOYEE_ID_KEY, "" + empID);
+        ERSResponse res = vrh.handleManagerViewByEmployee(req);
+
+        ensureDatabaseErrorResponse(res);
+    }
+
+    @Test
+    public void testHandleManagerViewByEmployeeMalformed() throws DAOException {
+
+        int manID = 1;
+        UserRole manRole = UserRole.MANAGER;
+        //int empID = 2; // don't need to make UserProfile for the employee...currently
+
+        ERSRequest req 
+                = new ERSRequest(ERSRequestType.MANAGER_VIEW_BY_EMPLOYEE, manID, manRole);
+        // req.putParameter(ERSRequest.EMPLOYEE_ID_KEY, "" + empID);
+        ERSResponse res = vrh.handleManagerViewByEmployee(req);
+
+        ensureMalformedRequestResponse(res);
+    }
 }

@@ -25,6 +25,7 @@ public class ERSResponse {
         SUCCESS, 
         FORBIDDEN, // if the current user doesn't have permission
         INVALID_PARAMETER, // eg, user not found
+        MALFORMED_REQUEST, // eg, missing a parameter for the user ID
         DATABASE_ERROR // seemingly valid request, but some problem with the database
     }
 

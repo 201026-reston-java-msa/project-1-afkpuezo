@@ -50,7 +50,33 @@ public abstract class TestRequestHandler {
      */
     protected void ensureResponseListsAreEmpty(ERSResponse res){
 
+        assertNotNull(res);
         assertTrue(res.getReturnedUserProfiles().isEmpty());
         assertTrue(res.getReturnedReimbursementRequests().isEmpty());
+    }
+
+    /**
+     * Ensures that the given res is of type SUCCESS
+     * 
+     * @param res
+     */
+    protected void ensureSuccessfulResponse(ERSResponse res){
+
+        assertNotNull(res);
+        assertEquals(ERSResponseType.SUCCESS, res.getType());
+    }
+
+    /**
+     * Ensures that the given response is in the correct format to indicate that
+     * the original request was malformed (EG, outright missing an expected parameter)
+     * Currently, does not check the message.
+     * 
+     * @param res
+     */
+    protected void ensureMalformedRequestResponse(ERSResponse res){
+
+        assertNotNull(res);
+        assertEquals(ERSResponseType.MALFORMED_REQUEST, res.getType());
+        ensureResponseListsAreEmpty(res);
     }
 }

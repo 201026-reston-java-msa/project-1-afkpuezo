@@ -21,10 +21,31 @@ public abstract class RequestHandler {
                 String.format("No user profile with ID %d was found.", userID));
     }
 
+    /**
+     * Returns a response indicating that there was a problem with the DAO
+     * 
+     * @return
+     */
     protected ERSResponse getGenericDAOExceptionResponse() {
 
         return new ERSResponse(
                 ERSResponseType.DATABASE_ERROR, 
                 "There was a problem communicating with the database.");
+    }
+
+    /**
+     * Returns a response indicating that the front end sent a malformed request to the
+     * service layer.
+     * 
+     * NOTE: If I do this right, this should never happen, but it keeps mistakes from
+     * NOTE: crashing the entire system during development. (hopefully)
+     * 
+     * @return
+     */
+    protected ERSResponse getMalformedRequestResponse() {
+        
+        return new ERSResponse(
+                ERSResponseType.MALFORMED_REQUEST, 
+                "Malformed request. Contant system admin.");
     }
 }
