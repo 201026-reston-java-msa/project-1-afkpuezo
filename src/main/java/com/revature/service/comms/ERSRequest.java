@@ -12,6 +12,11 @@ import com.revature.model.UserProfile;
 import com.revature.model.UserProfile.UserRole;
 
 public class ERSRequest {
+
+    // constants --------------------
+
+    // these strings are for expected common parameter name/keys
+    public static final String EMPLOYEE_ID_KEY = "employeeID";
     
     // enums
 
@@ -35,8 +40,8 @@ public class ERSRequest {
         APPROVE_REQUEST,
         DENY_REQUEST,
         VIEW_ALL_REQUESTS,
-        MANAGER_VIEW_ALL_PENDING,
-        MANAGER_VIEW_ALL_RESOLVED,
+        VIEW_ALL_PENDING,
+        VIEW_ALL_RESOLVED,
         VIEW_ALL_EMPLOYEES,
         MANAGER_VIEW_BY_EMPLOYEE
     }

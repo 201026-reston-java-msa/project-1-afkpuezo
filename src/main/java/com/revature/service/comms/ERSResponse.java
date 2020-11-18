@@ -25,6 +25,7 @@ public class ERSResponse {
         SUCCESS, 
         FORBIDDEN, // if the current user doesn't have permission
         INVALID_PARAMETER, // eg, user not found
+        MALFORMED_REQUEST, // eg, missing a parameter for the user ID
         DATABASE_ERROR // seemingly valid request, but some problem with the database
     }
 
@@ -68,41 +69,6 @@ public class ERSResponse {
         this.returnedReimbursementRequests = new ArrayList<ReimbursementRequest>();
     }
 
-    /**
-     * (Attempts to) determine the type of objects contained in the given List, and 
-     * assigns it to the correct instance variable. The other list is set to be empty.
-     * If the given list is empty, both lists will be set to be empty.
-     * Assumes that lists will only contain ALL user profiles, or ALL reimb-reqs.
-     * 
-     * @param type
-     * @param message
-     * @param returnedList : must be a List of all UserProfiles, or ReimbReqs
-     */
-    public ERSResponse(
-            ERSResponseType type, 
-            String message, 
-            List returnedList) {
-
-        this.type = type;
-        this.message = message;
-
-        if (returnedList.isEmpty()){
-
-            this.returnedUserProfiles = new ArrayList<UserProfile>();
-            this.returnedReimbursementRequests = new ArrayList<ReimbursementRequest>();
-        }
-        else if (returnedList.get(0).getClass() == UserProfile.class){
-
-            this.returnedUserProfiles = (List<UserProfile>)returnedList;
-            this.returnedReimbursementRequests = new ArrayList<ReimbursementRequest>();
-        }
-        else{ // assume it must be a list of reimb-reqs
-
-            this.returnedUserProfiles = new ArrayList<UserProfile>();
-            this.returnedReimbursementRequests = (List<ReimbursementRequest>)returnedList;
-        }
-    }
-
     public ERSResponse(
             ERSResponseType type, 
             String message, 
@@ -131,12 +97,31 @@ public class ERSResponse {
     }
 
     /**
+     * Does NOT copy the list, just makes a reference.
+     * 
+     * @param returnedUserProfiles
+     */
+    public void setReturnedUserProfiles(List<UserProfile> returnedUserProfiles) {
+        this.returnedUserProfiles = returnedUserProfiles;
+    }
+
+    /**
      * Returns a reference to the list, not a copy
      * 
      * @return
      */
     public List<ReimbursementRequest> getReturnedReimbursementRequests() {
         return this.returnedReimbursementRequests;
+    }
+
+    /**
+     * Does NOT copy the list, just makes a reference.
+     * 
+     * @param returnedUserProfiles
+     */
+    public void setReturnedReimbursementRequests(
+            List<ReimbursementRequest> returnedReimbursementRequests) {
+        this.returnedReimbursementRequests = returnedReimbursementRequests;
     }
 
     /**
