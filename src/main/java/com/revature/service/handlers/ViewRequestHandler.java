@@ -10,16 +10,14 @@
  * role is one that is permitted to take that action. Other permission/possibility checks
  * may still occur.
  */
-package com.revature.service;
+package com.revature.service.handlers;
 
-import com.revature.model.ReimbursementRequest;
 import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO;
 import com.revature.repository.DAO.interfaces.UserProfileDAO;
 import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO.SearchType;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSResponse;
-import com.revature.service.comms.ERSRequest.ERSRequestType;
 import com.revature.service.comms.ERSResponse.ERSResponseType;
 
 import java.util.List;
