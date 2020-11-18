@@ -19,11 +19,12 @@ import com.revature.repository.DAO.interfaces.UserProfileDAO;
 import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO.SearchType;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSResponse;
+import com.revature.service.comms.ERSRequest.ERSRequestType;
 import com.revature.service.comms.ERSResponse.ERSResponseType;
 
 import java.util.List;
 
-public class ViewRequestHandler {
+public class ViewRequestHandler extends RequestHandler {
     
     // enums -------------------------------
 
@@ -56,24 +57,20 @@ public class ViewRequestHandler {
      */
     public ERSResponse handleEmployeeViewPending(ERSRequest req){
 
-        ERSResponse res;
         int userID = req.getUserID();
 
         try{
-            if (!updao.checkExists(userID)) return userDoesNotExist(userID);
-
-            List<ReimbursementRequest> reimbs = 
-                    rrdao.getReimbursementRequests(userID, SearchType.ALL);
+            if (!updao.checkExists(userID)) return getUserDoesNotExistResponse(userID);
             
-            return new ERSResponse(
-                    ERSResponseType.SUCCESS,
-                    (List)reimbs);
+            ERSResponse res = new ERSResponse(ERSResponseType.SUCCESS);
+            res.setReturnedReimbursementRequest(
+                    rrdao.getReimbursementRequests(userID, SearchType.ALL));
+            return res;
         }
         catch(DAOException e){
-
+            return getGenericDAOExceptionResponse();
         }
 
-        return null; // shouldn't be reached? but satisfies compiler
     }
 
     public ERSResponse handleEmployeeViewResolved(ERSRequest req) {
@@ -108,11 +105,21 @@ public class ViewRequestHandler {
 
     /**
      * Returns a response indicating that a user was not found.
+     * 
+     * @param userID : included in the message
+     * @return
      */
-    private ERSResponse userDoesNotExist(int userID) {
+    private ERSResponse getUserDoesNotExistResponse(int userID) {
 
         return new ERSResponse(
-            ERSResponseType.INVALID_PARAMETER, 
-            String.format("No user profile with ID %d was found.", userID));
+                ERSResponseType.INVALID_PARAMETER, 
+                String.format("No user profile with ID %d was found.", userID));
+    }
+
+    private ERSResponse getGenericDAOExceptionResponse(){
+
+        return new ERSResponse(
+                ERSResponseType.DATABASE_ERROR,
+                "There was a problem communicating with the database.");
     }
 }
