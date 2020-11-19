@@ -203,6 +203,8 @@ public class ViewRequestHandler extends RequestHandler {
      * 
      * ? should it also return the targeted employee's UserProfile? stretch goal I suppose
      * 
+     * @author Andrew Curry
+     * 
      * @param req
      * @return
      */
