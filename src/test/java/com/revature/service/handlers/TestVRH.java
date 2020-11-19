@@ -1,5 +1,7 @@
 /**
  * Tests the ViewRequestHandler class
+ * 
+ * @author Andrew Curry
  */
 package com.revature.service.handlers;
 

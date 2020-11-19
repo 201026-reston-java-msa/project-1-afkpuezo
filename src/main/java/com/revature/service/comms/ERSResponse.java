@@ -2,6 +2,8 @@
  * This class is used for communicating between the front-end and service layers.
  * When the service layer evaluates an ERSRequest, it returns an object of this class,
  * containing the relevant information.
+ * 
+ * @author Andrew Curry
  */
 package com.revature.service.comms;
 

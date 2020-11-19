@@ -1,6 +1,8 @@
 /**
  * An abstrast class extended by individual handlers, contains some shared helper/utility
  * methods that can be used by each of the actual request handlers.
+ * 
+ * @author Andrew Curry
  */
 package com.revature.service.handlers;
 

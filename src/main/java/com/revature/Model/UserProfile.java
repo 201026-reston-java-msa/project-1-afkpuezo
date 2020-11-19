@@ -3,7 +3,7 @@
  * It does not do any verification of the data it is given; that should be
  * done before creating an object of this class. 
  * 
- * @Author Andrew Curry
+ * @author Andrew Curry
  */
 package com.revature.model;
 

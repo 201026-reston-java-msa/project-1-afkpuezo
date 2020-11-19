@@ -1,6 +1,8 @@
 /**
  * Test classes meant for specific RequestHandler classes should extend this.
  * It contains some common util/helper methods for tests.
+ * 
+ * @author Andrew Curry
  */
 package com.revature.service.handlers;
 
