@@ -72,13 +72,20 @@ public interface UserProfileDAO {
     public List<UserProfile> getAllEmployeeProfiles() throws DAOException;
 
     /**
-     * If no matching user exists, a new one is created.
+     * Saves/writes the given UserProfile to the database.
      * If a matching user DOES exist, ID and Role will not be updated,
      * but all other properties will be.
+     * If saving a new UserProfile, should use ID = -1. The system will automatically
+     * generate a new ID and return it.
      * Throws exception if there is a database communication problem. 
      * 
-     * @param up
+     * @param up : profile to save
+     * 
+     * @return : The ID of the profile that was saved. If given a up with an ID, the given
+     *      ID will be returned. If given a up with ID = -1, a new ID will be generated
+     *      and returned.
+     * 
      * @throws DAOException
      */
-    public void saveUserProfile(UserProfile up) throws DAOException;
+    public int saveUserProfile(UserProfile up) throws DAOException;
 }
