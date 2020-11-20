@@ -21,6 +21,9 @@ public class ERSRequest {
     public static final String EMPLOYEE_ID_KEY = "employeeID";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
+    public static final String REIMBURSEMENT_TYPE = "reimbursementType";
+    public static final String MONEY_AMOUNT = "moneyAmount";
+    public static final String REIMBURSEMENT_DESCRIPTION = "reimbursementDescription";
     
     // enums
 
