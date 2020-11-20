@@ -63,6 +63,10 @@ public class ModifyRequestHandler extends RequestHandler {
             long moneyAmount = Long.parseLong(req.getParameter(ERSRequest.MONEY_AMOUNT_KEY));
             ReimbursementType type = ReimbursementType.fromString(
                     req.getParameter(ERSRequest.REIMBURSEMENT_TYPE_KEY));
+            if (type == ReimbursementType.NONE)
+                return new ERSResponse(
+                    ERSResponseType.INVALID_PARAMETER, 
+                    "Invalid input for expense type."); 
 
             ReimbursementRequest reimb 
                     = new ReimbursementRequest(authorID, moneyAmount, type);
