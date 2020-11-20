@@ -43,8 +43,8 @@ public class AuthRequestHandler extends RequestHandler {
     public ERSResponse handleLogIn(ERSRequest req){
 
         try{
-            if (!req.hasParameter(ERSRequest.USERNAME) 
-                    || !req.hasParameter(ERSRequest.PASSWORD))
+            if (!req.hasParameter(ERSRequest.USERNAME_KEY) 
+                    || !req.hasParameter(ERSRequest.PASSWORD_KEY))
                 return getMalformedRequestResponse();
 
             if (req.getUserRole() != UserRole.LOGGED_OUT)
@@ -53,11 +53,11 @@ public class AuthRequestHandler extends RequestHandler {
                             String.format(
                                 "Unable to log in: there is already a user logged in."));
 
-            String username = req.getParameter(ERSRequest.USERNAME);
+            String username = req.getParameter(ERSRequest.USERNAME_KEY);
             if (!updao.checkExists(username)) 
             return getUserDoesNotExistResponse(username);
             
-            String password = req.getParameter(ERSRequest.PASSWORD);
+            String password = req.getParameter(ERSRequest.PASSWORD_KEY);
             if (!checkPassword(username, password)) // helper handles encryption
                 return getIncorrectPasswordResponse(username);
 

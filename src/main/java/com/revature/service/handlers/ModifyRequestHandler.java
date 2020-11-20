@@ -49,8 +49,8 @@ public class ModifyRequestHandler extends RequestHandler {
      */
     public ERSResponse handleSubmitRequest(ERSRequest req){
 
-        if (!(req.hasParameter(ERSRequest.REIMBURSEMENT_TYPE) 
-                && (req.hasParameter(ERSRequest.MONEY_AMOUNT))))
+        if (!(req.hasParameter(ERSRequest.REIMBURSEMENT_TYPE_KEY) 
+                && (req.hasParameter(ERSRequest.MONEY_AMOUNT_KEY))))
             return getMalformedRequestResponse();
         
         try{
@@ -60,15 +60,15 @@ public class ModifyRequestHandler extends RequestHandler {
                 return getUserDoesNotExistResponse(authorID);
             
             // good to go ahead and build the reimb-req
-            long moneyAmount = Long.parseLong(req.getParameter(ERSRequest.MONEY_AMOUNT));
+            long moneyAmount = Long.parseLong(req.getParameter(ERSRequest.MONEY_AMOUNT_KEY));
             ReimbursementType type = ReimbursementType.fromString(
-                    req.getParameter(ERSRequest.REIMBURSEMENT_TYPE));
+                    req.getParameter(ERSRequest.REIMBURSEMENT_TYPE_KEY));
 
             ReimbursementRequest reimb 
                     = new ReimbursementRequest(authorID, moneyAmount, type);
-            if (req.hasParameter(ERSRequest.REIMBURSEMENT_DESCRIPTION))
+            if (req.hasParameter(ERSRequest.REIMBURSEMENT_DESCRIPTION_KEY))
                 reimb.setDescription(
-                        req.getParameter(ERSRequest.REIMBURSEMENT_DESCRIPTION));
+                        req.getParameter(ERSRequest.REIMBURSEMENT_DESCRIPTION_KEY));
             
             int reimbID = rrdao.saveReimbursementRequest(reimb);
             ERSResponse res = new ERSResponse(

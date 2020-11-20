@@ -19,11 +19,11 @@ public class ERSRequest {
 
     // these strings are for expected common parameter name/keys
     public static final String EMPLOYEE_ID_KEY = "employeeID";
-    public static final String USERNAME = "username";
-    public static final String PASSWORD = "password";
-    public static final String REIMBURSEMENT_TYPE = "reimbursementType";
-    public static final String MONEY_AMOUNT = "moneyAmount";
-    public static final String REIMBURSEMENT_DESCRIPTION = "reimbursementDescription";
+    public static final String USERNAME_KEY = "username";
+    public static final String PASSWORD_KEY = "password";
+    public static final String REIMBURSEMENT_TYPE_KEY = "reimbursementType";
+    public static final String MONEY_AMOUNT_KEY = "moneyAmount";
+    public static final String REIMBURSEMENT_DESCRIPTION_KEY = "reimbursementDescription";
     
     // enums
 

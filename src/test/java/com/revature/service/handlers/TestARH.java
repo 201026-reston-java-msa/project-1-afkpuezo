@@ -1,3 +1,6 @@
+/**
+ * This class contains tests for the AuthRequestHandler class.
+ */
 package com.revature.service.handlers;
 
 import org.junit.Before;
@@ -9,9 +12,6 @@ import org.mockito.junit.MockitoRule;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.revature.model.UserProfile.UserRole;
 import com.revature.repository.DAO.exceptions.DAOException;
@@ -60,8 +60,8 @@ public class TestARH extends TestRequestHandler{
         String username = "testuser";
         String password = "testpass";
         ERSRequest req = new ERSRequest(ERSRequestType.LOG_IN, loID, lorole);
-        req.putParameter(ERSRequest.USERNAME, username);
-        req.putParameter(ERSRequest.PASSWORD, password);
+        req.putParameter(ERSRequest.USERNAME_KEY, username);
+        req.putParameter(ERSRequest.PASSWORD_KEY, password);
 
         when(updao.checkExists(username)).thenReturn(true);
         when(updao.getPassword(username)).thenReturn(encryptPassword(password));
@@ -80,8 +80,8 @@ public class TestARH extends TestRequestHandler{
         String username = "testuser";
         String password = "testpass";
         ERSRequest req = new ERSRequest(ERSRequestType.LOG_IN, loID, lorole);
-        req.putParameter(ERSRequest.USERNAME, username);
-        req.putParameter(ERSRequest.PASSWORD, password);
+        req.putParameter(ERSRequest.USERNAME_KEY, username);
+        req.putParameter(ERSRequest.PASSWORD_KEY, password);
 
         when(updao.checkExists(username)).thenReturn(false);
         ERSResponse res = arh.handleLogIn(req);
@@ -97,8 +97,8 @@ public class TestARH extends TestRequestHandler{
         String username = "testuser";
         String password = "testpass";
         ERSRequest req = new ERSRequest(ERSRequestType.LOG_IN, loID, lorole);
-        req.putParameter(ERSRequest.USERNAME, username);
-        req.putParameter(ERSRequest.PASSWORD, password);
+        req.putParameter(ERSRequest.USERNAME_KEY, username);
+        req.putParameter(ERSRequest.PASSWORD_KEY, password);
 
         when(updao.checkExists(username)).thenReturn(true);
         when(updao.getPassword(username)).thenReturn(encryptPassword("different"));
@@ -116,8 +116,8 @@ public class TestARH extends TestRequestHandler{
         String username = "testuser";
         String password = "testpass";
         ERSRequest req = new ERSRequest(ERSRequestType.LOG_IN, loID, lorole);
-        req.putParameter(ERSRequest.USERNAME, username);
-        req.putParameter(ERSRequest.PASSWORD, password);
+        req.putParameter(ERSRequest.USERNAME_KEY, username);
+        req.putParameter(ERSRequest.PASSWORD_KEY, password);
 
         when(updao.checkExists(username)).thenThrow(new DAOException(""));
 
@@ -134,8 +134,8 @@ public class TestARH extends TestRequestHandler{
         String username = "testuser";
         String password = "testpass";
         ERSRequest req = new ERSRequest(ERSRequestType.LOG_IN, userID, role);
-        req.putParameter(ERSRequest.USERNAME, username);
-        req.putParameter(ERSRequest.PASSWORD, password);
+        req.putParameter(ERSRequest.USERNAME_KEY, username);
+        req.putParameter(ERSRequest.PASSWORD_KEY, password);
 
         ERSResponse res = arh.handleLogIn(req);
         assertNotNull(res);
