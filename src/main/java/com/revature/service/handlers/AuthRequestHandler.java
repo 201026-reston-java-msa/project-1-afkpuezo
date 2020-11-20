@@ -6,6 +6,7 @@
  */
 package com.revature.service.handlers;
 
+import com.revature.model.UserProfile.UserRole;
 import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO;
 import com.revature.repository.DAO.interfaces.UserProfileDAO;
@@ -31,8 +32,9 @@ public class AuthRequestHandler extends RequestHandler {
 
     /**
      * Attempts to log in to the user profile indicated by the parameters in the request.
-     * Succeeds only if the username matches an existing account, and the given password
+     * Succeeds if the username matches an existing account, and the given password
      * matches the password for the given account.
+     * Fails if the user is not found, or if user is already logged in.
      * 
      * @param req
      * @return
@@ -44,12 +46,18 @@ public class AuthRequestHandler extends RequestHandler {
                     || !req.hasParameter(ERSRequest.PASSWORD))
                 return getMalformedRequestResponse();
 
+            if (req.getUserRole() != UserRole.LOGGED_OUT)
+                    return new ERSResponse(
+                            ERSResponseType.FORBIDDEN,
+                            String.format(
+                                "Unable to log in: there is already a user logged in."));
+
             String username = req.getParameter(ERSRequest.USERNAME);
             if (!updao.checkExists(username)) 
             return getUserDoesNotExistResponse(username);
             
             String password = req.getParameter(ERSRequest.PASSWORD);
-            if (!checkPassword(username, password))
+            if (!checkPassword(username, password)) // helper handles encryption
                 return getIncorrectPasswordResponse(username);
 
             return new ERSResponse(ERSResponseType.SUCCESS);
@@ -57,6 +65,17 @@ public class AuthRequestHandler extends RequestHandler {
         catch(DAOException e){
             return getGenericDAOExceptionResponse();
         }
+    }
+
+    /**
+     * Currently, only checks to make sure that someone is logged in. Succeeds unless the
+     * user is trying to logout while not logged in.
+     * 
+     * @param req
+     * @return
+     */
+    public ERSResponse handleLogOut(ERSRequest req){
+        return null;
     }
 
     // helpers

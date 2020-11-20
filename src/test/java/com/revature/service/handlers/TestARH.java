@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
@@ -19,6 +20,7 @@ import com.revature.repository.DAO.interfaces.UserProfileDAO;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSResponse;
 import com.revature.service.comms.ERSRequest.ERSRequestType;
+import com.revature.service.comms.ERSResponse.ERSResponseType;
 
 public class TestARH extends TestRequestHandler{
     
@@ -103,6 +105,42 @@ public class TestARH extends TestRequestHandler{
 
         ERSResponse res = arh.handleLogIn(req);
         ensureInvalidParameterResponse(res);
+    }
+
+    @Test
+    public void testHandleLogInDAOException() throws DAOException{
+
+        int loID = -1;
+        UserRole lorole = UserRole.LOGGED_OUT; 
+
+        String username = "testuser";
+        String password = "testpass";
+        ERSRequest req = new ERSRequest(ERSRequestType.LOG_IN, loID, lorole);
+        req.putParameter(ERSRequest.USERNAME, username);
+        req.putParameter(ERSRequest.PASSWORD, password);
+
+        when(updao.checkExists(username)).thenThrow(new DAOException(""));
+
+        ERSResponse res = arh.handleLogIn(req);
+        ensureDatabaseErrorResponse(res);
+    }
+
+    @Test
+    public void testHandleLogInAlreadyLoggedIn() throws DAOException{
+
+        int userID = 3;
+        UserRole role = UserRole.EMPLOYEE; 
+
+        String username = "testuser";
+        String password = "testpass";
+        ERSRequest req = new ERSRequest(ERSRequestType.LOG_IN, userID, role);
+        req.putParameter(ERSRequest.USERNAME, username);
+        req.putParameter(ERSRequest.PASSWORD, password);
+
+        ERSResponse res = arh.handleLogIn(req);
+        assertNotNull(res);
+        assertEquals(ERSResponseType.FORBIDDEN, res.getType());
+        ensureResponseListsAreEmpty(res);
     }
 
     @Test
