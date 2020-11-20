@@ -32,8 +32,8 @@ public class ERSRequest {
     public enum ERSRequestType{
 
         NONE,
-        LOGIN,
-        LOGOUT,
+        LOG_IN,
+        LOG_OUT,
         SUBMIT_REQUEST,
         EMPLOYEE_VIEW_PENDING,
         EMPLOYEE_VIEW_RESOLVED,

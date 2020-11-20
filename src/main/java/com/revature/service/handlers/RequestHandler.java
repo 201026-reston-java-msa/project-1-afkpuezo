@@ -24,6 +24,18 @@ public abstract class RequestHandler {
     }
 
     /**
+     * Returns a response indicating that a user was not found.
+     * 
+     * @param username : included in the message
+     * @return
+     */
+    protected ERSResponse getUserDoesNotExistResponse(String username) {
+
+        return new ERSResponse(ERSResponseType.INVALID_PARAMETER,
+                String.format("No user profile with username '%s' was found.", username));
+    }
+
+    /**
      * Returns a response indicating that there was a problem with the DAO
      * 
      * @return
