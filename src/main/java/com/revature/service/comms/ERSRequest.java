@@ -19,6 +19,8 @@ public class ERSRequest {
 
     // these strings are for expected common parameter name/keys
     public static final String EMPLOYEE_ID_KEY = "employeeID";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
     
     // enums
 
