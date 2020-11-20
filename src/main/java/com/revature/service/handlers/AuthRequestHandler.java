@@ -12,6 +12,7 @@ import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO;
 import com.revature.repository.DAO.interfaces.UserProfileDAO;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSResponse;
+import com.revature.service.comms.ERSRequest.ERSRequestType;
 import com.revature.service.comms.ERSResponse.ERSResponseType;
 
 public class AuthRequestHandler extends RequestHandler {
@@ -71,11 +72,18 @@ public class AuthRequestHandler extends RequestHandler {
      * Currently, only checks to make sure that someone is logged in. Succeeds unless the
      * user is trying to logout while not logged in.
      * 
+     * NOTE: currently checks only the req's userRole, not the userID
+     * 
      * @param req
      * @return
      */
     public ERSResponse handleLogOut(ERSRequest req){
-        return null;
+        
+        if (req.getUserRole() == UserRole.LOGGED_OUT)
+            return new ERSResponse(
+                    ERSResponseType.FORBIDDEN,
+                    "Unable to log out: No one is currently logged in.");
+        else return new ERSResponse(ERSResponseType.SUCCESS);
     }
 
     // helpers

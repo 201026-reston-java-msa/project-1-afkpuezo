@@ -49,7 +49,7 @@ public class TestARH extends TestRequestHandler{
 
     // --------------------------------------------------------------------------
     // handleLogIn
-    // ------------------------
+    // --------------------------------------------------------------------------
 
     @Test
     public void testHandleLogIn() throws DAOException{
@@ -161,5 +161,34 @@ public class TestARH extends TestRequestHandler{
      */
     private String encryptPassword(String password){
         return password;
+    }
+
+    // --------------------------------------------------------------------------
+    // handleLogOut
+    // --------------------------------------------------------------------------
+
+    @Test
+    public void testHandleLogOut() throws DAOException{
+
+        int userID = 3;
+        UserRole role = UserRole.EMPLOYEE; 
+
+        ERSRequest req = new ERSRequest(ERSRequestType.LOG_OUT, userID, role);
+        ERSResponse res = arh.handleLogOut(req);
+        ensureSuccessfulResponse(res);
+        ensureResponseListsAreEmpty(res);
+    }
+
+    @Test
+    public void testHandleLogOutAlreadyLoggedOut() throws DAOException{
+
+        int loID = -1;
+        UserRole lorole = UserRole.LOGGED_OUT; 
+
+        ERSRequest req = new ERSRequest(ERSRequestType.LOG_OUT, loID, lorole);
+        ERSResponse res = arh.handleLogOut(req);
+        assertNotNull(res);
+        assertEquals(ERSResponseType.FORBIDDEN, res.getType());
+        ensureResponseListsAreEmpty(res);
     }
 }
