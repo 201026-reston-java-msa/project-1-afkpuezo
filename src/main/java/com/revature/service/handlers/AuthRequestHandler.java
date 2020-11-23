@@ -6,6 +6,10 @@
  */
 package com.revature.service.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.revature.model.UserProfile;
 import com.revature.model.UserProfile.UserRole;
 import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO;
@@ -60,7 +64,13 @@ public class AuthRequestHandler extends RequestHandler {
             if (!checkPassword(username, password)) // helper handles encryption
                 return getIncorrectPasswordResponse(username);
 
-            return new ERSResponse(ERSResponseType.SUCCESS);
+            // return the UP object to let the front end know information like ID
+            ERSResponse res = new ERSResponse(ERSResponseType.SUCCESS);
+            List<UserProfile> returnedUsers = new ArrayList<>();
+            returnedUsers.add(updao.getUserProfile(username));
+            res.setReturnedUserProfiles(returnedUsers);
+
+            return res;
         }
         catch(DAOException e){
             return getGenericDAOExceptionResponse();

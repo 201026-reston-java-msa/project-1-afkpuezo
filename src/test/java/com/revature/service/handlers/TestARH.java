@@ -11,8 +11,12 @@ import org.mockito.junit.MockitoRule;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
+import java.util.List;
+
+import com.revature.model.UserProfile;
 import com.revature.model.UserProfile.UserRole;
 import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO;
@@ -57,18 +61,29 @@ public class TestARH extends TestRequestHandler{
         int loID = -1;
         UserRole lorole = UserRole.LOGGED_OUT; 
 
+        int userID = 1; // the account that is being logged in to
+        UserRole userRole = UserRole.EMPLOYEE;
         String username = "testuser";
         String password = "testpass";
+        String firstName = "testfirst";
+        String lastName = "testlast";
+        String email = "email@test.com";
+        UserProfile up 
+                = new UserProfile(userID, userRole, username, firstName, lastName, email);
         ERSRequest req = new ERSRequest(ERSRequestType.LOG_IN, loID, lorole);
         req.putParameter(ERSRequest.USERNAME_KEY, username);
         req.putParameter(ERSRequest.PASSWORD_KEY, password);
 
         when(updao.checkExists(username)).thenReturn(true);
         when(updao.getPassword(username)).thenReturn(encryptPassword(password));
+        when(updao.getUserProfile(username)).thenReturn(up);
 
         ERSResponse res = arh.handleLogIn(req);
         ensureSuccessfulResponse(res);
-        ensureResponseListsAreEmpty(res);
+        assertTrue(res.getReturnedReimbursementRequests().isEmpty());
+        List<UserProfile> returnedUsers = res.getReturnedUserProfiles();
+        assertEquals(1, returnedUsers.size());
+        assertEquals(up, returnedUsers.get(0));
     }
 
     @Test
