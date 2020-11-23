@@ -62,4 +62,16 @@ public abstract class RequestHandler {
                 ERSResponseType.MALFORMED_REQUEST, 
                 "Malformed request. Contant system admin.");
     }
+
+    /**
+     * Returns a response indicating that a reimbursement request was not found.
+     * 
+     * @param reimbID
+     * @return
+     */
+    protected ERSResponse getReimbursementRequestDoesNotExistResponse(int reimbID) {
+        return new ERSResponse(ERSResponseType.INVALID_PARAMETER,
+                String.format(
+                        "No reimbursement request with id '%n' was found.", reimbID));
+    }
 }

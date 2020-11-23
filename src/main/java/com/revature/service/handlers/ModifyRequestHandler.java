@@ -103,8 +103,7 @@ public class ModifyRequestHandler extends RequestHandler {
 
             int userID = req.getUserID();
 
-            if (!updao.checkExists(userID))
-                return getUserDoesNotExistResponse(userID);
+            if (!updao.checkExists(userID)) return getUserDoesNotExistResponse(userID);
             
             // this is a clumsy way of checking to see if there are duplicate values
             UserProfile up = updao.getUserProfile(userID);
@@ -142,6 +141,38 @@ public class ModifyRequestHandler extends RequestHandler {
 
             updao.saveUserProfile(up);
             return new ERSResponse(ERSResponseType.SUCCESS);
+        }
+        catch (DAOException e) {
+            return getGenericDAOExceptionResponse();
+        }
+    }
+
+    /**
+     * A manager approves an employees reimb-req.
+     * Fails if the (currently logged in) manager's account does not exist.
+     * Fails if the req does not exist.
+     * Fails if the req is not PENDING.
+     * Fails if the reimbID paramater is missing.
+     * Fails if there is a DAOException
+     * 
+     * @param req
+     * @return
+     */
+    public ERSResponse handleApproveRequest(ERSRequest req) {
+
+        if (!req.hasParameter(ERSRequest.REIMBURSEMENT_ID_KEY))
+            return getMalformedRequestResponse();
+        
+        try{
+            int userID = req.getUserID();
+
+            if (!updao.checkExists(userID)) return getUserDoesNotExistResponse(userID);
+
+            int reimbID = Integer.parseInt(
+                    req.getParameter(ERSRequest.REIMBURSEMENT_ID_KEY));
+            
+            if (!rrdao.checkExists(reimbID)) 
+                return getReimbursementRequestDoesNotExistResponse(reimbID);
         }
         catch (DAOException e) {
             return getGenericDAOExceptionResponse();

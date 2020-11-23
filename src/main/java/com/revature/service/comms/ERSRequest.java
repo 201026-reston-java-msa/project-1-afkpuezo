@@ -24,6 +24,8 @@ public class ERSRequest {
     public static final String FIRST_NAME_KEY = "firstName";
     public static final String LAST_NAME_KEY = "lastName";
     public static final String EMAIL_ADDRESS_KEY = "emailAddress";
+
+    public static final String REIMBURSEMENT_ID_KEY = "reimbursementID";
     public static final String REIMBURSEMENT_TYPE_KEY = "reimbursementType";
     public static final String MONEY_AMOUNT_KEY = "moneyAmount";
     public static final String REIMBURSEMENT_DESCRIPTION_KEY = "reimbursementDescription";

@@ -23,14 +23,15 @@ public interface ReimbursementRequestDAO {
     /**
      * Returns a list of reimb-reqs matching the given constraints.
      * 
-     * @param ID : if ID != -1, search is limited to reqs submitted by the employee with 
-     *      the matching ID. If ID == -1, reqs from any employee will be considered.
+     * @param authorID : if authorID != -1, search is limited to reqs submitted by the 
+     *      employee with the matching authorID. If authorID == -1, reqs from any employee
+     *      will be considered.
      * @param searchBy : results are limited to reqs whose Status correpsonds to searchBy
      * @return
      * @throws DAOException
      */
     public List<ReimbursementRequest> getReimbursementRequests(
-            int ID, SearchType searchBy) throws DAOException;
+            int authorID, SearchType searchBy) throws DAOException;
 
     /**
      * Saves/writes the given reimb-req to the database.
@@ -43,4 +44,23 @@ public interface ReimbursementRequestDAO {
      * @throws DAOException
      */
     public int saveReimbursementRequest(ReimbursementRequest reimb) throws DAOException;
+
+    /**
+     * Returns true if there is a reimb-req in the database with the given id, false
+     * otherwise.
+     * 
+     * @param reimbID
+     * @return
+     * @throws DAOException
+     */
+    public boolean checkExists(int reimbID) throws DAOException;
+
+    /**
+     * 
+     * 
+     * @param reimbID
+     * @return
+     * @throws DAOException
+     */
+    public ReimbursementRequest getReimbursementRequest (int reimbID) throws DAOException;
 }
