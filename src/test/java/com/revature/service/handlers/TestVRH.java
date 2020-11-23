@@ -65,12 +65,15 @@ public class TestVRH extends TestRequestHandler{
     public void testHandleEmployeeViewPending() throws DAOException {
 
         int userID = 1;
+        UserRole role = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(userID, role);
+
         int rrID = 2;
         long moneyAmount = 12345;
         ReimbursementType type = ReimbursementType.LODGING;
 
         List<ReimbursementRequest> rrlist = new ArrayList<>();
-        rrlist.add(new ReimbursementRequest(rrID, userID, moneyAmount, type));
+        rrlist.add(new ReimbursementRequest(rrID, author, moneyAmount, type));
 
         ERSRequest req = new ERSRequest(
                 ERSRequestType.EMPLOYEE_VIEW_PENDING, userID, UserRole.EMPLOYEE);
@@ -112,12 +115,15 @@ public class TestVRH extends TestRequestHandler{
     public void testHandleEmployeeViewPendingDAOException() throws DAOException {
 
         int userID = 1;
+        UserRole role = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(userID, role);
+
         int rrID = 2;
         long moneyAmount = 12345;
         ReimbursementType type = ReimbursementType.LODGING;
 
         List<ReimbursementRequest> rrlist = new ArrayList<>();
-        rrlist.add(new ReimbursementRequest(rrID, userID, moneyAmount, type));
+        rrlist.add(new ReimbursementRequest(rrID, author, moneyAmount, type));
 
         ERSRequest req = new ERSRequest(
                 ERSRequestType.EMPLOYEE_VIEW_PENDING, userID, UserRole.EMPLOYEE);
@@ -137,13 +143,16 @@ public class TestVRH extends TestRequestHandler{
     public void testHandleEmployeeViewResolved() throws DAOException {
 
         int userID = 1;
+        UserRole role = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(userID, role);
+
         int rrID = 2;
         long moneyAmount = 12345;
         ReimbursementType type = ReimbursementType.LODGING;
 
         List<ReimbursementRequest> rrlist = new ArrayList<>();
         ReimbursementRequest reimb = 
-                new ReimbursementRequest(rrID, userID, moneyAmount, type);
+                new ReimbursementRequest(rrID, author, moneyAmount, type);
         reimb.setStatus(ReimbursementStatus.APPROVED);
         rrlist.add(reimb);
 
@@ -181,12 +190,15 @@ public class TestVRH extends TestRequestHandler{
     public void testHandleEmployeeViewResolvedDAOException() throws DAOException {
 
         int userID = 1;
+        UserRole role = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(userID, role);
+
         int rrID = 2;
         long moneyAmount = 12345;
         ReimbursementType type = ReimbursementType.LODGING;
 
         List<ReimbursementRequest> rrlist = new ArrayList<>();
-        rrlist.add(new ReimbursementRequest(rrID, userID, moneyAmount, type));
+        rrlist.add(new ReimbursementRequest(rrID, author, moneyAmount, type));
 
         ERSRequest req = new ERSRequest(
                 ERSRequestType.EMPLOYEE_VIEW_RESOLVED, userID, UserRole.EMPLOYEE);
@@ -270,15 +282,20 @@ public class TestVRH extends TestRequestHandler{
     @Test
     public void testHandleViewAllPending() throws DAOException {
 
+        int manID = 1;
+        UserRole manRole = UserRole.MANAGER;
+
         int userID = 1;
-        UserRole role = UserRole.MANAGER;
+        UserRole role = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(userID, role);
+
         int rrID = 2;
         long moneyAmount = 12345;
         ReimbursementType type = ReimbursementType.LODGING;
 
         List<ReimbursementRequest> rrlist = new ArrayList<>();
-        rrlist.add(new ReimbursementRequest(rrID, userID, moneyAmount, type));
-        ERSRequest req = new ERSRequest(ERSRequestType.VIEW_ALL_PENDING, userID, role);
+        rrlist.add(new ReimbursementRequest(rrID, author, moneyAmount, type));
+        ERSRequest req = new ERSRequest(ERSRequestType.VIEW_ALL_PENDING, manID, manRole);
 
         when(rrdao.getReimbursementRequests(-1, SearchType.PENDING)).thenReturn(rrlist);
         ERSResponse res = vrh.handleViewAllPending(req);
@@ -310,15 +327,20 @@ public class TestVRH extends TestRequestHandler{
     @Test
     public void testHandleViewAllResolved() throws DAOException {
 
+        int manID = 1;
+        UserRole manRole = UserRole.MANAGER;
+
         int userID = 1;
-        UserRole role = UserRole.MANAGER;
+        UserRole role = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(userID, role);
+
         int rrID = 2;
         long moneyAmount = 12345;
         ReimbursementType type = ReimbursementType.LODGING;
 
         List<ReimbursementRequest> rrlist = new ArrayList<>();
-        rrlist.add(new ReimbursementRequest(rrID, userID, moneyAmount, type));
-        ERSRequest req = new ERSRequest(ERSRequestType.VIEW_ALL_RESOLVED, userID, role);
+        rrlist.add(new ReimbursementRequest(rrID, author, moneyAmount, type));
+        ERSRequest req = new ERSRequest(ERSRequestType.VIEW_ALL_RESOLVED, manID, manRole);
 
         when(rrdao.getReimbursementRequests(-1, SearchType.RESOLVED)).thenReturn(rrlist);
         ERSResponse res = vrh.handleViewAllResolved(req);
@@ -396,6 +418,10 @@ public class TestVRH extends TestRequestHandler{
         int manID = 1;
         UserRole manRole = UserRole.MANAGER;
 
+        int userID = 2;
+        UserRole role = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(userID, role);
+
         int empID = 2; // don't need to make UserProfile for the employee...currently
 
         int reimbID = 1;
@@ -403,7 +429,7 @@ public class TestVRH extends TestRequestHandler{
         long moneyAmount = 6564321L;
         ReimbursementType reimbType = ReimbursementType.FOOD;
         ReimbursementRequest reimb 
-                = new ReimbursementRequest(reimbID, authorID, moneyAmount, reimbType);
+                = new ReimbursementRequest(reimbID, author, moneyAmount, reimbType);
         List<ReimbursementRequest> rrList = new ArrayList<>();
         rrList.add(reimb);
 

@@ -421,13 +421,18 @@ public class TestMRH extends TestRequestHandler{
         int userID = 4; // the logged-in manager
         UserRole role = UserRole.MANAGER;
 
+        // employee asking for money
+        int authorID = 1; 
+        UserRole authorRole = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(authorID, authorRole);
+
         int reimbID = 45;
-        int authorID = 1; // employee asking for money
+
         long moneyAmount = 12345L;
         ReimbursementType type = ReimbursementType.FOOD;
         // defaults to PENDING
         ReimbursementRequest reimb 
-                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+                        = new ReimbursementRequest(reimbID, author, moneyAmount, type);
 
         ERSRequest req = new ERSRequest(ERSRequestType.APPROVE_REQUEST, userID, role);
         req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
@@ -454,13 +459,17 @@ public class TestMRH extends TestRequestHandler{
         int userID = 4; // the logged-in manager (but not)
         UserRole role = UserRole.MANAGER;
 
+        // employee asking for money
+        int authorID = 1; 
+        UserRole authorRole = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(authorID, authorRole);
+
         int reimbID = 45;
-        int authorID = 1; // employee asking for money
         long moneyAmount = 12345L;
         ReimbursementType type = ReimbursementType.FOOD;
         ReimbursementStatus oldStatus = ReimbursementStatus.DENIED;
         ReimbursementRequest reimb 
-                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+                        = new ReimbursementRequest(reimbID, author, moneyAmount, type);
         reimb.setStatus(oldStatus);
 
         ERSRequest req = new ERSRequest(ERSRequestType.APPROVE_REQUEST, userID, role);
@@ -479,13 +488,17 @@ public class TestMRH extends TestRequestHandler{
         int userID = 4; // the logged-in manager
         UserRole role = UserRole.MANAGER;
 
+        // employee asking for money
+        int authorID = 1; 
+        UserRole authorRole = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(authorID, authorRole);
+
         int reimbID = 45;
-        int authorID = 1; // employee asking for money
         long moneyAmount = 12345L;
         ReimbursementType type = ReimbursementType.FOOD;
         // defaults to PENDING
         ReimbursementRequest reimb 
-                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+                        = new ReimbursementRequest(reimbID, author, moneyAmount, type);
 
         ERSRequest req = new ERSRequest(ERSRequestType.APPROVE_REQUEST, userID, role);
         req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
@@ -503,13 +516,17 @@ public class TestMRH extends TestRequestHandler{
         int userID = 4; // the logged-in manager
         UserRole role = UserRole.MANAGER;
 
+        // employee asking for money
+        int authorID = 1; 
+        UserRole authorRole = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(authorID, authorRole);
+
         int reimbID = 45; // invalid
-        int authorID = 1; // employee asking for money
         long moneyAmount = 12345L;
         ReimbursementType type = ReimbursementType.FOOD;
         // defaults to PENDING
         ReimbursementRequest reimb 
-                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+                        = new ReimbursementRequest(reimbID, author, moneyAmount, type);
 
         ERSRequest req = new ERSRequest(ERSRequestType.APPROVE_REQUEST, userID, role);
         req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
@@ -565,13 +582,17 @@ public class TestMRH extends TestRequestHandler{
         int userID = 4; // the logged-in manager
         UserRole role = UserRole.MANAGER;
 
+        // employee asking for money
+        int authorID = 1; 
+        UserRole authorRole = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(authorID, authorRole);
+
         int reimbID = 45;
-        int authorID = 1; // employee asking for money
         long moneyAmount = 12345L;
         ReimbursementType type = ReimbursementType.FOOD;
         // defaults to PENDING
         ReimbursementRequest reimb 
-                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+                        = new ReimbursementRequest(reimbID, author, moneyAmount, type);
 
         ERSRequest req = new ERSRequest(ERSRequestType.DENY_REQUEST, userID, role);
         req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
@@ -598,13 +619,17 @@ public class TestMRH extends TestRequestHandler{
         int userID = 4; // the logged-in manager (but not)
         UserRole role = UserRole.MANAGER;
 
+        // employee asking for money
+        int authorID = 1; 
+        UserRole authorRole = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(authorID, authorRole);
+
         int reimbID = 45;
-        int authorID = 1; // employee asking for money
         long moneyAmount = 12345L;
         ReimbursementType type = ReimbursementType.FOOD;
         ReimbursementStatus oldStatus = ReimbursementStatus.DENIED;
         ReimbursementRequest reimb 
-                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+                        = new ReimbursementRequest(reimbID, author, moneyAmount, type);
         reimb.setStatus(oldStatus);
 
         ERSRequest req = new ERSRequest(ERSRequestType.DENY_REQUEST, userID, role);
@@ -623,13 +648,17 @@ public class TestMRH extends TestRequestHandler{
         int userID = 4; // the logged-in manager
         UserRole role = UserRole.MANAGER;
 
+        // employee asking for money
+        int authorID = 1; 
+        UserRole authorRole = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(authorID, authorRole);
+
         int reimbID = 45;
-        int authorID = 1; // employee asking for money
         long moneyAmount = 12345L;
         ReimbursementType type = ReimbursementType.FOOD;
         // defaults to PENDING
         ReimbursementRequest reimb 
-                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+                        = new ReimbursementRequest(reimbID, author, moneyAmount, type);
 
         ERSRequest req = new ERSRequest(ERSRequestType.DENY_REQUEST, userID, role);
         req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
@@ -647,13 +676,17 @@ public class TestMRH extends TestRequestHandler{
         int userID = 4; // the logged-in manager
         UserRole role = UserRole.MANAGER;
 
+        // employee asking for money
+        int authorID = 1; 
+        UserRole authorRole = UserRole.EMPLOYEE;
+        UserProfile author = new UserProfile(authorID, authorRole);
+
         int reimbID = 45; // invalid
-        int authorID = 1; // employee asking for money
         long moneyAmount = 12345L;
         ReimbursementType type = ReimbursementType.FOOD;
         // defaults to PENDING
         ReimbursementRequest reimb 
-                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+                        = new ReimbursementRequest(reimbID, author, moneyAmount, type);
 
         ERSRequest req = new ERSRequest(ERSRequestType.DENY_REQUEST, userID, role);
         req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
