@@ -27,6 +27,12 @@ public interface UserProfileDAO {
     public boolean checkExists(String username) throws DAOException;
 
     /**
+     * Determines if the indicated user exists.
+     * Throws exception if there is a database communication problem.
+     */
+    public boolean checkExistsEmail(String emailAddress) throws DAOException;
+
+    /**
      * Should return the safe, encrypted version of the password.
      * Throws exception if there is a database communication problem.
      * Throws exception if the user is not found.
