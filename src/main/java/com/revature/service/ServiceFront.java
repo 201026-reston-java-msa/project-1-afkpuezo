@@ -60,7 +60,34 @@ public class ServiceFront {
         
         ERSRequestType type = req.getType();
         switch(type){
-            default:
+
+            LOG_IN:
+                return arh.handleLogIn(req);
+            LOG_OUT:
+                return arh.handleLogOut(req);
+            SUBMIT_REQUEST:
+                return mrh.handleSubmitRequest(req);
+            EMPLOYEE_VIEW_PENDING:
+                return vrh.handleEmployeeViewPending(req);
+            EMPLOYEE_VIEW_RESOLVED:
+                return vrh.handleEmployeeViewResolved(req);
+            EMPLOYEE_VIEW_SELF:
+                return vrh.handleEmployeeViewSelf(req);
+            EMPLOYEE_UPDATE_SELF:
+                return mrh.handleEmployeeUpdateSelf(req);
+            APPROVE_REQUEST:
+                return mrh.handleApproveRequest(req);
+            DENY_REQUEST:
+                return mrh.handleDenyRequest(req);
+            VIEW_ALL_PENDING:
+                return vrh.handleViewAllPending(req);
+            VIEW_ALL_RESOLVED:
+                return vrh.handleViewAllResolved(req);
+            VIEW_ALL_EMPLOYEES:
+                return vrh.handleViewAllEmployees(req);
+            MANAGER_VIEW_BY_EMPLOYEE:
+                return vrh.handleManagerViewByEmployee(req);
+            default: // should never happen?
                 return new ERSResponse(
                         ERSResponseType.MALFORMED_REQUEST,
                         String.format("Request Type '%s' not recognized", type.name()));
