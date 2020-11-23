@@ -148,6 +148,13 @@ public class ReimbursementRequest implements Serializable{
     // constructor(s) ---------------------
 
     /**
+     * (I think) This should only be used by Hibernate
+     */
+    public ReimbursementRequest(){
+
+    }
+
+    /**
      * Used when submitting/writing a new reimb-req.
      * Defaults to ID = -1 and PENDING status
      * @param ID
