@@ -17,6 +17,7 @@ import javax.management.monitor.Monitor;
 
 import com.revature.model.ReimbursementRequest;
 import com.revature.model.UserProfile;
+import com.revature.model.ReimbursementRequest.ReimbursementStatus;
 import com.revature.model.ReimbursementRequest.ReimbursementType;
 
 public class ModifyRequestHandler extends RequestHandler {
@@ -165,14 +166,26 @@ public class ModifyRequestHandler extends RequestHandler {
         
         try{
             int userID = req.getUserID();
-
             if (!updao.checkExists(userID)) return getUserDoesNotExistResponse(userID);
 
             int reimbID = Integer.parseInt(
                     req.getParameter(ERSRequest.REIMBURSEMENT_ID_KEY));
-            
             if (!rrdao.checkExists(reimbID)) 
                 return getReimbursementRequestDoesNotExistResponse(reimbID);
+            
+            ReimbursementRequest reimb = rrdao.getReimbursementRequest(reimbID);
+            if (reimb.getStatus() != ReimbursementStatus.PENDING)
+                return new ERSResponse(
+                        ERSResponseType.INVALID_PARAMETER,
+                        String.format(
+                                "Reimbursement Request #%n is not pending approval.", 
+                                reimbID);
+            
+            // finally, we can do it
+            reimb.setStatus(ReimbursementStatus.APPROVED);
+            rrdao.saveReimbursementRequest(reimb);
+
+            return new ERSResponse(ERSResponseType.SUCCESS);
         }
         catch (DAOException e) {
             return getGenericDAOExceptionResponse();
