@@ -179,12 +179,11 @@ public class ModifyRequestHandler extends RequestHandler {
                         ERSResponseType.INVALID_PARAMETER,
                         String.format(
                                 "Reimbursement Request #%n is not pending approval.", 
-                                reimbID);
+                                reimbID));
             
             // finally, we can do it
             reimb.setStatus(ReimbursementStatus.APPROVED);
             rrdao.saveReimbursementRequest(reimb);
-
             return new ERSResponse(ERSResponseType.SUCCESS);
         }
         catch (DAOException e) {

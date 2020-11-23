@@ -19,6 +19,7 @@ import static org.mockito.Mockito.*;
 
 import com.revature.model.ReimbursementRequest;
 import com.revature.model.UserProfile;
+import com.revature.model.ReimbursementRequest.ReimbursementStatus;
 import com.revature.model.ReimbursementRequest.ReimbursementType;
 import com.revature.model.UserProfile.UserRole;
 import com.revature.repository.DAO.exceptions.DAOException;
@@ -414,5 +415,149 @@ public class TestMRH extends TestRequestHandler{
 
         ERSResponse res = mrh.handleEmployeeUpdateSelf(req);
         ensureDatabaseErrorResponse(res);
+    }
+
+    // --------------------------------------------------------------------------
+    // handleApproveRequest
+    // --------------------------------------------------------------------------
+
+    @Test
+    public void testHandleApproveRequest() throws DAOException {
+
+        int userID = 4; // the logged-in manager
+        UserRole role = UserRole.MANAGER;
+
+        int reimbID = 45;
+        int authorID = 1; // employee asking for money
+        long moneyAmount = 12345L;
+        ReimbursementType type = ReimbursementType.FOOD;
+        // defaults to PENDING
+        ReimbursementRequest reimb 
+                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+
+        ERSRequest req = new ERSRequest(ERSRequestType.APPROVE_REQUEST, userID, role);
+        req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
+
+        when(updao.checkExists(userID)).thenReturn(true);
+        when(rrdao.checkExists(reimbID)).thenReturn(true);
+        when(rrdao.getReimbursementRequest(reimbID)).thenReturn(reimb);
+        ERSResponse res = mrh.handleApproveRequest(req);
+        ensureSuccessfulResponse(res);
+        ensureResponseListsAreEmpty(res);
+
+        // should edit the reference "returned" by the mock dao
+        assertEquals(ReimbursementStatus.APPROVED, reimb.getStatus());
+    }
+
+    /**
+     * Only tests on a reimb-req that is DENIED
+     * 
+     * @throws DAOException
+     */
+    @Test
+    public void testHandleApproveRequestNotPending() throws DAOException {
+
+        int userID = 4; // the logged-in manager (but not)
+        UserRole role = UserRole.MANAGER;
+
+        int reimbID = 45;
+        int authorID = 1; // employee asking for money
+        long moneyAmount = 12345L;
+        ReimbursementType type = ReimbursementType.FOOD;
+        ReimbursementStatus oldStatus = ReimbursementStatus.DENIED;
+        ReimbursementRequest reimb 
+                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+        reimb.setStatus(oldStatus);
+
+        ERSRequest req = new ERSRequest(ERSRequestType.APPROVE_REQUEST, userID, role);
+        req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
+
+        when(updao.checkExists(userID)).thenReturn(true);
+        when(rrdao.checkExists(reimbID)).thenReturn(true);
+        when(rrdao.getReimbursementRequest(reimbID)).thenReturn(reimb);
+        ERSResponse res = mrh.handleApproveRequest(req);
+        ensureInvalidParameterResponse(res);
+    }
+
+    @Test
+    public void testHandleApproveRequestUserNotExist() throws DAOException {
+
+        int userID = 4; // the logged-in manager
+        UserRole role = UserRole.MANAGER;
+
+        int reimbID = 45;
+        int authorID = 1; // employee asking for money
+        long moneyAmount = 12345L;
+        ReimbursementType type = ReimbursementType.FOOD;
+        // defaults to PENDING
+        ReimbursementRequest reimb 
+                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+
+        ERSRequest req = new ERSRequest(ERSRequestType.APPROVE_REQUEST, userID, role);
+        req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
+
+        when(updao.checkExists(userID)).thenReturn(false); // not found
+        when(rrdao.checkExists(reimbID)).thenReturn(true);
+        when(rrdao.getReimbursementRequest(reimbID)).thenReturn(reimb);
+        ERSResponse res = mrh.handleApproveRequest(req);
+        ensureInvalidParameterResponse(res);
+    }
+
+    @Test
+    public void testHandleApproveRequestReimbReqNotFound() throws DAOException {
+
+        int userID = 4; // the logged-in manager
+        UserRole role = UserRole.MANAGER;
+
+        int reimbID = 45; // invalid
+        int authorID = 1; // employee asking for money
+        long moneyAmount = 12345L;
+        ReimbursementType type = ReimbursementType.FOOD;
+        // defaults to PENDING
+        ReimbursementRequest reimb 
+                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+
+        ERSRequest req = new ERSRequest(ERSRequestType.APPROVE_REQUEST, userID, role);
+        req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
+
+        when(updao.checkExists(userID)).thenReturn(true);
+        when(rrdao.checkExists(reimbID)).thenReturn(false); // not found
+        when(rrdao.getReimbursementRequest(reimbID)).thenReturn(reimb);
+        ERSResponse res = mrh.handleApproveRequest(req);
+        ensureInvalidParameterResponse(res);
+    }
+
+    /**
+     * Only tests if a DAOException is thrown when checking for the userID
+     * 
+     * @throws DAOException
+     */
+    @Test
+    public void testHandleApproveRequestDAOException() throws DAOException {
+
+        int userID = 4; // the logged-in manager
+        UserRole role = UserRole.MANAGER;
+
+        int reimbID = 45;
+        ERSRequest req = new ERSRequest(ERSRequestType.APPROVE_REQUEST, userID, role);
+        req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
+
+        when(updao.checkExists(userID)).thenThrow(new DAOException(""));
+        ERSResponse res = mrh.handleApproveRequest(req);
+        ensureDatabaseErrorResponse(res);
+    }
+
+    @Test
+    public void testHandleApproveRequestMalformed() throws DAOException {
+
+        int userID = 4; // the logged-in manager
+        UserRole role = UserRole.MANAGER;
+
+        int reimbID = 45;
+        ERSRequest req = new ERSRequest(ERSRequestType.APPROVE_REQUEST, userID, role);
+        //req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
+
+        ERSResponse res = mrh.handleApproveRequest(req);
+        ensureMalformedRequestResponse(res);
     }
 }
