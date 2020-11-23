@@ -25,8 +25,10 @@ import javax.persistence.Table;
 public class ReimbursementRequest implements Serializable{
 
     // constants
-    private static final long serialVersionUID = 0L; // makes compiler happy
     public static final int NULL_ID = -1; // can't make ints null???
+    public static final String TIME_DEFAULT = "--";
+    private static final long serialVersionUID = 0L; // makes compiler happy
+    
     
     // enums ---------------------
 
@@ -161,9 +163,9 @@ public class ReimbursementRequest implements Serializable{
         this.type = type;
         this.status = ReimbursementStatus.PENDING;
         this.description = "";
-        this.timeSubmitted = "PLACEHOLDER";
+        this.timeSubmitted = TIME_DEFAULT;
         this.resolverID = NULL_ID;
-        this.timeResolved = "PLACEHOLDER";
+        this.timeResolved = TIME_DEFAULT;
     }
 
     /**
@@ -182,9 +184,9 @@ public class ReimbursementRequest implements Serializable{
         this.type = type;
         this.status = ReimbursementStatus.PENDING;
         this.description = "";
-        this.timeSubmitted = "PLACEHOLDER";
+        this.timeSubmitted = TIME_DEFAULT;
         this.resolverID = NULL_ID;
-        this.timeResolved = "PLACEHOLDER";
+        this.timeResolved = TIME_DEFAULT;
     }
 
     /**
@@ -232,12 +234,24 @@ public class ReimbursementRequest implements Serializable{
         return author.getID();
     }
 
+    public UserProfile getAuthor(){
+        return author;
+    }
+
+    public void setAuthor(UserProfile author){
+        this.author = author;
+    }
+
     public long getMoneyAmount() {
         return this.moneyAmount;
     }
 
     public ReimbursementType getType() {
         return this.type;
+    }
+
+    public void setType(ReimbursementType type) {
+        this.type = type;
     }
 
     public ReimbursementStatus getStatus() {

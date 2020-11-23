@@ -47,7 +47,8 @@ public class ModifyRequestHandler extends RequestHandler {
      */
     public ERSResponse handleSubmitRequest(ERSRequest req) {
 
-        if (!(req.hasParameter(ERSRequest.REIMBURSEMENT_TYPE_KEY) && (req.hasParameter(ERSRequest.MONEY_AMOUNT_KEY))))
+        if (!(req.hasParameter(ERSRequest.REIMBURSEMENT_TYPE_KEY) 
+                && (req.hasParameter(ERSRequest.MONEY_AMOUNT_KEY))))
             return getMalformedRequestResponse();
 
         try {
@@ -57,12 +58,17 @@ public class ModifyRequestHandler extends RequestHandler {
                 return getUserDoesNotExistResponse(authorID);
 
             // good to go ahead and build the reimb-req
-            long moneyAmount = Long.parseLong(req.getParameter(ERSRequest.MONEY_AMOUNT_KEY));
-            ReimbursementType type = ReimbursementType.fromString(req.getParameter(ERSRequest.REIMBURSEMENT_TYPE_KEY));
+            long moneyAmount 
+                    = Long.parseLong(req.getParameter(ERSRequest.MONEY_AMOUNT_KEY));
+            ReimbursementType type = ReimbursementType.fromString(
+                        req.getParameter(ERSRequest.REIMBURSEMENT_TYPE_KEY));
             if (type == ReimbursementType.NONE)
-                return new ERSResponse(ERSResponseType.INVALID_PARAMETER, "Invalid input for expense type.");
+                return new ERSResponse(
+                        ERSResponseType.INVALID_PARAMETER, 
+                        "Invalid input for expense type.");
 
-            ReimbursementRequest reimb = new ReimbursementRequest(authorID, moneyAmount, type);
+            ReimbursementRequest reimb = new ReimbursementRequest(author, moneyAmount, type);
+            reimb.setTimeSubmitted(java.time.LocalDateTime.now().toString()); 
             if (req.hasParameter(ERSRequest.REIMBURSEMENT_DESCRIPTION_KEY))
                 reimb.setDescription(req.getParameter(ERSRequest.REIMBURSEMENT_DESCRIPTION_KEY));
 
