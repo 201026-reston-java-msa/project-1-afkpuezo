@@ -67,6 +67,7 @@ public class TestVRH extends TestRequestHandler{
         int userID = 1;
         UserRole role = UserRole.EMPLOYEE;
         UserProfile author = new UserProfile(userID, role);
+        when(updao.getUserProfile(userID)).thenReturn(author);
 
         int rrID = 2;
         long moneyAmount = 12345;
@@ -117,6 +118,7 @@ public class TestVRH extends TestRequestHandler{
         int userID = 1;
         UserRole role = UserRole.EMPLOYEE;
         UserProfile author = new UserProfile(userID, role);
+        when(updao.getUserProfile(userID)).thenReturn(author);
 
         int rrID = 2;
         long moneyAmount = 12345;
@@ -145,6 +147,7 @@ public class TestVRH extends TestRequestHandler{
         int userID = 1;
         UserRole role = UserRole.EMPLOYEE;
         UserProfile author = new UserProfile(userID, role);
+        when(updao.getUserProfile(userID)).thenReturn(author);
 
         int rrID = 2;
         long moneyAmount = 12345;
@@ -192,6 +195,7 @@ public class TestVRH extends TestRequestHandler{
         int userID = 1;
         UserRole role = UserRole.EMPLOYEE;
         UserProfile author = new UserProfile(userID, role);
+        when(updao.getUserProfile(userID)).thenReturn(author);
 
         int rrID = 2;
         long moneyAmount = 12345;
@@ -288,6 +292,7 @@ public class TestVRH extends TestRequestHandler{
         int userID = 1;
         UserRole role = UserRole.EMPLOYEE;
         UserProfile author = new UserProfile(userID, role);
+        when(updao.getUserProfile(userID)).thenReturn(author);
 
         int rrID = 2;
         long moneyAmount = 12345;
@@ -333,6 +338,7 @@ public class TestVRH extends TestRequestHandler{
         int userID = 1;
         UserRole role = UserRole.EMPLOYEE;
         UserProfile author = new UserProfile(userID, role);
+        when(updao.getUserProfile(userID)).thenReturn(author);
 
         int rrID = 2;
         long moneyAmount = 12345;
