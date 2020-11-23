@@ -553,11 +553,156 @@ public class TestMRH extends TestRequestHandler{
         int userID = 4; // the logged-in manager
         UserRole role = UserRole.MANAGER;
 
-        int reimbID = 45;
+        //int reimbID = 45;
         ERSRequest req = new ERSRequest(ERSRequestType.APPROVE_REQUEST, userID, role);
         //req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
 
         ERSResponse res = mrh.handleApproveRequest(req);
         ensureMalformedRequestResponse(res);
     }
+
+    // --------------------------------------------------------------------------
+    // handleDenyRequest
+    // --------------------------------------------------------------------------
+
+    @Test
+    public void testHandleDenyRequest() throws DAOException {
+
+        int userID = 4; // the logged-in manager
+        UserRole role = UserRole.MANAGER;
+
+        int reimbID = 45;
+        int authorID = 1; // employee asking for money
+        long moneyAmount = 12345L;
+        ReimbursementType type = ReimbursementType.FOOD;
+        // defaults to PENDING
+        ReimbursementRequest reimb 
+                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+
+        ERSRequest req = new ERSRequest(ERSRequestType.DENY_REQUEST, userID, role);
+        req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
+
+        when(updao.checkExists(userID)).thenReturn(true);
+        when(rrdao.checkExists(reimbID)).thenReturn(true);
+        when(rrdao.getReimbursementRequest(reimbID)).thenReturn(reimb);
+        ERSResponse res = mrh.handleDenyRequest(req);
+        ensureSuccessfulResponse(res);
+        ensureResponseListsAreEmpty(res);
+
+        // should edit the reference "returned" by the mock dao
+        assertEquals(ReimbursementStatus.DENIED, reimb.getStatus());
+    }
+
+    /**
+     * Only tests on a reimb-req that is DENIED
+     * 
+     * @throws DAOException
+     */
+    @Test
+    public void testHandleDenyRequestNotPending() throws DAOException {
+
+        int userID = 4; // the logged-in manager (but not)
+        UserRole role = UserRole.MANAGER;
+
+        int reimbID = 45;
+        int authorID = 1; // employee asking for money
+        long moneyAmount = 12345L;
+        ReimbursementType type = ReimbursementType.FOOD;
+        ReimbursementStatus oldStatus = ReimbursementStatus.DENIED;
+        ReimbursementRequest reimb 
+                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+        reimb.setStatus(oldStatus);
+
+        ERSRequest req = new ERSRequest(ERSRequestType.DENY_REQUEST, userID, role);
+        req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
+
+        when(updao.checkExists(userID)).thenReturn(true);
+        when(rrdao.checkExists(reimbID)).thenReturn(true);
+        when(rrdao.getReimbursementRequest(reimbID)).thenReturn(reimb);
+        ERSResponse res = mrh.handleDenyRequest(req);
+        ensureInvalidParameterResponse(res);
+    }
+
+    @Test
+    public void testHandleDenyRequestUserNotExist() throws DAOException {
+
+        int userID = 4; // the logged-in manager
+        UserRole role = UserRole.MANAGER;
+
+        int reimbID = 45;
+        int authorID = 1; // employee asking for money
+        long moneyAmount = 12345L;
+        ReimbursementType type = ReimbursementType.FOOD;
+        // defaults to PENDING
+        ReimbursementRequest reimb 
+                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+
+        ERSRequest req = new ERSRequest(ERSRequestType.DENY_REQUEST, userID, role);
+        req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
+
+        when(updao.checkExists(userID)).thenReturn(false); // not found
+        when(rrdao.checkExists(reimbID)).thenReturn(true);
+        when(rrdao.getReimbursementRequest(reimbID)).thenReturn(reimb);
+        ERSResponse res = mrh.handleDenyRequest(req);
+        ensureInvalidParameterResponse(res);
+    }
+
+    @Test
+    public void testHandleDenyRequestReimbReqNotFound() throws DAOException {
+
+        int userID = 4; // the logged-in manager
+        UserRole role = UserRole.MANAGER;
+
+        int reimbID = 45; // invalid
+        int authorID = 1; // employee asking for money
+        long moneyAmount = 12345L;
+        ReimbursementType type = ReimbursementType.FOOD;
+        // defaults to PENDING
+        ReimbursementRequest reimb 
+                        = new ReimbursementRequest(reimbID, authorID, moneyAmount, type);
+
+        ERSRequest req = new ERSRequest(ERSRequestType.DENY_REQUEST, userID, role);
+        req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
+
+        when(updao.checkExists(userID)).thenReturn(true);
+        when(rrdao.checkExists(reimbID)).thenReturn(false); // not found
+        when(rrdao.getReimbursementRequest(reimbID)).thenReturn(reimb);
+        ERSResponse res = mrh.handleDenyRequest(req);
+        ensureInvalidParameterResponse(res);
+    }
+
+    /**
+     * Only tests if a DAOException is thrown when checking for the userID
+     * 
+     * @throws DAOException
+     */
+    @Test
+    public void testHandleDenyRequestDAOException() throws DAOException {
+
+        int userID = 4; // the logged-in manager
+        UserRole role = UserRole.MANAGER;
+
+        int reimbID = 45;
+        ERSRequest req = new ERSRequest(ERSRequestType.DENY_REQUEST, userID, role);
+        req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
+
+        when(updao.checkExists(userID)).thenThrow(new DAOException(""));
+        ERSResponse res = mrh.handleDenyRequest(req);
+        ensureDatabaseErrorResponse(res);
+    }
+
+    @Test
+    public void testHandleDenyRequestMalformed() throws DAOException {
+
+        int userID = 4; // the logged-in manager
+        UserRole role = UserRole.MANAGER;
+
+        //int reimbID = 45;
+        ERSRequest req = new ERSRequest(ERSRequestType.DENY_REQUEST, userID, role);
+        //req.putParameter(ERSRequest.REIMBURSEMENT_ID_KEY, "" + reimbID);
+
+        ERSResponse res = mrh.handleDenyRequest(req);
+        ensureMalformedRequestResponse(res);
+    }
+
 }

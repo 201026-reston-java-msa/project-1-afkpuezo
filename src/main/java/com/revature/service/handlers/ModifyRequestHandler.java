@@ -190,4 +190,47 @@ public class ModifyRequestHandler extends RequestHandler {
             return getGenericDAOExceptionResponse();
         }
     }
+
+    /**
+     * A manager denies an employees reimb-req.
+     * Fails if the (currently logged in) manager's account does not exist.
+     * Fails if the req does not exist.
+     * Fails if the req is not PENDING.
+     * Fails if the reimbID paramater is missing.
+     * Fails if there is a DAOException
+     * 
+     * @param req
+     * @return
+     */
+    public ERSResponse handleDenyRequest(ERSRequest req) {
+
+        if (!req.hasParameter(ERSRequest.REIMBURSEMENT_ID_KEY))
+            return getMalformedRequestResponse();
+        
+        try{
+            int userID = req.getUserID();
+            if (!updao.checkExists(userID)) return getUserDoesNotExistResponse(userID);
+
+            int reimbID = Integer.parseInt(
+                    req.getParameter(ERSRequest.REIMBURSEMENT_ID_KEY));
+            if (!rrdao.checkExists(reimbID)) 
+                return getReimbursementRequestDoesNotExistResponse(reimbID);
+            
+            ReimbursementRequest reimb = rrdao.getReimbursementRequest(reimbID);
+            if (reimb.getStatus() != ReimbursementStatus.PENDING)
+                return new ERSResponse(
+                        ERSResponseType.INVALID_PARAMETER,
+                        String.format(
+                                "Reimbursement Request #%n is not pending approval.", 
+                                reimbID));
+            
+            // finally, we can do it
+            reimb.setStatus(ReimbursementStatus.DENIED);
+            rrdao.saveReimbursementRequest(reimb);
+            return new ERSResponse(ERSResponseType.SUCCESS);
+        }
+        catch (DAOException e) {
+            return getGenericDAOExceptionResponse();
+        }
+    }
 }
