@@ -56,6 +56,7 @@ public class ModifyRequestHandler extends RequestHandler {
 
             if (!updao.checkExists(authorID))
                 return getUserDoesNotExistResponse(authorID);
+            UserProfile author = updao.getUserProfile(authorID);
 
             // good to go ahead and build the reimb-req
             long moneyAmount 
@@ -67,19 +68,25 @@ public class ModifyRequestHandler extends RequestHandler {
                         ERSResponseType.INVALID_PARAMETER, 
                         "Invalid input for expense type.");
 
-            ReimbursementRequest reimb = new ReimbursementRequest(author, moneyAmount, type);
+            ReimbursementRequest reimb 
+                    = new ReimbursementRequest(author, moneyAmount, type);
             reimb.setTimeSubmitted(java.time.LocalDateTime.now().toString()); 
             if (req.hasParameter(ERSRequest.REIMBURSEMENT_DESCRIPTION_KEY))
-                reimb.setDescription(req.getParameter(ERSRequest.REIMBURSEMENT_DESCRIPTION_KEY));
+                reimb.setDescription(
+                        req.getParameter(ERSRequest.REIMBURSEMENT_DESCRIPTION_KEY));
 
             int reimbID = rrdao.saveReimbursementRequest(reimb);
             ERSResponse res = new ERSResponse(ERSResponseType.SUCCESS,
-                    String.format("Successfully submitted new reimbursement request with ID %n", reimbID));
+                    String.format(
+                            "Successfully submitted new reimbursement request with ID %n", 
+                            reimbID));
             return res;
         } catch (DAOException e) {
             return getGenericDAOExceptionResponse();
         } catch (NumberFormatException e) {
-            return new ERSResponse(ERSResponseType.INVALID_PARAMETER, "Invalid input format for money amount field.");
+            return new ERSResponse(
+                    ERSResponseType.INVALID_PARAMETER, 
+                    "Invalid input format for money amount field.");
         }
     }
 
@@ -187,6 +194,8 @@ public class ModifyRequestHandler extends RequestHandler {
             
             // finally, we can do it
             reimb.setStatus(ReimbursementStatus.APPROVED);
+            reimb.setTimeResolved(java.time.LocalDateTime.now().toString()); 
+            reimb.setResolverID(userID);
             rrdao.saveReimbursementRequest(reimb);
             return new ERSResponse(ERSResponseType.SUCCESS);
         }
@@ -230,6 +239,8 @@ public class ModifyRequestHandler extends RequestHandler {
             
             // finally, we can do it
             reimb.setStatus(ReimbursementStatus.DENIED);
+            reimb.setTimeResolved(java.time.LocalDateTime.now().toString()); 
+            reimb.setResolverID(userID);
             rrdao.saveReimbursementRequest(reimb);
             return new ERSResponse(ERSResponseType.SUCCESS);
         }
