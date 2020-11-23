@@ -10,7 +10,6 @@ package com.revature.service.comms;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.revature.model.UserProfile;
 import com.revature.model.UserProfile.UserRole;
 
 public class ERSRequest {

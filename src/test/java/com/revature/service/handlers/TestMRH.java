@@ -6,15 +6,11 @@ package com.revature.service.handlers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.invocation.Invocation;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.mockito.stubbing.Answer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 import com.revature.model.ReimbursementRequest;
@@ -28,7 +24,6 @@ import com.revature.repository.DAO.interfaces.UserProfileDAO;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSResponse;
 import com.revature.service.comms.ERSRequest.ERSRequestType;
-import com.revature.service.comms.ERSResponse.ERSResponseType;
 
 public class TestMRH extends TestRequestHandler{
     
@@ -171,7 +166,7 @@ public class TestMRH extends TestRequestHandler{
 
         int authorID = 2;
         UserRole authorRole = UserRole.EMPLOYEE;
-        int reimbID = 454;
+        //int reimbID = 454;
         ERSRequest req 
                 = new ERSRequest(ERSRequestType.SUBMIT_REQUEST, authorID, authorRole);
         req.putParameter(
@@ -392,11 +387,7 @@ public class TestMRH extends TestRequestHandler{
 
         int userID = 3;
         UserRole role = UserRole.EMPLOYEE;
-        String username = "emp";
-        String first = "first";
-        String last = "last";
-        String email = "email@me.com";
-        UserProfile up = new UserProfile(userID, role, username, first, last, email);
+        //UserProfile up = new UserProfile(userID, role, username, first, last, email);
 
         // change everything this time
         String newUsername = "nemp";

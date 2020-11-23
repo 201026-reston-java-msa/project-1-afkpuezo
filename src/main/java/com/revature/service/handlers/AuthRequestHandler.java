@@ -12,21 +12,20 @@ import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO;
 import com.revature.repository.DAO.interfaces.UserProfileDAO;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSResponse;
-import com.revature.service.comms.ERSRequest.ERSRequestType;
 import com.revature.service.comms.ERSResponse.ERSResponseType;
 
 public class AuthRequestHandler extends RequestHandler {
     
     // instance variables ------------------
     private UserProfileDAO updao;
-    private ReimbursementRequestDAO rrdao;
+    //private ReimbursementRequestDAO rrdao; // never needs this
 
     // constructor(s) ----------------------
 
     public AuthRequestHandler(UserProfileDAO updao, ReimbursementRequestDAO rrdao){
 
         this.updao = updao;
-        this.rrdao = rrdao;
+        //this.rrdao = rrdao;
     }
 
     // handler methods
