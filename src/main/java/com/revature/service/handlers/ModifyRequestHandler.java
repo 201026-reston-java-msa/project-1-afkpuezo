@@ -91,11 +91,13 @@ public class ModifyRequestHandler extends RequestHandler {
      */
     public ERSResponse handleEmployeeUpdateSelf(ERSRequest req) {
 
-        if (!(req.hasParameter(ERSRequest.USERNAME_KEY) 
-                && (req.hasParameter(ERSRequest.FIRST_NAME_KEY)))
-                && (req.hasParameter(ERSRequest.LAST_NAME_KEY))
-                && (req.hasParameter(ERSRequest.EMAIL_ADDRESS_KEY)))
-            return getMalformedRequestResponse();
+        boolean hasAllParams = true; // easier to debug than a complex if
+        hasAllParams = hasAllParams && req.hasParameter(ERSRequest.USERNAME_KEY);
+        hasAllParams = hasAllParams && req.hasParameter(ERSRequest.FIRST_NAME_KEY);
+        hasAllParams = hasAllParams && req.hasParameter(ERSRequest.LAST_NAME_KEY);
+        hasAllParams = hasAllParams && req.hasParameter(ERSRequest.EMAIL_ADDRESS_KEY);
+
+        if (!hasAllParams) return getMalformedRequestResponse();
 
         try{
 
@@ -144,6 +146,5 @@ public class ModifyRequestHandler extends RequestHandler {
         catch (DAOException e) {
             return getGenericDAOExceptionResponse();
         }
-
     }
 }
