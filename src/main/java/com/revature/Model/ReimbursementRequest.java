@@ -11,9 +11,13 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -108,14 +112,33 @@ public class ReimbursementRequest implements Serializable{
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int ID;
 
-    
-    private int authorID; // user who submitted this req
+    //private int authorID; // user who submitted this req
+    @ManyToOne
+	@JoinColumn(name="USER_ID")
+    private UserProfile author;
+
+    @Column(name="RR_MONEY_AMOUNT")
     private long moneyAmount;
+
+    @Column(name="RR_TYPE")
+    @Enumerated(EnumType.STRING)
     private ReimbursementType type; // what kind of expense
+
+    @Column(name="RR_STATUS")
+    @Enumerated(EnumType.STRING)
     private ReimbursementStatus status; // has it been approved or not
+
+    @Column(name="RR_DESCRIPTION")
     private String description;
+
+    @Column(name="RR_TIME_SUBMITTED")
     private String timeSubmitted;
+
+    // TODO adjust this to be more correct for hibernate
+    @Column(name="RR_RESOLVER_ID")
     private int resolverID; // manager
+
+    @Column(name="RR_TIME_SUBMITTED")
     private String timeResolved;
 
     // optionally, some way of representing an image
@@ -126,14 +149,14 @@ public class ReimbursementRequest implements Serializable{
      * Used when submitting/writing a new reimb-req.
      * Defaults to ID = -1 and PENDING status
      * @param ID
-     * @param authorID
+     * @param author
      * @param moneyAmount
      * @param type
      */
-    public ReimbursementRequest(int authorID, long moneyAmount, ReimbursementType type){
+    public ReimbursementRequest(UserProfile author, long moneyAmount, ReimbursementType type){
 
         this.ID = NULL_ID;
-        this.authorID = authorID;
+        this.author = author;
         this.moneyAmount = moneyAmount;
         this.type = type;
         this.status = ReimbursementStatus.PENDING;
@@ -146,15 +169,15 @@ public class ReimbursementRequest implements Serializable{
     /**
      * Defaults to PENDING status
      * @param ID
-     * @param authorID
+     * @param author
      * @param moneyAmount
      * @param type
      */
     public ReimbursementRequest(
-            int ID, int authorID, long moneyAmount, ReimbursementType type){
+            int ID, UserProfile author, long moneyAmount, ReimbursementType type){
 
         this.ID = ID;
-        this.authorID = authorID;
+        this.author = author;
         this.moneyAmount = moneyAmount;
         this.type = type;
         this.status = ReimbursementStatus.PENDING;
@@ -167,7 +190,7 @@ public class ReimbursementRequest implements Serializable{
     /**
      * 
      * @param ID
-     * @param authorID
+     * @param author
      * @param moneyAmount
      * @param type
      * @param status
@@ -178,7 +201,7 @@ public class ReimbursementRequest implements Serializable{
      */
     public ReimbursementRequest(
             int ID, 
-            int authorID, 
+            UserProfile author, 
             long moneyAmount, 
             ReimbursementType type,
             ReimbursementStatus status,
@@ -188,7 +211,7 @@ public class ReimbursementRequest implements Serializable{
             String timeResolved) {
 
         this.ID = ID;
-        this.authorID = authorID;
+        this.author = author;
         this.moneyAmount = moneyAmount;
         this.type = type;
         this.status = status;
@@ -206,7 +229,7 @@ public class ReimbursementRequest implements Serializable{
     }
 
     public int getAuthorID() {
-        return this.authorID;
+        return author.getID();
     }
 
     public long getMoneyAmount() {
