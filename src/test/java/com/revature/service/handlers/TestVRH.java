@@ -431,7 +431,7 @@ public class TestVRH extends TestRequestHandler{
         int empID = 2; // don't need to make UserProfile for the employee...currently
 
         int reimbID = 1;
-        int authorID = empID; // overkill i guess
+        //int authorID = empID; // overkill i guess
         long moneyAmount = 6564321L;
         ReimbursementType reimbType = ReimbursementType.FOOD;
         ReimbursementRequest reimb 

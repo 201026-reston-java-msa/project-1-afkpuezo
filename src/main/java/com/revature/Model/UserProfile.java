@@ -7,7 +7,23 @@
  */
 package com.revature.model;
 
-public class UserProfile {
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="USER_PROFILE")
+public class UserProfile implements Serializable{
+
+    // constants
+    private static final long serialVersionUID = 0L; // makes compiler happy
     
     // enums ---------------------
 
@@ -42,14 +58,36 @@ public class UserProfile {
     // class/static variables ---------------------
 
     // instance variables ---------------------
+    @Id
+    @Column(name="USER_ID")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int ID;
+
+    @Column(name="USER_ROLE")
+    @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @Column(name="USERNAME")
     private String username;
+
+    @Column(name="FIRST_NAME")
     private String firstName;
+
+    @Column(name="LAST_NAME")
     private String lastName;
+
+    @Column(name="EMAIL_ADDRESS")
     private String emailAddress;
 
     // constructor(s) ---------------------
+
+    /**
+     * (I think) This should only be used by Hibernate
+     */
+    public UserProfile(){
+
+    }
+
     public UserProfile(int ID, UserRole role){
 
         this.ID = ID;
@@ -77,14 +115,21 @@ public class UserProfile {
     }
 
     // getters and setters ---------------------
-    // (currently no way to set ID or Role outsIDe of constructor)
 
     public int getID() {
         return this.ID;
     }
 
+    public void setID(int ID){
+        this.ID = ID;
+    }
+
     public UserRole getRole() {
         return this.role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     public String getUsername() {
@@ -92,7 +137,7 @@ public class UserProfile {
     }
 
     /**
-     * Does NOT check to make sure the username is in the valID format.
+     * Does NOT check to make sure the username is in the valid format.
      * @param username
      */
     public void setUsername(String username) {
@@ -104,7 +149,7 @@ public class UserProfile {
     }
 
     /**
-     * Does NOT check to make sure the firstName is in the valID format.
+     * Does NOT check to make sure the firstName is in the valid format.
      * @param firstName
      */
     public void setFirstName(String firstName) {
@@ -116,7 +161,7 @@ public class UserProfile {
     }
 
     /**
-     * Does NOT check to make sure the lastName is in the valID format.
+     * Does NOT check to make sure the lastName is in the valid format.
      * @param lastName
      */
     public void setLastName(String lastName) {

@@ -15,6 +15,7 @@
 		<property name="hibernate.connection.username">postgres</property>
 		<property name="hibernate.connection.password">revature</property>
 		<property name="hibernate.connection.url">
+		<property name="hibernate.default_schema" value="project1"/>
             jdbc:postgresql://project-1.ctbiymuawd1y.us-east-2.rds.amazonaws.com:5432/
         </property>
 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
