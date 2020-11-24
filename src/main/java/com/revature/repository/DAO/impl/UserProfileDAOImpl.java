@@ -89,9 +89,8 @@ public class UserProfileDAOImpl implements UserProfileDAO {
 
         Criteria crit = session.createCriteria(UserPassword.class);
         //UserProfile user = getUserProfile(userID);
-        crit.add(Restrictions.eq("user.userID", userID));
+        crit.add(Restrictions.eq("user.ID", userID));
         List<UserPassword> passList = crit.list();
-        session.close();
 
         if (passList.isEmpty()){
             session.close();
