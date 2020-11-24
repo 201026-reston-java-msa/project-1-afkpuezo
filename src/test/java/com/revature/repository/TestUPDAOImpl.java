@@ -98,6 +98,9 @@ public class TestUPDAOImpl {
         assertTrue(updao.checkExistsEmail(emailAddress));
     }
 
+    /**
+     * Tests both by ID and by username
+     */
     @Test
     public void testGetUserProfile() throws DAOException{
 
@@ -105,10 +108,19 @@ public class TestUPDAOImpl {
         UserProfile up;
         Session session;
         String username = "username";
-
         session = HibernateConnectionUtil.getSession();
-        up = (UserProfile) session.get(UserProfile.class, 1);
+
+        up = (UserProfile) updao.getUserProfile(-1);
         assertNull(up);
+
+        boolean caught = false;
+        try{
+            up = (UserProfile) updao.getUserProfile(username);
+        }
+        catch(DAOException e){
+            caught = true;
+        }
+        assertTrue(caught);
 
         // now insert a user
         UserProfile inserted = new UserProfile(-1, UserRole.EMPLOYEE);
@@ -118,13 +130,15 @@ public class TestUPDAOImpl {
         tx.commit();
         int userID = inserted.getID();
         session.evict(inserted);
-        UserProfile debugUser = (UserProfile) session.get(UserProfile.class, userID);
         session.close();
-        System.out.println("DEBUG: userID is: " + userID);
-        System.out.println("DEBUG: debugUser is null? : " + (debugUser == null));
 
         // see if we can find it
         up = updao.getUserProfile(userID);
+        assertNotNull(up);
+        assertEquals(userID, up.getID());
+        assertEquals(username, up.getUsername());
+
+        up = updao.getUserProfile(username);
         assertNotNull(up);
         assertEquals(userID, up.getID());
         assertEquals(username, up.getUsername());

@@ -133,8 +133,27 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * @return
      * @throws DAOException
      */
+    @SuppressWarnings("unchecked")
     public UserProfile getUserProfile(String username) throws DAOException{
-        return null;
+        
+        Session session = HibernateConnectionUtil.getSession();
+
+        Criteria crit = session.createCriteria(UserProfile.class);
+        crit.add(Restrictions.like("username", username));
+        List<UserProfile> userList = crit.list();
+        
+        if (userList.isEmpty()) {
+            session.close();
+            throw new DAOException(
+                String.format(
+                            "getUserProfile: No password for account with username '%s'", 
+                            username));
+        }
+        
+        UserProfile up = userList.get(0);
+        session.evict(up);
+        session.close();
+        return up;
     }
 
     /**
