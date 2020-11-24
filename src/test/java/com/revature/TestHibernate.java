@@ -3,6 +3,8 @@
  */
 package com.revature;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -17,5 +19,17 @@ public class TestHibernate {
     public void testConnection(){
         Session session = HibernateConnectionUtil.getSession();
         assertTrue(session.isConnected());
+        HibernateConnectionUtil.enterTestMode();
+        Session testSession = HibernateConnectionUtil.getSession();
+        assertTrue(testSession.isConnected());
+        assertNotEquals(session.getSessionFactory(), testSession.getSessionFactory());
+
+        HibernateConnectionUtil.forceDropSessionFactory();
+        HibernateConnectionUtil.exitTestMode();
+        Session thirdSession = HibernateConnectionUtil.getSession();
+        assertTrue(thirdSession.isConnected());
+
+        session.close();
+        testSession.close();
     }
 }

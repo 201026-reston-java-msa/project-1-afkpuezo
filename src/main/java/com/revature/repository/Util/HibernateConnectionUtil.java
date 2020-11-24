@@ -41,7 +41,7 @@ public class HibernateConnectionUtil {
 	 * is already a SessionFactory initialized, it will be dropped.
 	 * If already in testMode, does nothing.
 	 */
-	public void enterTestMode(){
+	public static void enterTestMode(){
 
 		if (!isTestMode && isInitialized){
 			sf.close();
@@ -56,7 +56,7 @@ public class HibernateConnectionUtil {
 	 * is already a SessionFactory initialized, it will be dropped.
 	 * If already in normal mode, does nothing.
 	 */
-	public void exitTestMode(){
+	public static void exitTestMode(){
 
 		if (isTestMode && isInitialized){
 			sf.close();
@@ -64,5 +64,17 @@ public class HibernateConnectionUtil {
 			isInitialized = false;
 		}
 		isTestMode = false;
+	}
+
+	/**
+	 * De-initializes the session factory. Does nothing if not already initialized.
+	 */
+	public static void forceDropSessionFactory(){
+
+		if (isInitialized){
+			sf.close();
+			sf = null;
+			isInitialized = false;
+		}
 	}
 }
