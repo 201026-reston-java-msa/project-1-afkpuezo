@@ -75,4 +75,23 @@ public class TestUPDAOImpl {
         session.close();
         assertTrue(updao.checkExists(username));
     }
+
+    @Test
+    public void testCheckExistsByEmail() throws DAOException, HibernateException{
+
+        String emailAddress = "not_found";
+        assertFalse(updao.checkExistsEmail(emailAddress));
+
+        Session session = HibernateConnectionUtil.getSession();
+        UserProfile up = new UserProfile(-1, UserRole.EMPLOYEE);
+        emailAddress = "found";
+        up.setEmailAddress(emailAddress);
+        Transaction tx = session.beginTransaction();
+        session.save(up);
+        tx.commit();
+        session.evict(up);
+
+        session.close();
+        assertTrue(updao.checkExistsEmail(emailAddress));
+    }
 }

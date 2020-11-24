@@ -64,8 +64,16 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * Determines if the indicated user exists.
      * Throws exception if there is a database communication problem.
      */
+    @SuppressWarnings("unchecked")
     public boolean checkExistsEmail(String emailAddress) throws DAOException{
-        return false;
+        
+        Session session = HibernateConnectionUtil.getSession();
+
+        Criteria crit = session.createCriteria(UserProfile.class);
+        crit.add(Restrictions.like("emailAddress", emailAddress));
+        List<UserProfile> userList = crit.list();
+        session.close();
+        return !userList.isEmpty();
     }
 
     /**
