@@ -54,7 +54,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
         Session session = HibernateConnectionUtil.getSession();
 
         Criteria crit = session.createCriteria(UserProfile.class);
-        crit.add(Restrictions.like("username", username));
+        crit.add(Restrictions.eq("username", username));
         List<UserProfile> userList = crit.list();
         session.close();
         return !userList.isEmpty();
@@ -71,7 +71,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
         Session session = HibernateConnectionUtil.getSession();
 
         Criteria crit = session.createCriteria(UserProfile.class);
-        crit.add(Restrictions.like("emailAddress", emailAddress));
+        crit.add(Restrictions.eq("emailAddress", emailAddress));
         List<UserProfile> userList = crit.list();
         session.close();
         return !userList.isEmpty();
@@ -88,14 +88,21 @@ public class UserProfileDAOImpl implements UserProfileDAO {
         Session session = HibernateConnectionUtil.getSession();
 
         Criteria crit = session.createCriteria(UserPassword.class);
-        crit.add(Restrictions.like("userID", userID)); // TODO FIX
+        //UserProfile user = getUserProfile(userID);
+        crit.add(Restrictions.eq("user.userID", userID));
         List<UserPassword> passList = crit.list();
         session.close();
 
-        if (passList.isEmpty()) throw new DAOException(
+        if (passList.isEmpty()){
+            session.close();
+            throw new DAOException(  
                 "getPassword: No password for account with ID " + userID);
+        } 
 
-        return passList.get(0).getPass();
+        UserPassword uPass = passList.get(0);
+        session.evict(uPass);
+        session.close();
+        return uPass.getPass();
     }
     
     /**
@@ -139,7 +146,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
         Session session = HibernateConnectionUtil.getSession();
 
         Criteria crit = session.createCriteria(UserProfile.class);
-        crit.add(Restrictions.like("username", username));
+        crit.add(Restrictions.eq("username", username));
         List<UserProfile> userList = crit.list();
         
         if (userList.isEmpty()) {

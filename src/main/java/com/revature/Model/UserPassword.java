@@ -23,7 +23,7 @@ public class UserPassword implements Serializable {
     // instance vars
     @Id
     @OneToOne
-    @JoinColumn(name="USER_ID", nullable=false, referencedColumnName = "USER_ID")
+    @JoinColumn(name="PASSWORD_USER_ID", nullable=false, referencedColumnName="USER_ID")
     private UserProfile user;
 
     @Column(name="PASS")
