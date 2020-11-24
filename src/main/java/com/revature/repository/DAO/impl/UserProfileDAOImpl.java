@@ -9,6 +9,9 @@ import com.revature.model.UserProfile;
 import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.interfaces.UserProfileDAO;
 
+import org.hibernate.Session;
+import com.revature.repository.Util.HibernateConnectionUtil;
+
 public class UserProfileDAOImpl implements UserProfileDAO {
     
     // constants
@@ -30,7 +33,10 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * @throws DAOException
      */
     public boolean checkExists(int userID) throws DAOException{
-        return false;
+
+        Session session = HibernateConnectionUtil.getSession();
+        UserProfile up = (UserProfile)session.get(UserProfile.class, userID);
+        return up != null;
     }
 
     /**
