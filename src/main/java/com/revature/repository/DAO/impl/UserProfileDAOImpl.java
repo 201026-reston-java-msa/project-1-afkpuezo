@@ -88,7 +88,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
         Session session = HibernateConnectionUtil.getSession();
 
         Criteria crit = session.createCriteria(UserPassword.class);
-        crit.add(Restrictions.like("userID", userID));
+        crit.add(Restrictions.like("userID", userID)); // TODO FIX
         List<UserPassword> passList = crit.list();
         session.close();
 
@@ -110,13 +110,18 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     /**
      * Returns a filled-out UserProfile object.
      * Throws exception if there is a database communication problem.
-     * Throws exception if the user is not found.
+     * Returns null if the user was not found.
      * @param userID
      * @return
      * @throws DAOException
      */
     public UserProfile getUserProfile(int userID) throws DAOException{
-        return null;
+
+        Session session = HibernateConnectionUtil.getSession();
+        UserProfile up = (UserProfile) session.get(UserProfile.class, userID);
+        session.evict(up);
+        session.close();
+        return up;
     }
 
     /**

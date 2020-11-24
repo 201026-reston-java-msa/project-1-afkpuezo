@@ -5,6 +5,8 @@ package com.revature.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.hibernate.Transaction;
@@ -41,7 +43,7 @@ public class TestUPDAOImpl {
     }
 
     @Test
-    public void testCheckExistsByID() throws DAOException, HibernateException{
+    public void testCheckExistsByID() throws DAOException{
 
         int userID = 999;
         assertFalse(updao.checkExists(userID));
@@ -59,7 +61,7 @@ public class TestUPDAOImpl {
     }
 
     @Test
-    public void testCheckExistsByUsername() throws DAOException, HibernateException{
+    public void testCheckExistsByUsername() throws DAOException{
 
         String username = "not_found";
         assertFalse(updao.checkExists(username));
@@ -78,7 +80,7 @@ public class TestUPDAOImpl {
     }
 
     @Test
-    public void testCheckExistsByEmail() throws DAOException, HibernateException{
+    public void testCheckExistsByEmail() throws DAOException{
 
         String emailAddress = "not_found";
         assertFalse(updao.checkExistsEmail(emailAddress));
@@ -94,6 +96,38 @@ public class TestUPDAOImpl {
 
         session.close();
         assertTrue(updao.checkExistsEmail(emailAddress));
+    }
+
+    @Test
+    public void testGetUserProfile() throws DAOException{
+
+        // should be null if no user found
+        UserProfile up;
+        Session session;
+        String username = "username";
+
+        session = HibernateConnectionUtil.getSession();
+        up = (UserProfile) session.get(UserProfile.class, 1);
+        assertNull(up);
+
+        // now insert a user
+        UserProfile inserted = new UserProfile(-1, UserRole.EMPLOYEE);
+        inserted.setUsername(username);
+        Transaction tx = session.beginTransaction();
+        session.save(inserted);
+        tx.commit();
+        int userID = inserted.getID();
+        session.evict(inserted);
+        UserProfile debugUser = (UserProfile) session.get(UserProfile.class, userID);
+        session.close();
+        System.out.println("DEBUG: userID is: " + userID);
+        System.out.println("DEBUG: debugUser is null? : " + (debugUser == null));
+
+        // see if we can find it
+        up = updao.getUserProfile(userID);
+        assertNotNull(up);
+        assertEquals(userID, up.getID());
+        assertEquals(username, up.getUsername());
     }
 
     /**
@@ -128,4 +162,6 @@ public class TestUPDAOImpl {
         String foundPass = updao.getPassword(userID);
         assertEquals(password, foundPass);
     }
+
+
 }
