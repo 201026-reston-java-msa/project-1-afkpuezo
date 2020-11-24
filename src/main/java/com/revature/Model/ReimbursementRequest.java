@@ -136,11 +136,10 @@ public class ReimbursementRequest implements Serializable{
     @Column(name="RR_TIME_SUBMITTED")
     private String timeSubmitted;
 
-    // TODO adjust this to be more correct for hibernate
     @Column(name="RR_RESOLVER_ID")
     private int resolverID; // manager
 
-    @Column(name="RR_TIME_SUBMITTED")
+    @Column(name="RR_TIME_RESOLVED")
     private String timeResolved;
 
     // optionally, some way of representing an image
