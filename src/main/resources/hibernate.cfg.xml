@@ -30,6 +30,7 @@
 		<!-- Tell Hibernate where to look for ORMs -->
 		<mapping class="com.revature.model.ReimbursementRequest" />
 		<mapping class="com.revature.model.UserProfile" />
+		<mapping class="com.revature.model.UserPassword" />
 
 		<!-- CACHE CONFIGURATION -->
 <!-- 		<property name="net.sf.ehcache.configurationResourceName">/ehcache.xml</property>

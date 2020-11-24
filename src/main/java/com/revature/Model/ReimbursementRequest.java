@@ -116,7 +116,7 @@ public class ReimbursementRequest implements Serializable{
 
     //private int authorID; // user who submitted this req
     @ManyToOne
-	@JoinColumn(name="USER_ID")
+	@JoinColumn(name="USER_ID", nullable=false, referencedColumnName = "USER_ID")
     private UserProfile author;
 
     @Column(name="RR_MONEY_AMOUNT")
