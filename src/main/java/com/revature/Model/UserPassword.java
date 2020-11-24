@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Id;
 
 @Entity
 @Table(name="USER_PASSWORD")
@@ -20,6 +21,7 @@ public class UserPassword implements Serializable {
     private static final long serialVersionUID = 0L; // makes compiler happy
     
     // instance vars
+    @Id
     @OneToOne
     @JoinColumn(name="USER_ID", nullable=false, referencedColumnName = "USER_ID")
     private UserProfile user;
