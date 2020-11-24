@@ -17,14 +17,14 @@
 		<property name="hibernate.connection.url">
 			jdbc:postgresql://project-1.ctbiymuawd1y.us-east-2.rds.amazonaws.com:5432/
         </property>
-		<property name="hibernate.default_schema">project1</property>
+		<property name="hibernate.default_schema">project1_test</property>
 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
 
 		<!-- New Hibernate stuff -->
 		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 		<property name="hibernate.show_sql">true</property>
         <!-- creates table from scratch -->
-		<property name="hibernate.hbm2ddl.auto">update</property> 
+		<property name="hibernate.hbm2ddl.auto">create</property> 
 		<property name="hibernate.format_sql">true</property>
  
 		<!-- Tell Hibernate where to look for ORMs -->
