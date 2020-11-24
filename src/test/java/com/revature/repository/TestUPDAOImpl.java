@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.hibernate.Transaction;
 
+import com.revature.model.UserPassword;
 import com.revature.model.UserProfile;
 import com.revature.model.UserProfile.UserRole;
 import com.revature.repository.DAO.exceptions.DAOException;
@@ -93,5 +94,38 @@ public class TestUPDAOImpl {
 
         session.close();
         assertTrue(updao.checkExistsEmail(emailAddress));
+    }
+
+    /**
+     * This should test both by ID and username
+     * 
+     * @throws DAOException
+     * @throws HibernateException
+     */
+    @Test
+    public void testGetPassword() throws DAOException, HibernateException{
+
+        // create a user with a password
+        Session session = HibernateConnectionUtil.getSession();
+        UserProfile up = new UserProfile(-1, UserRole.EMPLOYEE);
+        String username = "username";
+        up.setUsername(username);
+        Transaction tx = session.beginTransaction();
+        session.save(up);
+        tx.commit();
+        session.evict(up);
+        int userID = up.getID();
+        String password = "password";
+        UserPassword uPass = new UserPassword();
+        uPass.setUser(up);
+        uPass.setPass(password);
+        tx = session.beginTransaction();
+        session.save(uPass);
+        tx.commit();
+        session.evict(uPass);
+
+        // now see if we can get it
+        String foundPass = updao.getPassword(userID);
+        assertEquals(password, foundPass);
     }
 }

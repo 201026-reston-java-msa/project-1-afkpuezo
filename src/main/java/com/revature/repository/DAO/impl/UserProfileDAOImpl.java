@@ -5,6 +5,7 @@ package com.revature.repository.DAO.impl;
 
 import java.util.List;
 
+import com.revature.model.UserPassword;
 import com.revature.model.UserProfile;
 import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.interfaces.UserProfileDAO;
@@ -81,8 +82,20 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * Throws exception if there is a database communication problem.
      * Throws exception if the user is not found.
      */
+    @SuppressWarnings("unchecked")
     public String getPassword(int userID) throws DAOException{
-        return null;
+        
+        Session session = HibernateConnectionUtil.getSession();
+
+        Criteria crit = session.createCriteria(UserPassword.class);
+        crit.add(Restrictions.like("userID", userID));
+        List<UserPassword> passList = crit.list();
+        session.close();
+
+        if (passList.isEmpty()) throw new DAOException(
+                "getPassword: No password for account with ID " + userID);
+
+        return passList.get(0).getPass();
     }
     
     /**
