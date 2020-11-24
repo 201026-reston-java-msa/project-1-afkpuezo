@@ -9,7 +9,10 @@ import com.revature.model.UserProfile;
 import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.interfaces.UserProfileDAO;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
 import com.revature.repository.Util.HibernateConnectionUtil;
 
 public class UserProfileDAOImpl implements UserProfileDAO {
@@ -36,6 +39,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
 
         Session session = HibernateConnectionUtil.getSession();
         UserProfile up = (UserProfile)session.get(UserProfile.class, userID);
+        session.close();
         return up != null;
     }
 
@@ -43,8 +47,17 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * Determines if the indicated user exists.
      * Throws exception if there is a database communication problem.
      */
+    @SuppressWarnings("unchecked")
     public boolean checkExists(String username) throws DAOException{
-        return false;
+        
+        Session session = HibernateConnectionUtil.getSession();
+
+        Criteria crit = session.createCriteria(UserProfile.class);
+        crit.add(Restrictions.like("username", username));
+        List<UserProfile> userList = crit.list();
+        session.close();
+        return !userList.isEmpty();
+
     }
 
     /**

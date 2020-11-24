@@ -59,5 +59,20 @@ public class TestUPDAOImpl {
 
     @Test
     public void testCheckExistsByUsername() throws DAOException, HibernateException{
+
+        String username = "not_found";
+        assertFalse(updao.checkExists(username));
+
+        Session session = HibernateConnectionUtil.getSession();
+        UserProfile up = new UserProfile(-1, UserRole.EMPLOYEE);
+        username = "found";
+        up.setUsername(username);
+        Transaction tx = session.beginTransaction();
+        session.save(up);
+        tx.commit();
+        session.evict(up);
+
+        session.close();
+        assertTrue(updao.checkExists(username));
     }
 }
