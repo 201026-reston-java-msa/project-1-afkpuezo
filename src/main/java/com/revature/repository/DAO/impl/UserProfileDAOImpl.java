@@ -12,6 +12,7 @@ import com.revature.repository.DAO.interfaces.UserProfileDAO;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import com.revature.repository.Util.HibernateConnectionUtil;
@@ -210,8 +211,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
 
     /**
      * Saves/writes the given UserProfile to the database.
-     * If a matching user DOES exist, ID and Role will not be updated,
-     * but all other properties will be.
+     * If a matching user DOES exist, the entry will be updated
      * If saving a new UserProfile, should use ID = -1. The system will automatically
      * generate a new ID and return it.
      * Throws exception if there is a database communication problem. 
@@ -225,6 +225,15 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * @throws DAOException
      */
     public int saveUserProfile(UserProfile up) throws DAOException{
-        return 0;
+
+
+        Session session = HibernateConnectionUtil.getSession();
+        Transaction tx = session.beginTransaction();
+        if (up.getID() == -1) session.save(up);
+        else session.saveOrUpdate(up);
+        tx.commit();
+        session.evict(up);
+        session.close();
+        return up.getID();
     }
 }

@@ -21,6 +21,7 @@ import com.revature.repository.DAO.impl.UserProfileDAOImpl;
 import com.revature.repository.DAO.interfaces.UserProfileDAO;
 import com.revature.repository.Util.HibernateConnectionUtil;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.junit.After;
@@ -227,5 +228,53 @@ public class TestUPDAOImpl {
         assertTrue(found0);
         assertTrue(found1);
         assertFalse(foundWrong);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testSaveUserProfile() throws DAOException, HibernateException{
+
+        // make a new profile
+        String username = "newguy";
+        UserRole role = UserRole.EMPLOYEE;
+        UserProfile up = new UserProfile();
+        up.setUsername(username);
+        up.setRole(role);
+
+        // insert it
+        updao.saveUserProfile(up);
+
+        // can we find it?
+        Session session = HibernateConnectionUtil.getSession();
+        UserProfile found = (UserProfile) session.get(UserProfile.class, up.getID());
+        session.evict(found);
+        session.close();
+
+        assertNotNull(found);
+        assertEquals(up.getID(), found.getID());
+        assertEquals(username, found.getUsername());
+        assertEquals(role, found.getRole());
+
+        // now try to update it - should change the old entry rather than adding a new one
+        String secondUsername = "oldguy";
+        up.setUsername(secondUsername);
+        updao.saveUserProfile(up);
+
+        session = HibernateConnectionUtil.getSession();
+        found = (UserProfile) session.get(UserProfile.class, up.getID());
+        session.evict(found);
+        session.close();
+
+        assertNotNull(found);
+        assertEquals(up.getID(), found.getID());
+        assertEquals(secondUsername, found.getUsername());
+        assertEquals(role, found.getRole());
+
+        // make sure oinly one entry
+        session = HibernateConnectionUtil.getSession();
+        Criteria crit = session.createCriteria(UserProfile.class);
+        List<UserProfile> userList = crit.list();
+        session.close();
+        assertEquals(1, userList.size());
     }
 }
