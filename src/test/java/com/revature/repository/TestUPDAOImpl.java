@@ -9,6 +9,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import org.hibernate.Transaction;
 
 import com.revature.model.UserPassword;
@@ -24,6 +26,7 @@ import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 
 public class TestUPDAOImpl {
     
@@ -180,5 +183,49 @@ public class TestUPDAOImpl {
         assertEquals(password, foundPass);
     }
 
+    @Test
+    public void testGetAllEmployeeProfiles() throws DAOException, HibernateException{
 
+        // should return an empty list if there are no employees
+        List<UserProfile> users = updao.getAllEmployeeProfiles();
+        assertNotNull(users);
+        assertTrue(users.isEmpty());
+
+        // put some users in there
+        UserProfile user0 = new UserProfile();
+        user0.setUsername("user0");
+        user0.setRole(UserRole.EMPLOYEE);
+        UserProfile user1 = new UserProfile();
+        user1.setUsername("user1");
+        user1.setRole(UserRole.EMPLOYEE);
+
+        Session session = HibernateConnectionUtil.getSession();
+        Transaction tx = session.beginTransaction();
+        session.save(user0);
+        session.save(user1);
+        tx.commit();
+        session.close();
+
+        // should be able to find them now
+        users = updao.getAllEmployeeProfiles();
+        assertNotNull(users);
+        assertEquals(2, users.size());
+        
+        // try to validate that each user is correctly stored
+        boolean found0 = false;
+        boolean found1 = false;
+        boolean foundWrong = false;
+        for (UserProfile up : users){
+            if (up.getID() == user0.getID()){
+                found0 = true;
+            }
+            else if (up.getID() == user1.getID()){
+                found1 = true;
+            }
+            else foundWrong = true;
+        }
+        assertTrue(found0);
+        assertTrue(found1);
+        assertFalse(foundWrong);
+    }
 }

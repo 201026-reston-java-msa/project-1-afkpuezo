@@ -186,12 +186,26 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * Returns a list of all employee profiles in the system.
      * Returns an empty list if there are no employees.
      * Throws exception if there is a database communication problem. 
-     * Throws exception if the user is not found.
      * @return
      * @throws DAOException
      */
+    @SuppressWarnings("unchecked")
     public List<UserProfile> getAllEmployeeProfiles() throws DAOException{
-        return null;
+        
+        Session session = HibernateConnectionUtil.getSession();
+
+        Criteria crit = session.createCriteria(UserProfile.class);
+        // I thought I would have to cast the enum to string, but I don't. Neat.
+        crit.add(Restrictions.eq("role", UserProfile.UserRole.EMPLOYEE));
+        List<UserProfile> userList = crit.list();
+        
+        // ? is this actually necessary?
+        for (UserProfile user : userList){
+            session.evict(user);
+        }
+
+        session.close();
+        return userList;
     }
 
     /**
