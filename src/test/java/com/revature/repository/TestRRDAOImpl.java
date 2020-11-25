@@ -186,4 +186,80 @@ public class TestRRDAOImpl {
         assertEquals(rr1.getType(), found1.getType());
         assertEquals(rr1.getAuthorID(), found1.getAuthorID());
     }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testSaveReimbursementRequest() throws DAOException{
+
+        // make a user to be the author
+        UserProfile up = new UserProfile();
+        up.setUsername("up");
+        up.setRole(UserRole.EMPLOYEE);
+
+        Session session = HibernateConnectionUtil.getSession();
+        Transaction tx = session.beginTransaction();
+        session.save(up);
+        tx.commit();
+        session.evict(up);
+        session.close();
+
+        // now make a request
+        ReimbursementRequest reimb = new ReimbursementRequest();
+        reimb.setAuthor(up);
+        reimb.setStatus(ReimbursementStatus.PENDING);
+        reimb.setType(ReimbursementType.FOOD);
+
+        int reimbID = rrdao.saveReimbursementRequest(reimb);
+        reimb.setID(reimbID);
+
+        // see if it was added
+        session = HibernateConnectionUtil.getSession();
+        ReimbursementRequest found 
+                = (ReimbursementRequest) session.get(ReimbursementRequest.class, reimbID);
+        session.evict(found);
+        session.close();
+
+        assertNotNull(found);
+        assertEquals(reimb.getID(), found.getID());
+        assertEquals(reimb.getStatus(), found.getStatus());
+        assertEquals(reimb.getType(), found.getType());
+
+        // test over-writing
+        reimb.setStatus(ReimbursementStatus.APPROVED);
+        rrdao.saveReimbursementRequest(reimb);
+
+        session = HibernateConnectionUtil.getSession();
+        found = (ReimbursementRequest) session.get(ReimbursementRequest.class, reimbID);
+        session.evict(found);
+        session.close();
+
+        assertNotNull(found);
+        assertEquals(reimb.getID(), found.getID());
+        assertEquals(reimb.getStatus(), found.getStatus());
+        assertEquals(reimb.getType(), found.getType());
+
+        // test adding a 2nd one // ? necessary?
+        ReimbursementRequest secondReimb = new ReimbursementRequest();
+        secondReimb.setAuthor(up);
+        secondReimb.setStatus(ReimbursementStatus.DENIED);
+        secondReimb.setType(ReimbursementType.TRAVEL);
+
+        reimbID = rrdao.saveReimbursementRequest(secondReimb);
+
+        session = HibernateConnectionUtil.getSession();
+        found = (ReimbursementRequest) session.get(ReimbursementRequest.class, reimbID);
+        session.evict(found);
+        session.close();
+
+        assertNotNull(found);
+        assertEquals(secondReimb.getID(), found.getID());
+        assertEquals(secondReimb.getStatus(), found.getStatus());
+        assertEquals(secondReimb.getType(), found.getType());
+
+        session = HibernateConnectionUtil.getSession();
+        Criteria crit = session.createCriteria(ReimbursementRequest.class);
+        List<ReimbursementRequest> reimbList = crit.list();
+        session.close();
+        assertEquals(2, reimbList.size());
+    }
 }

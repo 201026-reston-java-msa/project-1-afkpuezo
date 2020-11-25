@@ -82,7 +82,16 @@ public class ReimbursementRequestDAOImpl implements ReimbursementRequestDAO {
      */
     @Override
     public int saveReimbursementRequest(ReimbursementRequest reimb) throws DAOException{
-        return 0;
+
+        Session session = HibernateConnectionUtil.getSession();
+        Transaction tx = session.beginTransaction();
+        if (reimb.getID() == -1) session.save(reimb);
+        else session.saveOrUpdate(reimb);
+        tx.commit();
+        session.evict(reimb);
+        session.close();
+
+        return reimb.getID();
     }
 
     /**

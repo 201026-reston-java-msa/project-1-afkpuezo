@@ -236,6 +236,10 @@ public class ReimbursementRequest implements Serializable{
         return this.ID;
     }
 
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
     public int getAuthorID() {
         return author.getID();
     }
