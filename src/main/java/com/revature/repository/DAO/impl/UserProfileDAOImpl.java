@@ -109,8 +109,28 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * Throws exception if there is a database communication problem.
      * Throws exception if the user is not found.
      */
+    @SuppressWarnings("unchecked")
     public String getPassword(String username) throws DAOException{
-        return null;
+        
+        Session session = HibernateConnectionUtil.getSession();
+
+        UserProfile user = getUserProfile(username); // a little hacky but it works
+        int userID = user.getID();
+        Criteria crit = session.createCriteria(UserPassword.class);
+        crit.add(Restrictions.eq("user.id", userID));
+        List<UserPassword> passList = crit.list();
+
+        if (passList.isEmpty()){
+            session.close();
+            throw new DAOException(  
+                String.format("getPassword: No password for account with username '%s'",
+                username));
+        } 
+
+        UserPassword uPass = passList.get(0);
+        session.evict(uPass);
+        session.close();
+        return uPass.getPass();
     }
 
     /**

@@ -175,6 +175,9 @@ public class TestUPDAOImpl {
         // now see if we can get it
         String foundPass = updao.getPassword(userID);
         assertEquals(password, foundPass);
+
+        foundPass = updao.getPassword(username);
+        assertEquals(password, foundPass);
     }
 
 
