@@ -1,5 +1,7 @@
 /**
  * This class provides an implementation of DAO functionality for UserProfiles.
+ * 
+ * @author Andrew Curry
  */
 package com.revature.repository.DAO.impl;
 
