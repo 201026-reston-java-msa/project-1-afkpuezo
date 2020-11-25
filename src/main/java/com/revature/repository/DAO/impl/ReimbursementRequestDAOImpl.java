@@ -8,9 +8,19 @@ package com.revature.repository.DAO.impl;
 import java.util.List;
 
 import com.revature.model.ReimbursementRequest;
+import com.revature.model.ReimbursementRequest.ReimbursementStatus;
 import com.revature.repository.DAO.exceptions.DAOException;
+import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO;
+import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO.SearchType;
 
-public class ReimbursementRequestDAOImpl {
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
+
+import com.revature.repository.Util.HibernateConnectionUtil;
+
+public class ReimbursementRequestDAOImpl implements ReimbursementRequestDAO {
 
     // constants
 
@@ -23,14 +33,6 @@ public class ReimbursementRequestDAOImpl {
     // ---------------------------
     // methods from ReimbursementRequestDAO
     // ---------------------------
-    
-    /**
-     * Used to control search parameters.
-     * I don't think this needs the complicated enum features
-     */
-    public enum SearchType{
-        ALL, PENDING, RESOLVED;
-    }
 
     /**
      * Returns a list of reimb-reqs matching the given constraints.
@@ -42,10 +44,34 @@ public class ReimbursementRequestDAOImpl {
      * @return
      * @throws DAOException
      */
+    @Override
+    @SuppressWarnings("unchecked")
     public List<ReimbursementRequest> getReimbursementRequests(
-            int authorID, SearchType searchBy) throws DAOException{
-        return null;
+            int authorID,
+            SearchType searchBy) throws DAOException {
+
+        Session session = HibernateConnectionUtil.getSession();
+        Criteria crit = session.createCriteria(ReimbursementRequest.class);
+        if (authorID != -1)
+                crit.add(Restrictions.eq("authorID", authorID));
+        if (searchBy == SearchType.PENDING)
+                crit.add(Restrictions.eq("status", ReimbursementStatus.PENDING));
+        else if (searchBy == SearchType.RESOLVED)
+                crit.add(Restrictions.or(
+                        Restrictions.eq("status", ReimbursementStatus.APPROVED),
+                        Restrictions.eq("status", ReimbursementStatus.DENIED)));
+
+        List<ReimbursementRequest> reimbList = crit.list();
+        for (ReimbursementRequest reimb : reimbList){
+            session.evict(reimb); // ? is this necessary?
+        }
+        session.close();
+        return reimbList;
     }
+
+    /*
+    
+    */
 
     /**
      * Saves/writes the given reimb-req to the database.
@@ -57,6 +83,7 @@ public class ReimbursementRequestDAOImpl {
      * @return ID of the reimb-req
      * @throws DAOException
      */
+    @Override
     public int saveReimbursementRequest(ReimbursementRequest reimb) throws DAOException{
         return 0;
     }
@@ -69,6 +96,7 @@ public class ReimbursementRequestDAOImpl {
      * @return
      * @throws DAOException
      */
+    @Override
     public boolean checkExists(int reimbID) throws DAOException{
         return false;
     }
@@ -80,6 +108,7 @@ public class ReimbursementRequestDAOImpl {
      * @return
      * @throws DAOException
      */
+    @Override
     public ReimbursementRequest getReimbursementRequest(int reimbID) throws DAOException{
         return null;
     }

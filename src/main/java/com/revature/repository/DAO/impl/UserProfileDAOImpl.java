@@ -39,6 +39,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * @return
      * @throws DAOException
      */
+    @Override
     public boolean checkExists(int userID) throws DAOException{
 
         Session session = HibernateConnectionUtil.getSession();
@@ -51,6 +52,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * Determines if the indicated user exists.
      * Throws exception if there is a database communication problem.
      */
+    @Override
     @SuppressWarnings("unchecked")
     public boolean checkExists(String username) throws DAOException{
         
@@ -68,6 +70,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * Determines if the indicated user exists.
      * Throws exception if there is a database communication problem.
      */
+    @Override
     @SuppressWarnings("unchecked")
     public boolean checkExistsEmail(String emailAddress) throws DAOException{
         
@@ -85,6 +88,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * Throws exception if there is a database communication problem.
      * Throws exception if the user is not found.
      */
+    @Override
     @SuppressWarnings("unchecked")
     public String getPassword(int userID) throws DAOException{
         
@@ -112,6 +116,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * Throws exception if there is a database communication problem.
      * Throws exception if the user is not found.
      */
+    @Override
     @SuppressWarnings("unchecked")
     public String getPassword(String username) throws DAOException{
         
@@ -144,6 +149,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * @return
      * @throws DAOException
      */
+    @Override
     public UserProfile getUserProfile(int userID) throws DAOException{
 
         Session session = HibernateConnectionUtil.getSession();
@@ -162,6 +168,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * @return
      * @throws DAOException
      */
+    @Override
     @SuppressWarnings("unchecked")
     public UserProfile getUserProfile(String username) throws DAOException{
         
@@ -192,6 +199,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * @return
      * @throws DAOException
      */
+    @Override
     @SuppressWarnings("unchecked")
     public List<UserProfile> getAllEmployeeProfiles() throws DAOException{
         
@@ -226,6 +234,7 @@ public class UserProfileDAOImpl implements UserProfileDAO {
      * 
      * @throws DAOException
      */
+    @Override
     public int saveUserProfile(UserProfile up) throws DAOException{
 
 
