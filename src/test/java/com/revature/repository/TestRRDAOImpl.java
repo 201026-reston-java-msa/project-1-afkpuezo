@@ -19,8 +19,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.revature.model.ReimbursementRequest;
+import com.revature.model.UserProfile;
+import com.revature.model.ReimbursementRequest.ReimbursementStatus;
+import com.revature.model.ReimbursementRequest.ReimbursementType;
+import com.revature.model.UserProfile.UserRole;
+import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.impl.ReimbursementRequestDAOImpl;
 import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO;
+import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO.SearchType;
 import com.revature.repository.Util.HibernateConnectionUtil;
 
 public class TestRRDAOImpl {
@@ -38,5 +45,145 @@ public class TestRRDAOImpl {
     public void cleanup(){
         HibernateConnectionUtil.exitTestMode();
         HibernateConnectionUtil.forceDropSessionFactory(); // unnecessary?
+    }
+
+    /**
+     * Should test different combinations of parameters
+     * 
+     * @throws DAOException
+     */
+    @Test
+    public void testGetReimbursementRequests() throws DAOException{
+
+        // should get an empty list if there are no reimb-reqs
+        List<ReimbursementRequest> reimbList 
+                = rrdao.getReimbursementRequests(-1, SearchType.ALL);
+        assertNotNull(reimbList);
+        assertTrue(reimbList.isEmpty());
+
+        // put some reimbs in there...which also requires people
+        UserProfile up0 = new UserProfile();
+        up0.setUsername("up0");
+        up0.setRole(UserRole.EMPLOYEE);
+        UserProfile up1 = new UserProfile();
+        up1.setUsername("up1");
+        up1.setRole(UserRole.EMPLOYEE);
+
+        Session session = HibernateConnectionUtil.getSession();
+        Transaction tx = session.beginTransaction();
+        session.save(up0);
+        session.save(up1);
+        tx.commit();
+
+        ReimbursementRequest rr0 = new ReimbursementRequest();
+        rr0.setAuthor(up0);
+        rr0.setStatus(ReimbursementStatus.PENDING);
+        rr0.setType(ReimbursementType.FOOD); 
+
+        ReimbursementRequest rr1 = new ReimbursementRequest();
+        rr1.setAuthor(up1);
+        rr1.setStatus(ReimbursementStatus.APPROVED);
+        rr1.setType(ReimbursementType.LODGING);
+
+        tx = session.beginTransaction();
+        session.save(rr0);
+        session.save(rr1);
+        tx.commit();
+        session.close();
+
+        // now look for the new reqs
+        reimbList = rrdao.getReimbursementRequests(-1, SearchType.ALL);
+        assertNotNull(reimbList);
+        assertEquals(2, reimbList.size());
+
+        // clumsy way of making sure that the right reimb-reqs are returned
+        ReimbursementRequest found0 = null;
+        ReimbursementRequest found1 = null;
+
+        for (ReimbursementRequest reimb : reimbList){
+            if (reimb.getID() == rr0.getID()) found0 = reimb;
+            else if (reimb.getID() == rr1.getID()) found1 = reimb;
+        }
+
+        assertNotNull(found0);
+        assertNotNull(found1);
+
+        assertEquals(rr0.getStatus(), found0.getStatus());
+        assertEquals(rr0.getType(), found0.getType());
+        assertEquals(rr0.getAuthorID(), found0.getAuthorID());
+
+        assertEquals(rr1.getStatus(), found1.getStatus());
+        assertEquals(rr1.getType(), found1.getType());
+        assertEquals(rr1.getAuthorID(), found1.getAuthorID());
+
+        // now test the discriminator parameters
+
+        // by author
+        reimbList = rrdao.getReimbursementRequests(12345, SearchType.ALL);
+        assertNotNull(reimbList);
+        assertTrue(reimbList.isEmpty());
+
+        reimbList = rrdao.getReimbursementRequests(rr0.getAuthorID(), SearchType.ALL);
+        assertNotNull(reimbList);
+        assertEquals(1, reimbList.size());
+        found0 = reimbList.get(0);
+
+        assertEquals(rr0.getStatus(), found0.getStatus());
+        assertEquals(rr0.getType(), found0.getType());
+        assertEquals(rr0.getAuthorID(), found0.getAuthorID());
+
+        reimbList = rrdao.getReimbursementRequests(rr1.getAuthorID(), SearchType.ALL);
+        assertNotNull(reimbList);
+        assertEquals(1, reimbList.size());
+        found1 = reimbList.get(0);
+
+        assertEquals(rr1.getStatus(), found1.getStatus());
+        assertEquals(rr1.getType(), found1.getType());
+        assertEquals(rr1.getAuthorID(), found1.getAuthorID());
+
+        // by status
+        reimbList = rrdao.getReimbursementRequests(-1, SearchType.PENDING);
+        assertNotNull(reimbList);
+        assertEquals(1, reimbList.size());
+        found0 = reimbList.get(0);
+
+        assertEquals(rr0.getStatus(), found0.getStatus());
+        assertEquals(rr0.getType(), found0.getType());
+        assertEquals(rr0.getAuthorID(), found0.getAuthorID());
+
+        reimbList = rrdao.getReimbursementRequests(-1, SearchType.RESOLVED);
+        assertNotNull(reimbList);
+        assertEquals(1, reimbList.size());
+        found1 = reimbList.get(0);
+
+        assertEquals(rr1.getStatus(), found1.getStatus());
+        assertEquals(rr1.getType(), found1.getType());
+        assertEquals(rr1.getAuthorID(), found1.getAuthorID());
+
+        // by both
+        reimbList 
+                = rrdao.getReimbursementRequests(rr0.getAuthorID(), SearchType.RESOLVED);
+        assertNotNull(reimbList);
+        assertTrue(reimbList.isEmpty());
+
+        reimbList 
+                = rrdao.getReimbursementRequests(rr0.getAuthorID(), SearchType.PENDING);
+        assertNotNull(reimbList);
+        assertEquals(1, reimbList.size());
+        found0 = reimbList.get(0);
+
+        assertEquals(rr0.getStatus(), found0.getStatus());
+        assertEquals(rr0.getType(), found0.getType());
+        assertEquals(rr0.getAuthorID(), found0.getAuthorID());
+
+        reimbList 
+                = rrdao.getReimbursementRequests(rr1.getAuthorID(), SearchType.RESOLVED);
+        assertNotNull(reimbList);
+        assertEquals(1, reimbList.size());
+        found1 = reimbList.get(0);
+
+        assertEquals(rr1.getStatus(), found1.getStatus());
+        assertEquals(rr1.getType(), found1.getType());
+        assertEquals(rr1.getAuthorID(), found1.getAuthorID());
     }
 }

@@ -36,6 +36,7 @@ public class ReimbursementRequestDAOImpl implements ReimbursementRequestDAO {
 
     /**
      * Returns a list of reimb-reqs matching the given constraints.
+     * If no matching reimb-reqs are found, returns an empty list.
      * 
      * @param authorID : if authorID != -1, search is limited to reqs submitted by the 
      *      employee with the matching authorID. If authorID == -1, reqs from any employee
@@ -53,7 +54,7 @@ public class ReimbursementRequestDAOImpl implements ReimbursementRequestDAO {
         Session session = HibernateConnectionUtil.getSession();
         Criteria crit = session.createCriteria(ReimbursementRequest.class);
         if (authorID != -1)
-                crit.add(Restrictions.eq("authorID", authorID));
+                crit.add(Restrictions.eq("author.ID", authorID));
         if (searchBy == SearchType.PENDING)
                 crit.add(Restrictions.eq("status", ReimbursementStatus.PENDING));
         else if (searchBy == SearchType.RESOLVED)
@@ -68,10 +69,6 @@ public class ReimbursementRequestDAOImpl implements ReimbursementRequestDAO {
         session.close();
         return reimbList;
     }
-
-    /*
-    
-    */
 
     /**
      * Saves/writes the given reimb-req to the database.
