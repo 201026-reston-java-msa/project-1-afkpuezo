@@ -113,7 +113,9 @@ public class ReimbursementRequestDAOImpl implements ReimbursementRequestDAO {
     }
 
     /**
-     * 
+     * Retrieves the reimb-req corresponding to the given ID.
+     * Returns null if no matching reimb found // ? is this a good idea/consistent?
+     * Throws an exception if there is a problem with the database.
      * 
      * @param reimbID
      * @return
@@ -121,6 +123,12 @@ public class ReimbursementRequestDAOImpl implements ReimbursementRequestDAO {
      */
     @Override
     public ReimbursementRequest getReimbursementRequest(int reimbID) throws DAOException{
-        return null;
+
+        Session session = HibernateConnectionUtil.getSession();
+        ReimbursementRequest reimb 
+                = (ReimbursementRequest)session.get(ReimbursementRequest.class, reimbID);
+        session.evict(reimb);
+        session.close();
+        return reimb;
     }
 }

@@ -302,4 +302,46 @@ public class TestRRDAOImpl {
 
         assertTrue(rrdao.checkExists(reimb.getID()));
     }
+
+    @Test
+    public void testGetReimbursementRequest() throws DAOException {
+
+        // get one that's not there
+        ReimbursementRequest reimb = rrdao.getReimbursementRequest(12345);
+        assertNull(reimb);
+
+        // put one in there so we can get it
+        // make a user to be the author
+        UserProfile up = new UserProfile();
+        up.setUsername("up");
+        up.setRole(UserRole.EMPLOYEE);
+
+        Session session = HibernateConnectionUtil.getSession();
+        Transaction tx = session.beginTransaction();
+        session.save(up);
+        tx.commit();
+        session.evict(up);
+        session.close();
+
+        // now make a request
+        reimb = new ReimbursementRequest();
+        reimb.setAuthor(up);
+        reimb.setStatus(ReimbursementStatus.PENDING);
+        reimb.setType(ReimbursementType.FOOD);
+
+        session = HibernateConnectionUtil.getSession();
+        tx = session.beginTransaction();
+        session.save(reimb);
+        tx.commit();
+        session.evict(reimb);
+        session.close();
+
+        // get it
+        ReimbursementRequest found = rrdao.getReimbursementRequest(reimb.getID());
+        assertNotNull(found);
+        assertEquals(reimb.getID(), found.getID());
+        assertEquals(reimb.getAuthorID(), found.getAuthorID());
+        assertEquals(reimb.getStatus(), found.getStatus());
+        assertEquals(reimb.getType(), found.getType());
+    }
 }
