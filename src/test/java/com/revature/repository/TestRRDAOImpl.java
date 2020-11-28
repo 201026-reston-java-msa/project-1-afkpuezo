@@ -13,7 +13,6 @@ import java.util.List;
 
 import org.hibernate.Transaction;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;

@@ -11,7 +11,6 @@ import com.revature.model.ReimbursementRequest;
 import com.revature.model.ReimbursementRequest.ReimbursementStatus;
 import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO;
-import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO.SearchType;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
