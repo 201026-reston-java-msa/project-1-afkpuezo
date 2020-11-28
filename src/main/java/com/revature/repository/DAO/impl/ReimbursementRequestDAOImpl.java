@@ -104,7 +104,12 @@ public class ReimbursementRequestDAOImpl implements ReimbursementRequestDAO {
      */
     @Override
     public boolean checkExists(int reimbID) throws DAOException{
-        return false;
+        
+        Session session = HibernateConnectionUtil.getSession();
+        ReimbursementRequest reimb 
+                = (ReimbursementRequest)session.get(ReimbursementRequest.class, reimbID);
+        session.close();
+        return reimb != null;
     }
 
     /**

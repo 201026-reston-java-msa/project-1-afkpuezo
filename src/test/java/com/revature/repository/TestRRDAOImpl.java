@@ -262,4 +262,44 @@ public class TestRRDAOImpl {
         session.close();
         assertEquals(2, reimbList.size());
     }
+
+    /**
+     * Tests both positive and negative cases
+     * 
+     * @throws DAOException
+     */
+    @Test
+    public void testCheckExists() throws DAOException {
+
+        // look for a reimb that doesn't exist
+        assertFalse(rrdao.checkExists(12345));
+
+        // add a reimb and look for it
+        // make a user to be the author
+        UserProfile up = new UserProfile();
+        up.setUsername("up");
+        up.setRole(UserRole.EMPLOYEE);
+
+        Session session = HibernateConnectionUtil.getSession();
+        Transaction tx = session.beginTransaction();
+        session.save(up);
+        tx.commit();
+        session.evict(up);
+        session.close();
+
+        // now make a request
+        ReimbursementRequest reimb = new ReimbursementRequest();
+        reimb.setAuthor(up);
+        reimb.setStatus(ReimbursementStatus.PENDING);
+        reimb.setType(ReimbursementType.FOOD);
+
+        session = HibernateConnectionUtil.getSession();
+        tx = session.beginTransaction();
+        session.save(reimb);
+        tx.commit();
+        session.evict(reimb);
+        session.close();
+
+        assertTrue(rrdao.checkExists(reimb.getID()));
+    }
 }
