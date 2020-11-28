@@ -13,6 +13,7 @@ import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.interfaces.UserProfileDAO;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -42,10 +43,15 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     @Override
     public boolean checkExists(int userID) throws DAOException{
 
-        Session session = HibernateConnectionUtil.getSession();
-        UserProfile up = (UserProfile)session.get(UserProfile.class, userID);
-        session.close();
-        return up != null;
+        try{
+            Session session = HibernateConnectionUtil.getSession();
+            UserProfile up = (UserProfile)session.get(UserProfile.class, userID);
+            session.close();
+            return up != null;
+        }
+        catch(HibernateException e){
+            throw new DAOException("HibernateException: " + e.getMessage());
+        }
     }
 
     /**
@@ -56,13 +62,18 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     @SuppressWarnings("unchecked")
     public boolean checkExists(String username) throws DAOException{
         
-        Session session = HibernateConnectionUtil.getSession();
-
-        Criteria crit = session.createCriteria(UserProfile.class);
-        crit.add(Restrictions.eq("username", username));
-        List<UserProfile> userList = crit.list();
-        session.close();
-        return !userList.isEmpty();
+        try{
+            Session session = HibernateConnectionUtil.getSession();
+    
+            Criteria crit = session.createCriteria(UserProfile.class);
+            crit.add(Restrictions.eq("username", username));
+            List<UserProfile> userList = crit.list();
+            session.close();
+            return !userList.isEmpty();
+        }
+        catch(HibernateException e){
+            throw new DAOException("HibernateException: " + e.getMessage());
+        }
 
     }
 
@@ -74,13 +85,18 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     @SuppressWarnings("unchecked")
     public boolean checkExistsEmail(String emailAddress) throws DAOException{
         
-        Session session = HibernateConnectionUtil.getSession();
-
-        Criteria crit = session.createCriteria(UserProfile.class);
-        crit.add(Restrictions.eq("emailAddress", emailAddress));
-        List<UserProfile> userList = crit.list();
-        session.close();
-        return !userList.isEmpty();
+        try{
+            Session session = HibernateConnectionUtil.getSession();
+    
+            Criteria crit = session.createCriteria(UserProfile.class);
+            crit.add(Restrictions.eq("emailAddress", emailAddress));
+            List<UserProfile> userList = crit.list();
+            session.close();
+            return !userList.isEmpty();
+        }
+        catch(HibernateException e){
+            throw new DAOException("HibernateException: " + e.getMessage());
+        }
     }
 
     /**
@@ -92,23 +108,28 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     @SuppressWarnings("unchecked")
     public String getPassword(int userID) throws DAOException{
         
-        Session session = HibernateConnectionUtil.getSession();
-
-        Criteria crit = session.createCriteria(UserPassword.class);
-        //UserProfile user = getUserProfile(userID);
-        crit.add(Restrictions.eq("user.ID", userID));
-        List<UserPassword> passList = crit.list();
-
-        if (passList.isEmpty()){
+        try{
+            Session session = HibernateConnectionUtil.getSession();
+    
+            Criteria crit = session.createCriteria(UserPassword.class);
+            //UserProfile user = getUserProfile(userID);
+            crit.add(Restrictions.eq("user.ID", userID));
+            List<UserPassword> passList = crit.list();
+    
+            if (passList.isEmpty()){
+                session.close();
+                throw new DAOException(  
+                    "getPassword: No password for account with ID " + userID);
+            } 
+    
+            UserPassword uPass = passList.get(0);
+            session.evict(uPass);
             session.close();
-            throw new DAOException(  
-                "getPassword: No password for account with ID " + userID);
-        } 
-
-        UserPassword uPass = passList.get(0);
-        session.evict(uPass);
-        session.close();
-        return uPass.getPass();
+            return uPass.getPass();
+        }
+        catch(HibernateException e){
+            throw new DAOException("HibernateException: " + e.getMessage());
+        }
     }
     
     /**
@@ -120,25 +141,30 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     @SuppressWarnings("unchecked")
     public String getPassword(String username) throws DAOException{
         
-        Session session = HibernateConnectionUtil.getSession();
-
-        UserProfile user = getUserProfile(username); // a little hacky but it works
-        int userID = user.getID();
-        Criteria crit = session.createCriteria(UserPassword.class);
-        crit.add(Restrictions.eq("user.id", userID));
-        List<UserPassword> passList = crit.list();
-
-        if (passList.isEmpty()){
+        try{
+            Session session = HibernateConnectionUtil.getSession();
+    
+            UserProfile user = getUserProfile(username); // a little hacky but it works
+            int userID = user.getID();
+            Criteria crit = session.createCriteria(UserPassword.class);
+            crit.add(Restrictions.eq("user.id", userID));
+            List<UserPassword> passList = crit.list();
+    
+            if (passList.isEmpty()){
+                session.close();
+                throw new DAOException(  
+                    String.format("getPassword: No password for account with username '%s'",
+                    username));
+            } 
+    
+            UserPassword uPass = passList.get(0);
+            session.evict(uPass);
             session.close();
-            throw new DAOException(  
-                String.format("getPassword: No password for account with username '%s'",
-                username));
-        } 
-
-        UserPassword uPass = passList.get(0);
-        session.evict(uPass);
-        session.close();
-        return uPass.getPass();
+            return uPass.getPass();
+        }
+        catch(HibernateException e){
+            throw new DAOException("HibernateException: " + e.getMessage());
+        }
     }
 
     /**
@@ -152,11 +178,16 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     @Override
     public UserProfile getUserProfile(int userID) throws DAOException{
 
-        Session session = HibernateConnectionUtil.getSession();
-        UserProfile up = (UserProfile) session.get(UserProfile.class, userID);
-        session.evict(up);
-        session.close();
-        return up;
+        try{
+            Session session = HibernateConnectionUtil.getSession();
+            UserProfile up = (UserProfile) session.get(UserProfile.class, userID);
+            session.evict(up);
+            session.close();
+            return up;
+        }
+        catch(HibernateException e){
+            throw new DAOException("HibernateException: " + e.getMessage());
+        }
     }
 
     /**
@@ -172,24 +203,29 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     @SuppressWarnings("unchecked")
     public UserProfile getUserProfile(String username) throws DAOException{
         
-        Session session = HibernateConnectionUtil.getSession();
-
-        Criteria crit = session.createCriteria(UserProfile.class);
-        crit.add(Restrictions.eq("username", username));
-        List<UserProfile> userList = crit.list();
-        
-        if (userList.isEmpty()) {
+        try{
+            Session session = HibernateConnectionUtil.getSession();
+    
+            Criteria crit = session.createCriteria(UserProfile.class);
+            crit.add(Restrictions.eq("username", username));
+            List<UserProfile> userList = crit.list();
+            
+            if (userList.isEmpty()) {
+                session.close();
+                throw new DAOException(
+                    String.format(
+                                "getUserProfile: No password for account with username '%s'", 
+                                username));
+            }
+            
+            UserProfile up = userList.get(0);
+            session.evict(up);
             session.close();
-            throw new DAOException(
-                String.format(
-                            "getUserProfile: No password for account with username '%s'", 
-                            username));
+            return up;
         }
-        
-        UserProfile up = userList.get(0);
-        session.evict(up);
-        session.close();
-        return up;
+        catch(HibernateException e){
+            throw new DAOException("HibernateException: " + e.getMessage());
+        }
     }
 
     /**
@@ -203,20 +239,25 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     @SuppressWarnings("unchecked")
     public List<UserProfile> getAllEmployeeProfiles() throws DAOException{
         
-        Session session = HibernateConnectionUtil.getSession();
-
-        Criteria crit = session.createCriteria(UserProfile.class);
-        // I thought I would have to cast the enum to string, but I don't. Neat.
-        crit.add(Restrictions.eq("role", UserProfile.UserRole.EMPLOYEE));
-        List<UserProfile> userList = crit.list();
-        
-        // ? is this actually necessary?
-        for (UserProfile user : userList){
-            session.evict(user);
+        try{
+            Session session = HibernateConnectionUtil.getSession();
+    
+            Criteria crit = session.createCriteria(UserProfile.class);
+            // I thought I would have to cast the enum to string, but I don't. Neat.
+            crit.add(Restrictions.eq("role", UserProfile.UserRole.EMPLOYEE));
+            List<UserProfile> userList = crit.list();
+            
+            // ? is this actually necessary?
+            for (UserProfile user : userList){
+                session.evict(user);
+            }
+    
+            session.close();
+            return userList;
         }
-
-        session.close();
-        return userList;
+        catch(HibernateException e){
+            throw new DAOException("HibernateException: " + e.getMessage());
+        }
     }
 
     /**
@@ -237,14 +278,18 @@ public class UserProfileDAOImpl implements UserProfileDAO {
     @Override
     public int saveUserProfile(UserProfile up) throws DAOException{
 
-
-        Session session = HibernateConnectionUtil.getSession();
-        Transaction tx = session.beginTransaction();
-        if (up.getID() == -1) session.save(up);
-        else session.saveOrUpdate(up);
-        tx.commit();
-        session.evict(up);
-        session.close();
-        return up.getID();
+        try{
+            Session session = HibernateConnectionUtil.getSession();
+            Transaction tx = session.beginTransaction();
+            if (up.getID() == -1) session.save(up);
+            else session.saveOrUpdate(up);
+            tx.commit();
+            session.evict(up);
+            session.close();
+            return up.getID();
+        }
+        catch(HibernateException e){
+            throw new DAOException("HibernateException: " + e.getMessage());
+        }
     }
 }
