@@ -14,6 +14,7 @@ import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO;
 import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO.SearchType;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -51,23 +52,29 @@ public class ReimbursementRequestDAOImpl implements ReimbursementRequestDAO {
             int authorID,
             SearchType searchBy) throws DAOException {
 
-        Session session = HibernateConnectionUtil.getSession();
-        Criteria crit = session.createCriteria(ReimbursementRequest.class);
-        if (authorID != -1)
-                crit.add(Restrictions.eq("author.ID", authorID));
-        if (searchBy == SearchType.PENDING)
-                crit.add(Restrictions.eq("status", ReimbursementStatus.PENDING));
-        else if (searchBy == SearchType.RESOLVED)
-                crit.add(Restrictions.or(
-                        Restrictions.eq("status", ReimbursementStatus.APPROVED),
-                        Restrictions.eq("status", ReimbursementStatus.DENIED)));
-
-        List<ReimbursementRequest> reimbList = crit.list();
-        for (ReimbursementRequest reimb : reimbList){
-            session.evict(reimb); // ? is this necessary?
+        try{
+            Session session = HibernateConnectionUtil.getSession();
+            Criteria crit = session.createCriteria(ReimbursementRequest.class);
+            if (authorID != -1)
+                    crit.add(Restrictions.eq("author.ID", authorID));
+            if (searchBy == SearchType.PENDING)
+                    crit.add(Restrictions.eq("status", ReimbursementStatus.PENDING));
+            else if (searchBy == SearchType.RESOLVED)
+                    crit.add(Restrictions.or(
+                            Restrictions.eq("status", ReimbursementStatus.APPROVED),
+                            Restrictions.eq("status", ReimbursementStatus.DENIED)));
+    
+            List<ReimbursementRequest> reimbList = crit.list();
+            for (ReimbursementRequest reimb : reimbList){
+                session.evict(reimb); // ? is this necessary?
+            }
+            session.close();
+            return reimbList;
         }
-        session.close();
-        return reimbList;
+        catch(HibernateException e){
+            throw new DAOException("HibernateException: " + e.getMessage());
+        }
+        
     }
 
     /**
@@ -83,15 +90,20 @@ public class ReimbursementRequestDAOImpl implements ReimbursementRequestDAO {
     @Override
     public int saveReimbursementRequest(ReimbursementRequest reimb) throws DAOException{
 
-        Session session = HibernateConnectionUtil.getSession();
-        Transaction tx = session.beginTransaction();
-        if (reimb.getID() == -1) session.save(reimb);
-        else session.saveOrUpdate(reimb);
-        tx.commit();
-        session.evict(reimb);
-        session.close();
-
-        return reimb.getID();
+        try{
+            Session session = HibernateConnectionUtil.getSession();
+            Transaction tx = session.beginTransaction();
+            if (reimb.getID() == -1) session.save(reimb);
+            else session.saveOrUpdate(reimb);
+            tx.commit();
+            session.evict(reimb);
+            session.close();
+    
+            return reimb.getID();
+        }
+        catch(HibernateException e){
+            throw new DAOException("HibernateException: " + e.getMessage());
+        }
     }
 
     /**
@@ -105,11 +117,16 @@ public class ReimbursementRequestDAOImpl implements ReimbursementRequestDAO {
     @Override
     public boolean checkExists(int reimbID) throws DAOException{
         
-        Session session = HibernateConnectionUtil.getSession();
-        ReimbursementRequest reimb 
-                = (ReimbursementRequest)session.get(ReimbursementRequest.class, reimbID);
-        session.close();
-        return reimb != null;
+        try{
+            Session session = HibernateConnectionUtil.getSession();
+            ReimbursementRequest reimb 
+                    = (ReimbursementRequest)session.get(ReimbursementRequest.class, reimbID);
+            session.close();
+            return reimb != null;
+        }
+        catch(HibernateException e){
+            throw new DAOException("HibernateException: " + e.getMessage());
+        }
     }
 
     /**
@@ -124,11 +141,16 @@ public class ReimbursementRequestDAOImpl implements ReimbursementRequestDAO {
     @Override
     public ReimbursementRequest getReimbursementRequest(int reimbID) throws DAOException{
 
-        Session session = HibernateConnectionUtil.getSession();
-        ReimbursementRequest reimb 
-                = (ReimbursementRequest)session.get(ReimbursementRequest.class, reimbID);
-        session.evict(reimb);
-        session.close();
-        return reimb;
+        try{
+            Session session = HibernateConnectionUtil.getSession();
+            ReimbursementRequest reimb 
+                    = (ReimbursementRequest)session.get(ReimbursementRequest.class, reimbID);
+            session.evict(reimb);
+            session.close();
+            return reimb;
+        }
+        catch(HibernateException e){
+            throw new DAOException("HibernateException: " + e.getMessage());
+        }
     }
 }
