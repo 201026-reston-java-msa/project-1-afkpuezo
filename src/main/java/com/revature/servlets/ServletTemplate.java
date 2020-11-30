@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.revature.service.BackEndUtil;
-
 @SuppressWarnings(value="all")
 public class ServletTemplate extends ERSServlet {
 
@@ -24,7 +22,7 @@ public class ServletTemplate extends ERSServlet {
     }
 
     /**
-     * DESCRIPTION
+     * Determines what options to show to the current user, based on their  role.
      * 
      * @param request
      * @param response
@@ -33,7 +31,7 @@ public class ServletTemplate extends ERSServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-		
+                
     }
     
     /**
