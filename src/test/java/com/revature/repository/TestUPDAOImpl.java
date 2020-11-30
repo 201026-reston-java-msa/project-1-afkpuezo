@@ -175,6 +175,7 @@ public class TestUPDAOImpl {
         session.save(uPass);
         tx.commit();
         session.evict(uPass);
+        session.close();
 
         // now see if we can get it
         String foundPass = updao.getPassword(userID);

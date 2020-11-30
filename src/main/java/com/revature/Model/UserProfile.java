@@ -60,7 +60,7 @@ public class UserProfile implements Serializable{
     // instance variables ---------------------
     @Id
     @Column(name="USER_ID")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ID;
 
     @Column(name="USER_ROLE")

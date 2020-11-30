@@ -111,7 +111,7 @@ public class ReimbursementRequest implements Serializable{
     // instance variables ---------------------
     @Id
     @Column(name="RR_ID")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ID;
 
     //private int authorID; // user who submitted this req
