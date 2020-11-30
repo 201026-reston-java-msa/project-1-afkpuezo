@@ -11,7 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.revature.model.UserProfile.UserRole;
+import com.revature.service.BackEndUtil;
+import com.revature.service.ServiceFront;
+import com.revature.service.comms.ERSRequest;
+import com.revature.service.comms.ERSResponse;
+import com.revature.service.comms.ERSResponse.ERSResponseType;
+import com.revature.service.comms.ERSRequest.ERSRequestType;
 
+  
 public abstract class ERSServlet extends HttpServlet{
 
     private static final long serialVersionUID = 0L;
@@ -46,7 +53,7 @@ public abstract class ERSServlet extends HttpServlet{
     }
 
     /**
-     * Determines what kind of user is logged in to the current session.
+     * Determines what kind of user is logged in to the request's session.
      * If the request's session does not have a user, or there is no session, defaults
      * to LOGGED_OUT.
      * 
@@ -55,7 +62,18 @@ public abstract class ERSServlet extends HttpServlet{
      */
     protected UserRole getCurrentUserRole(HttpServletRequest request){
 
-        HttpSession session = request.getSession();
+        return getCurrentUserRole(request.getSession());
+    }
+
+    /**
+     * Determines what kind of user is logged in to the current session.
+     * If the request's session does not have a user, or there is no session, defaults
+     * to LOGGED_OUT.
+     * 
+     * @param request
+     * @return
+     */
+    protected UserRole getCurrentUserRole(HttpSession session){
 
         if (session != null && session.getAttribute("role") != null) {
 			return (UserRole) session.getAttribute("role");
@@ -101,5 +119,59 @@ public abstract class ERSServlet extends HttpServlet{
     protected boolean isPasswordValid(String password){
         
         return isUsernameValid(password); // same requirements
+    }
+
+    /**
+     * Returns an ERSRequest with the given type and the info for the user currently
+     * logged in to the given session.
+     * 
+     * @param type
+     * @param session
+     * @return
+     */
+    protected ERSRequest makeERSRequest(ERSRequestType type, HttpSession session){
+
+        Integer userIDInteger = (Integer)session.getAttribute("currentUserID");
+        int userID;
+        if (userIDInteger == null) userID = -1;
+        else userID = userIDInteger;
+
+        return new ERSRequest(type, userID, getCurrentUserRole(session));
+    }
+
+    /**
+     * Hands the given request to the service layer, and returns the response.
+     * 
+     * @param req
+     * @returns
+     */
+    protected ERSResponse getResponse(ERSRequest req){
+        ServiceFront sf = BackEndUtil.getBackEnd();
+        return sf.handleERSRequest(req);
+    }
+
+    /**
+     * Redirects the given response to the problem page, with the given message and
+     * destination.
+     * 
+     * @param response
+     * @param session
+     * @param message
+     * @param destination
+     * @returns
+     */
+    protected void handleProblem (
+            HttpServletResponse response,
+            HttpSession session, 
+            String message, 
+            String destination) throws IOException {
+        
+        session.setAttribute("problemMessage", message);
+        session.setAttribute("problemDestination", destination);
+        response.sendRedirect("problem");
+    }
+
+    protected boolean isFailure(ERSResponse eres){
+        return (eres.getType() != ERSResponseType.SUCCESS);
     }
 }

@@ -14,12 +14,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.revature.service.ServiceFront;
+import com.revature.service.comms.ERSRequest;
+import com.revature.service.comms.ERSRequest.ERSRequestType;
+import com.revature.service.comms.ERSResponse;
+
 @SuppressWarnings(value="all")
-public class LoginServlet extends ERSServlet {
+public class LogInServlet extends ERSServlet {
 
     private static final long serialVersionUID = 0L;
 
-    public LoginServlet() {
+    public LogInServlet() {
         super();
     }
 
@@ -53,22 +58,28 @@ public class LoginServlet extends ERSServlet {
         String password = request.getParameter("password");
 
         if (!isUsernameValid(username)){
-            session.setAttribute("problemMessage", INVALID_USERNAME_MESSAGE);
-            session.setAttribute("problemDestination", "login");
-            response.sendRedirect("problem");
+            handleProblem(response, session, INVALID_USERNAME_MESSAGE, "login");
             return;
         }
 
         if (!isUsernameValid(password)){
-            session.setAttribute("problemMessage", INVALID_PASSWORD_MESSAGE);
-            session.setAttribute("problemDestination", "login");
-            response.sendRedirect("problem");
+            handleProblem(response, session, INVALID_PASSWORD_MESSAGE, "login");
             return;
         }
 
         // now that it's valid we can try to log in
-        PrintWriter writer = response.getWriter();
-        writer.write("INPUT VALID!\n");
-        writer.write(username + " " + password);
+        ERSRequest ereq = makeERSRequest(ERSRequestType.LOG_IN, session);
+        ereq.putParameter(ERSRequest.USERNAME_KEY, username);
+        ereq.putParameter(ERSRequest.PASSWORD_KEY, password);
+        ERSResponse eres = getResponse(ereq);
+
+        // was there a problem?
+        if (isFailure(eres)){
+            handleProblem(response, session, eres.getMessage(), "login");
+            return;
+        } 
+
+        response.getWriter().write("login success!");
+        // TODO continue here!
 	}
 }

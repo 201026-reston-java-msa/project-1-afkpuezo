@@ -76,12 +76,12 @@
   <!-- LoginServlet -->
   <servlet>
     <description></description>
-    <display-name>LoginServlet</display-name>
-    <servlet-name>LoginServlet</servlet-name>
-    <servlet-class>com.revature.servlets.LoginServlet</servlet-class>
+    <display-name>LogInServlet</display-name>
+    <servlet-name>LogInServlet</servlet-name>
+    <servlet-class>com.revature.servlets.LogInServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>LoginServlet</servlet-name>
+    <servlet-name>LogInServlet</servlet-name>
     <url-pattern>/login</url-pattern>
   </servlet-mapping>
 
