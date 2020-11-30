@@ -30,7 +30,7 @@ public class NoUserMenuServlet extends ERSServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        request.getRequestDispatcher("nousermenu.html").forward(request, response);
+        request.getRequestDispatcher("no_user_menu.html").forward(request, response);
     }
     
     /**

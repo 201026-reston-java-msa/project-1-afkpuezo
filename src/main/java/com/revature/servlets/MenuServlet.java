@@ -1,5 +1,5 @@
 /**
- * This servlet handles the index page - that is, it sends the user to appropriate menu.
+ * This servlet handles the menu pages - that is, it sends the user to appropriate menu.
  */
 package com.revature.servlets;
 
@@ -12,11 +12,11 @@ import javax.servlet.http.HttpSession;
 
 import com.revature.model.UserProfile.UserRole;
 
-public class IndexServlet extends ERSServlet {
+public class MenuServlet extends ERSServlet {
 
     private static final long serialVersionUID = 0L;
 
-    public IndexServlet() {
+    public MenuServlet() {
         super();
     }
 
@@ -41,24 +41,8 @@ public class IndexServlet extends ERSServlet {
                 response.getWriter().write("MANAGER");
                 break;
             default:
-                response.sendRedirect("nousermenu");
+                response.sendRedirect("no_user_menu");
                 break;
         }
     }
-    
-    /**
-     * DESCRIPTION
-     * 
-     * @param request
-     * @param response
-     * @throws ServletException, IOException
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        
-        HttpSession session = request.getSession();
-        session.setAttribute("role", UserRole.EMPLOYEE);
-        response.sendRedirect("index");
-	}
 }
