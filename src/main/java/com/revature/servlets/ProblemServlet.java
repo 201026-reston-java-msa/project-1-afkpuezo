@@ -1,7 +1,5 @@
 /**
- * This servlet displays the menu of actions available to a manager.
- * 
- * @author Andrew Curry
+ * DOCSTRING
  */
 package com.revature.servlets;
 
@@ -9,15 +7,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class ManagerMenuServlet extends ERSServlet {
+@SuppressWarnings(value="all")
+public class ProblemServlet extends ERSServlet {
 
     private static final long serialVersionUID = 0L;
 
-    public ManagerMenuServlet() {
+    public ProblemServlet() {
         super();
     }
 
@@ -31,7 +31,19 @@ public class ManagerMenuServlet extends ERSServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        
-        request.getRequestDispatcher("manager_menu.html").forward(request, response);
+                
     }
+    
+    /**
+     * DESCRIPTION
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException, IOException
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+		
+	}
 }

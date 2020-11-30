@@ -1,5 +1,7 @@
 /**
  * This servlet displays the menu of actions available to an employee
+ * 
+ * @author Andrew Curry
  */
 package com.revature.servlets;
 

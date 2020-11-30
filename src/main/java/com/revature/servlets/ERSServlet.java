@@ -64,7 +64,7 @@ public abstract class ERSServlet extends HttpServlet{
      * 
      * @param response
      */
-    protected void redirectLoggedOut(HttpServletResponse response) throws IOException{
-        response.sendRedirect("index");
+    protected void redirectToMenu(HttpServletResponse response) throws IOException{
+        response.sendRedirect("menu");
     }
 }
