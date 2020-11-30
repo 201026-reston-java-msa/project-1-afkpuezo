@@ -36,4 +36,29 @@
     <servlet-name>NoUserMenuServlet</servlet-name>
     <url-pattern>/no_user_menu</url-pattern>
   </servlet-mapping>
+
+  <!-- EmployeeMenu -->
+  <servlet>
+    <description></description>
+    <display-name>EmployeeMenuServlet</display-name>
+    <servlet-name>EmployeeMenuServlet</servlet-name>
+    <servlet-class>com.revature.servlets.EmployeeMenuServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EmployeeMenuServlet</servlet-name>
+    <url-pattern>/employee_menu</url-pattern>
+  </servlet-mapping>
+
+  <!-- ManagerMenu -->
+  <servlet>
+    <description></description>
+    <display-name>ManagerMenuServlet</display-name>
+    <servlet-name>ManagerMenuServlet</servlet-name>
+    <servlet-class>com.revature.servlets.ManagerMenuServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ManagerMenuServlet</servlet-name>
+    <url-pattern>/manager_menu</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

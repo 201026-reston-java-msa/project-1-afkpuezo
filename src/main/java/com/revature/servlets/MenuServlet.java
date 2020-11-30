@@ -35,10 +35,10 @@ public class MenuServlet extends ERSServlet {
 
         switch(role){
             case EMPLOYEE:
-                response.getWriter().write("EMPLOYEE");
+                response.sendRedirect("employee_menu");
                 break;
             case MANAGER:
-                response.getWriter().write("MANAGER");
+                response.sendRedirect("manager_menu");
                 break;
             default:
                 response.sendRedirect("no_user_menu");
