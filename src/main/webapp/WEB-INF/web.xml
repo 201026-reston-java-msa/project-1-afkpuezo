@@ -60,5 +60,17 @@
     <servlet-name>ManagerMenuServlet</servlet-name>
     <url-pattern>/manager_menu</url-pattern>
   </servlet-mapping>
-  
+
+  <!-- ProblemServlet -->
+  <servlet>
+    <description></description>
+    <display-name>ProblemServlet</display-name>
+    <servlet-name>ProblemServlet</servlet-name>
+    <servlet-class>com.revature.servlets.ProblemServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProblemServlet</servlet-name>
+    <url-pattern>/problem</url-pattern>
+  </servlet-mapping>
+
 </web-app>
