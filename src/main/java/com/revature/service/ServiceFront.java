@@ -12,6 +12,7 @@
  */
 package com.revature.service;
 
+import com.revature.model.UserProfile.UserRole;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSResponse;
 import com.revature.service.comms.ERSRequest.ERSRequestType;
@@ -23,6 +24,27 @@ import com.revature.service.handlers.ViewRequestHandler;
 public class ServiceFront {
     
     // constants
+
+    // these arrays control what actions each user role can make
+    private static final ERSRequestType[] NONE_TYPES = {};
+    private static final ERSRequestType[] LOGGED_OUT_TYPES = {
+        ERSRequestType.LOG_IN,
+    };
+    private static final ERSRequestType[] EMPLOYEE_TYPES = {
+        ERSRequestType.SUBMIT_REQUEST,
+        ERSRequestType.EMPLOYEE_VIEW_PENDING,
+        ERSRequestType.EMPLOYEE_VIEW_RESOLVED,
+        ERSRequestType.EMPLOYEE_VIEW_SELF,
+        ERSRequestType.EMPLOYEE_UPDATE_SELF
+    };
+    private static final ERSRequestType[] MANAGER_TYPES = {
+        ERSRequestType.APPROVE_REQUEST,
+        ERSRequestType.DENY_REQUEST,
+        ERSRequestType.VIEW_ALL_PENDING,
+        ERSRequestType.VIEW_ALL_RESOLVED,
+        ERSRequestType.VIEW_ALL_EMPLOYEES,
+        ERSRequestType.MANAGER_VIEW_BY_EMPLOYEE
+    };
 
     // class/static variables
 
@@ -47,6 +69,27 @@ public class ServiceFront {
     }
 
     // method(s)
+
+    /**
+     * Returns an array containing the permitted request types for the given role.
+     * EG, if passed MANAGER, returns all of the actions a manager can take.
+     * 
+     * @param role
+     * @return
+     */
+    public ERSRequestType[] getPossibleRequestTypes(UserRole role){
+        
+        switch (role){
+            case LOGGED_OUT:
+                return LOGGED_OUT_TYPES;
+            case EMPLOYEE:
+                return EMPLOYEE_TYPES;
+            case MANAGER:
+                return MANAGER_TYPES;
+            default:
+                return NONE_TYPES;
+        }
+    }
 
     /**
      * Passes the given req to the appropriate RequestHandler and returns the resulting
