@@ -14,8 +14,11 @@
  */
 package com.revature;
 
+import com.revature.model.ReimbursementRequest;
 import com.revature.model.UserPassword;
 import com.revature.model.UserProfile;
+import com.revature.model.ReimbursementRequest.ReimbursementStatus;
+import com.revature.model.ReimbursementRequest.ReimbursementType;
 import com.revature.model.UserProfile.UserRole;
 import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.impl.UserProfileDAOImpl;
@@ -85,26 +88,100 @@ public class DataSetup {
         session.evict(man1Pass);
 
         // the first employee acount
-        UserProfile empl0 = new UserProfile();
-        empl0.setID(-1);
-        empl0.setRole(UserRole.EMPLOYEE);
-        empl0.setUsername("user");
-        empl0.setFirstName("Eustace");
-        empl0.setLastName("Guy");
-        empl0.setEmailAddress("eustace@ers.com");
+        UserProfile emp0 = new UserProfile();
+        emp0.setID(-1);
+        emp0.setRole(UserRole.EMPLOYEE);
+        emp0.setUsername("user");
+        emp0.setFirstName("Eustace");
+        emp0.setLastName("Guy");
+        emp0.setEmailAddress("eustace@ers.com");
         tx = session.beginTransaction();
-        session.save(empl0);
+        session.save(emp0);
         tx.commit();
-        session.evict(empl0);
+        session.evict(emp0);
 
-        UserPassword empl0Pass = new UserPassword();
-        empl0Pass.setUser(empl0);
-        empl0Pass.setPass("password");
+        UserPassword emp0Pass = new UserPassword();
+        emp0Pass.setUser(emp0);
+        emp0Pass.setPass("password");
         tx = session.beginTransaction();
-        session.save(empl0Pass);
+        session.save(emp0Pass);
         tx.commit();
-        session.evict(empl0Pass);
+        session.evict(emp0Pass);
 
+        // the second employee acount
+        UserProfile emp1 = new UserProfile();
+        emp1.setID(-1);
+        emp1.setRole(UserRole.EMPLOYEE);
+        emp1.setUsername("employee");
+        emp1.setFirstName("Edward");
+        emp1.setLastName("Mann");
+        emp1.setEmailAddress("edward@ers.com");
+        tx = session.beginTransaction();
+        session.save(emp1);
+        tx.commit();
+        session.evict(emp1);
+
+        UserPassword emp1Pass = new UserPassword();
+        emp1Pass.setUser(emp1);
+        emp1Pass.setPass("password");
+        tx = session.beginTransaction();
+        session.save(emp1Pass);
+        tx.commit();
+        session.evict(emp1Pass);
+
+        // now some reimb-reqs
+
+        // for the first employee
+        ReimbursementRequest rr0 = new ReimbursementRequest();
+        rr0.setID(-1);
+        rr0.setAuthor(emp0);
+        rr0.setType(ReimbursementType.FOOD);
+        rr0.setStatus(ReimbursementStatus.PENDING);
+        rr0.setDescription("A delicious cheese burger");
+        rr0.setTimeSubmitted(java.time.LocalDateTime.now().toString());
+        tx = session.beginTransaction();
+        session.save(rr0);
+        tx.commit();
+        session.evict(rr0);
+
+        ReimbursementRequest rr1 = new ReimbursementRequest();
+        rr1.setID(-1);
+        rr1.setAuthor(emp0);
+        rr1.setType(ReimbursementType.LODGING);
+        rr1.setStatus(ReimbursementStatus.APPROVED);
+        rr1.setDescription("Hotel while on-site for client");
+        rr1.setTimeSubmitted(java.time.LocalDateTime.now().toString());
+        tx = session.beginTransaction();
+        session.save(rr1);
+        tx.commit();
+        session.evict(rr1);
+
+        // for the second employee
+        ReimbursementRequest rr2 = new ReimbursementRequest();
+        rr2.setID(-1);
+        rr2.setAuthor(emp0);
+        rr2.setType(ReimbursementType.TRAVEL);
+        rr2.setStatus(ReimbursementStatus.PENDING);
+        rr2.setDescription("Plane tickets");
+        rr2.setTimeSubmitted(java.time.LocalDateTime.now().toString());
+        tx = session.beginTransaction();
+        session.save(rr2);
+        tx.commit();
+        session.evict(rr2);
+
+        ReimbursementRequest rr3 = new ReimbursementRequest();
+        rr3.setID(-1);
+        rr3.setAuthor(emp0);
+        rr3.setType(ReimbursementType.OTHER);
+        rr3.setStatus(ReimbursementStatus.DENIED);
+        rr3.setDescription("Subcribed to WOW");
+        rr3.setTimeSubmitted(java.time.LocalDateTime.now().toString());
+        tx = session.beginTransaction();
+        session.save(rr3);
+        tx.commit();
+        session.evict(rr3);
+
+        // finally, end
         session.close();
     }
 }
