@@ -12,6 +12,8 @@
   </welcome-file-list>
 
   <!-- servlets -->
+
+  <!-- index/menu -->
   <servlet>
     <description></description>
     <display-name>IndexServlet</display-name>
@@ -22,8 +24,16 @@
     <servlet-name>IndexServlet</servlet-name>
     <url-pattern>/index</url-pattern>
   </servlet-mapping>
+
+  <!-- NoUserMenu -->
+  <servlet>
+    <description></description>
+    <display-name>NoUserMenuServlet</display-name>
+    <servlet-name>NoUserMenuServlet</servlet-name>
+    <servlet-class>com.revature.servlets.NoUserMenuServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
-    <servlet-name>IndexServlet</servlet-name>
-    <url-pattern>/</url-pattern>
+    <servlet-name>NoUserMenuServlet</servlet-name>
+    <url-pattern>/nousermenu</url-pattern>
   </servlet-mapping>
 </web-app>
