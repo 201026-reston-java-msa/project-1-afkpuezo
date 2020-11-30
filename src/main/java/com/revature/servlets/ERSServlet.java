@@ -15,6 +15,12 @@ import com.revature.model.UserProfile.UserRole;
 public abstract class ERSServlet extends HttpServlet{
 
     private static final long serialVersionUID = 0L;
+
+    // constants
+    protected static final String INVALID_USERNAME_MESSAGE
+            = "Invalid Username: Must have at least 1 character and no spaces.";
+    protected static final String INVALID_PASSWORD_MESSAGE
+            = "Invalid Password: Must have at least 1 character and no spaces.";
     
     // methods
 
@@ -66,5 +72,34 @@ public abstract class ERSServlet extends HttpServlet{
      */
     protected void redirectToMenu(HttpServletResponse response) throws IOException{
         response.sendRedirect("menu");
+    }
+
+    /** 
+     * Determines if the given username is in the valid format.
+     * Currently, that just means no spaces and at least 1 letter.
+     * 
+     * @param username
+     * @return
+    */
+    protected boolean isUsernameValid(String username){
+        
+        if (username.length() < 1) return false;
+
+        for (char c : username.toCharArray()){
+            if (c == ' ') return false;
+        }
+        return true;
+    }
+
+    /** 
+     * Determines if the given password is in the valid format.
+     * Currently, that just means no spaces and at least 1 letter.
+     * 
+     * @param username
+     * @return
+    */
+    protected boolean isPasswordValid(String password){
+        
+        return isUsernameValid(password); // same requirements
     }
 }
