@@ -102,6 +102,18 @@ public class ServiceFront {
     public ERSResponse handleERSRequest(ERSRequest req){
         
         ERSRequestType type = req.getType();
+
+        // can the current user do this action?
+        ERSRequestType[] permitted = getPossibleRequestTypes(req.getUserRole());
+        boolean found = false;
+        for (ERSRequestType pType : permitted){
+            if (type == pType){
+                found = true;
+                break;
+            }
+        }
+        if (!found) return new ERSResponse(ERSResponseType.FORBIDDEN);
+
         switch(type){
 
             case LOG_IN:
