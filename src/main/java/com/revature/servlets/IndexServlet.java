@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import com.revature.service.BackEndUtil;
 
-public class IndexServlet extends HttpServlet {
+public class IndexServlet extends ERSServlet {
 
     private static final long serialVersionUID = 0L;
 
@@ -30,6 +30,7 @@ public class IndexServlet extends HttpServlet {
      * @param response
      * @throws ServletException, IOException
      */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
 
@@ -43,6 +44,7 @@ public class IndexServlet extends HttpServlet {
      * @param response
      * @throws ServletException, IOException
      */
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
 		response.getWriter().write("Hello world!");

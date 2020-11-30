@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import com.revature.service.BackEndUtil;
 
 @SuppressWarnings(value="all")
-public class ServletTemplate extends HttpServlet {
+public class ServletTemplate extends ERSServlet {
 
     private static final long serialVersionUID = 0L;
     
@@ -30,6 +30,7 @@ public class ServletTemplate extends HttpServlet {
      * @param response
      * @throws ServletException, IOException
      */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
 		
@@ -42,6 +43,7 @@ public class ServletTemplate extends HttpServlet {
      * @param response
      * @throws ServletException, IOException
      */
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
 		
