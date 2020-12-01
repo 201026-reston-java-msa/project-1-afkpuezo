@@ -163,7 +163,7 @@ public class DataSetup {
         // for the second employee
         ReimbursementRequest rr2 = new ReimbursementRequest();
         rr2.setID(-1);
-        rr2.setAuthor(emp0);
+        rr2.setAuthor(emp1);
         rr2.setMoneyAmount(987654L);
         rr2.setType(ReimbursementType.TRAVEL);
         rr2.setStatus(ReimbursementStatus.PENDING);
@@ -176,7 +176,7 @@ public class DataSetup {
 
         ReimbursementRequest rr3 = new ReimbursementRequest();
         rr3.setID(-1);
-        rr3.setAuthor(emp0);
+        rr3.setAuthor(emp1);
         rr0.setMoneyAmount(1500L);
         rr3.setType(ReimbursementType.OTHER);
         rr3.setStatus(ReimbursementStatus.DENIED);

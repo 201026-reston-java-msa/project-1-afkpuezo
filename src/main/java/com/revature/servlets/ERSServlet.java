@@ -253,10 +253,11 @@ public abstract class ERSServlet extends HttpServlet{
         if (reimbs.isEmpty()) return "No matching reimbursement requests were found.";
 
         // start with opening the table and labeling the columns
-        // ID, Author ID, Money Amount, Type, Status, Time Submitted, Resolver ID, Time R.
-        String html = "<table><tr><th>ID</th><th>Author ID</th><th>Money Amount</th>"
-                + "<th>Type</th><th>Status</th><th>Time Submitted</th>"
-                + "<th>Resolver ID</th><th>Time Resolved</th></tr>";
+        // ID, Author ID, Type, $Amount, Status, Desc., Time Sub., Resolver ID, Time R.
+        String html = "<table><tr><th>ID</th><th>Author ID</th><th>Type</th>"
+                + "<th>Money Amount</th><th>Status</th><th>Description</th>" 
+                + "<th>Time Submitted</th><th>Resolver ID</th><th>Time Resolved</th>"
+                + "</tr>";
 
         for (ReimbursementRequest rr : reimbs){
             String row = "<tr>";
@@ -265,6 +266,7 @@ public abstract class ERSServlet extends HttpServlet{
             row = row + "<td>" + rr.getType() + "</td>";
             row = row + "<td>" + rr.getMoneyAmount() + "</td>";
             row = row + "<td>" + rr.getStatus() + "</td>";
+            row = row + "<td>" + rr.getDescription() + "</td>";
             row = row + "<td>" + rr.getTimeSubmitted() + "</td>";
             row = row + "<td>" + rr.getResolverID() + "</td>";
             row = row + "<td>" + rr.getTimeResolved() + "</td>";
