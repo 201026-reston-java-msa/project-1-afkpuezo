@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.revature.model.ReimbursementRequest;
 import com.revature.model.UserProfile.UserRole;
 import com.revature.servlets.ERSServlet;
 
@@ -55,6 +56,12 @@ public class SubmitRequestServlet extends ERSServlet {
         String typeString = request.getParameter("type");
         String description = request.getParameter("description");
 
-        response.getWriter().write(moneyString + " " + typeString + " " + description);
+        if (!isMoneyStringValid(moneyString))
+            response.getWriter().write("Invalid money");
+
+        response.getWriter().write(
+                moneyStringToLong(moneyString) + " " 
+                + ReimbursementRequest.ReimbursementType.fromString(typeString) 
+                + " " + description);
     }
 }

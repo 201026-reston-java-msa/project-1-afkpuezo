@@ -340,4 +340,80 @@ public abstract class ERSServlet extends HttpServlet{
         String result = "$" + bare.substring(0, dotPos) + "." + bare.substring(dotPos);
         return result;
     }
+
+    /**
+     * Determines if the given money string is in a valid format.
+     * May or may not have $ at the start.
+     * May or may not have a decimal before exactly 2 numbers.
+     * Must be positive (no negative sign -)
+     * All other characters MUST be numbers.
+     * 
+     * (if I knew regex this would be easier)
+     * 
+     * @param moneyString
+     * @return
+     */
+    protected boolean isMoneyStringValid(String moneyString){
+
+        int startIndex = 0;
+        if (moneyString.charAt(0) == '$') startIndex = 1;
+        boolean dotFound = false;
+        int dotFoundAt = -1;
+
+        for (int i = startIndex; i < moneyString.length(); i++){
+
+            char c = moneyString.charAt(i);
+            if (c == '.'){
+                if (dotFound) return false; // only one dot allowed
+                else{
+                    dotFound = true;
+                    dotFoundAt = i;
+                }
+            } // end if .
+            else{
+                if (!Character.isDigit(c)){
+                    return false;
+                }
+                else{ // if a digit
+                    if (dotFound && (i - dotFoundAt) > 2) 
+                        return false; // too far after dot
+                }
+            }
+        } // end for loop
+
+        return true; // didn't find any problems
+    }
+
+    /**
+     * Parses the given string into a long amount representing money.
+     * Assumes the string is properly formatted. (see isMoneyStringValid() )
+     * 
+     * Might have been better to do validation and parsing in the same method but this is
+     * better for my workflow
+     * 
+     * @param moneyString
+     * @return
+     */
+    protected long moneyStringToLong(String moneyString){
+
+        int startIndex = 0;
+        if (moneyString.charAt(0) == '$') startIndex = 1;
+        boolean dotFound = false;
+        String bare = "";
+
+        for (int i = startIndex; i < moneyString.length(); i++){
+
+            char c = moneyString.charAt(i);
+
+            if (c == '.') dotFound = true;
+            else{ // assume number
+                bare = bare + c;
+            }
+        } // end for loop
+
+        long money = Long.parseLong(bare);
+        if (!dotFound) money *= 100; // $5 is the same as $5.00
+
+        return money;
+    }
 }
