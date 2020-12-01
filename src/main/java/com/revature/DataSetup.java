@@ -135,6 +135,7 @@ public class DataSetup {
         ReimbursementRequest rr0 = new ReimbursementRequest();
         rr0.setID(-1);
         rr0.setAuthor(emp0);
+        rr0.setMoneyAmount(123456L);
         rr0.setType(ReimbursementType.FOOD);
         rr0.setStatus(ReimbursementStatus.PENDING);
         rr0.setDescription("A delicious cheese burger");
@@ -147,10 +148,13 @@ public class DataSetup {
         ReimbursementRequest rr1 = new ReimbursementRequest();
         rr1.setID(-1);
         rr1.setAuthor(emp0);
+        rr1.setMoneyAmount(654321L);
         rr1.setType(ReimbursementType.LODGING);
         rr1.setStatus(ReimbursementStatus.APPROVED);
         rr1.setDescription("Hotel while on-site for client");
         rr1.setTimeSubmitted(java.time.LocalDateTime.now().toString());
+        rr1.setResolverID(man1.getID());
+        rr1.setTimeResolved(java.time.LocalDateTime.now().toString());
         tx = session.beginTransaction();
         session.save(rr1);
         tx.commit();
@@ -160,6 +164,7 @@ public class DataSetup {
         ReimbursementRequest rr2 = new ReimbursementRequest();
         rr2.setID(-1);
         rr2.setAuthor(emp0);
+        rr2.setMoneyAmount(987654L);
         rr2.setType(ReimbursementType.TRAVEL);
         rr2.setStatus(ReimbursementStatus.PENDING);
         rr2.setDescription("Plane tickets");
@@ -172,10 +177,13 @@ public class DataSetup {
         ReimbursementRequest rr3 = new ReimbursementRequest();
         rr3.setID(-1);
         rr3.setAuthor(emp0);
+        rr0.setMoneyAmount(1500L);
         rr3.setType(ReimbursementType.OTHER);
         rr3.setStatus(ReimbursementStatus.DENIED);
         rr3.setDescription("Subcribed to WOW");
         rr3.setTimeSubmitted(java.time.LocalDateTime.now().toString());
+        rr3.setResolverID(man0.getID());
+        rr3.setTimeResolved(java.time.LocalDateTime.now().toString());
         tx = session.beginTransaction();
         session.save(rr3);
         tx.commit();

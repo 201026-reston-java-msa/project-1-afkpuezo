@@ -256,6 +256,10 @@ public class ReimbursementRequest implements Serializable{
         return this.moneyAmount;
     }
 
+    public void setMoneyAmount(long moneyAmount) {
+        this.moneyAmount = moneyAmount;
+    }
+
     public ReimbursementType getType() {
         return this.type;
     }
