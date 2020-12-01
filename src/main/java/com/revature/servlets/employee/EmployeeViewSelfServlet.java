@@ -4,25 +4,22 @@
 package com.revature.servlets.employee;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.revature.model.ReimbursementRequest;
 import com.revature.model.UserProfile.UserRole;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSResponse;
 import com.revature.service.comms.ERSRequest.ERSRequestType;
 import com.revature.servlets.ERSServlet;
 
-public class EmployeeViewPendingServlet extends ERSServlet {
+public class EmployeeViewSelfServlet extends ERSServlet {
 
     private static final long serialVersionUID = 0L;
 
-    public EmployeeViewPendingServlet() {
+    public EmployeeViewSelfServlet() {
         super();
     }
 
