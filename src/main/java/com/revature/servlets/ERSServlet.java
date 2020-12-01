@@ -148,6 +148,19 @@ public abstract class ERSServlet extends HttpServlet{
     }
 
     /**
+     * Returns an ERSRequest with the given type and the info for the user currently
+     * logged in to the given session.
+     * 
+     * @param type
+     * @param request
+     * @return
+     */
+    protected ERSRequest makeERSRequest(ERSRequestType type, HttpServletRequest request){
+
+        return makeERSRequest(type, request.getSession());
+    }
+
+    /**
      * Hands the given request to the service layer, and returns the response.
      * 
      * @param req
@@ -180,6 +193,25 @@ public abstract class ERSServlet extends HttpServlet{
     }
 
     /**
+     * Redirects the given response to the problem page, with the given message and
+     * destination.
+     * 
+     * @param response
+     * @param session
+     * @param message
+     * @param destination
+     * @returns
+     */
+    protected void handleProblem (
+            HttpServletResponse response,
+            HttpServletRequest request, 
+            String message, 
+            String destination) throws IOException {
+        
+        handleProblem(response, request.getSession(), message, destination);
+    }
+
+    /**
      * Redirects the given response to the success page, with the given message and
      * destination.
      * 
@@ -198,6 +230,25 @@ public abstract class ERSServlet extends HttpServlet{
         session.setAttribute("resultMessage", message);
         session.setAttribute("resultDestination", destination);
         response.sendRedirect("success");
+    }
+
+    /**
+     * Redirects the given response to the success page, with the given message and
+     * destination.
+     * 
+     * @param response
+     * @param session
+     * @param message
+     * @param destination
+     * @throws IOException
+     */
+    protected void handleSuccess (
+            HttpServletResponse response,
+            HttpServletRequest request, 
+            String message, 
+            String destination) throws IOException {
+    
+        handleSuccess(response, request.getSession(), message, destination);
     }
 
     /**
@@ -385,7 +436,8 @@ public abstract class ERSServlet extends HttpServlet{
     }
 
     /**
-     * Parses the given string into a long amount representing money.
+     * Convers the given money String into a bare string that can later be converted to
+     * a long. EG "$1234.56" -> "123456"
      * Assumes the string is properly formatted. (see isMoneyStringValid() )
      * 
      * Might have been better to do validation and parsing in the same method but this is
@@ -394,7 +446,7 @@ public abstract class ERSServlet extends HttpServlet{
      * @param moneyString
      * @return
      */
-    protected long moneyStringToLong(String moneyString){
+    protected String moneyStringToBareString(String moneyString){
 
         int startIndex = 0;
         if (moneyString.charAt(0) == '$') startIndex = 1;
@@ -411,9 +463,8 @@ public abstract class ERSServlet extends HttpServlet{
             }
         } // end for loop
 
-        long money = Long.parseLong(bare);
-        if (!dotFound) money *= 100; // $5 is the same as $5.00
+        if (!dotFound) bare = bare + "00"; // $5 is the same as $5.00
 
-        return money;
+        return bare;
     }
 }

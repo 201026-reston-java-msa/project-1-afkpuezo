@@ -36,11 +36,12 @@ public class ModifyRequestHandler extends RequestHandler {
 
     /**
      * Employee submits a new reimbursement request. If successful, the message of
-     * the returned response will indicate the ID of the new reimb-req. Fails if the
-     * req is missing parameter(s) : (type, moneyAmount) Can optionally have
-     * parameter(s) : (description) Fails if the logged-in user cannot be found.
-     * Fails if there is a DAO exception. Fails if the moneyAmount parameter cannot
-     * be covnerted to a long.
+     * the returned response will indicate the ID of the new reimb-req. 
+     * Fails if the req is missing parameter(s) : (type, moneyAmount) 
+     * Can optionally have parameter(s) : (description) Fails if the logged-in user cannot
+     * be found.
+     * Fails if there is a DAO exception. 
+     * Fails if the moneyAmount parameter cannot be converted to a long.
      * 
      * @param req
      * @return
@@ -78,7 +79,7 @@ public class ModifyRequestHandler extends RequestHandler {
             int reimbID = rrdao.saveReimbursementRequest(reimb);
             ERSResponse res = new ERSResponse(ERSResponseType.SUCCESS,
                     String.format(
-                            "Successfully submitted new reimbursement request with ID %n", 
+                            "Successfully submitted new reimbursement request with ID %d", 
                             reimbID));
             return res;
         } catch (DAOException e) {
@@ -189,7 +190,7 @@ public class ModifyRequestHandler extends RequestHandler {
                 return new ERSResponse(
                         ERSResponseType.INVALID_PARAMETER,
                         String.format(
-                                "Reimbursement Request #%n is not pending approval.", 
+                                "Reimbursement Request #%d is not pending approval.", 
                                 reimbID));
             
             // finally, we can do it
@@ -234,7 +235,7 @@ public class ModifyRequestHandler extends RequestHandler {
                 return new ERSResponse(
                         ERSResponseType.INVALID_PARAMETER,
                         String.format(
-                                "Reimbursement Request #%n is not pending approval.", 
+                                "Reimbursement Request #%d is not pending approval.", 
                                 reimbID));
             
             // finally, we can do it
