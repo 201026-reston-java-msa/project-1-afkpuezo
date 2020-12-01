@@ -248,7 +248,7 @@ public abstract class ERSServlet extends HttpServlet{
      * @param reimbs
      * @return
      */
-    protected String tableFromReimbursementRequests(List<ReimbursementRequest> reimbs) {
+    protected String makeTableFromReimbursementRequests(List<ReimbursementRequest> reimbs) {
         
         if (reimbs.isEmpty()) return "No matching reimbursement requests were found.";
 
@@ -261,19 +261,83 @@ public abstract class ERSServlet extends HttpServlet{
 
         for (ReimbursementRequest rr : reimbs){
             String row = "<tr>";
-            row = row + "<td>" + rr.getID() + "</td>";
-            row = row + "<td>" + rr.getAuthorID() + "</td>";
-            row = row + "<td>" + rr.getType() + "</td>";
-            row = row + "<td>" + rr.getMoneyAmount() + "</td>";
-            row = row + "<td>" + rr.getStatus() + "</td>";
-            row = row + "<td>" + rr.getDescription() + "</td>";
-            row = row + "<td>" + rr.getTimeSubmitted() + "</td>";
-            row = row + "<td>" + rr.getResolverID() + "</td>";
-            row = row + "<td>" + rr.getTimeResolved() + "</td>";
+            row = row + "<td>" + cleanUpID(rr.getID()) + "</td>";
+            row = row + "<td>" + cleanUpID(rr.getAuthorID()) + "</td>";
+            row = row + "<td>" + cleanUpEnum("" + rr.getType()) + "</td>";
+            row = row + "<td>" + longToMoneyString(rr.getMoneyAmount()) + "</td>";
+            row = row + "<td>" + cleanUpEnum("" + rr.getStatus()) + "</td>";
+            row = row + "<td>" + cleanUpString(rr.getDescription()) + "</td>";
+            row = row + "<td>" + cleanUpString(rr.getTimeSubmitted()) + "</td>";
+            row = row + "<td>" + cleanUpID(rr.getResolverID()) + "</td>";
+            row = row + "<td>" + cleanUpString(rr.getTimeResolved()) + "</td>";
             html = html + row + "</tr>";
         }
         html = html + "</table>";
 
         return html;
+    }
+
+    /**
+     * Returns a more readable, user friendly version of an enum
+     * EG, EXAMPLE_ENUM -> 'Example enum'
+     * 
+     * @return
+     */
+    private String cleanUpEnum(String enm){
+        
+        if (enm == null || enm.equals("")) return "";
+
+        char[] output = new char[enm.length()];
+        output[0] = enm.charAt(0);
+        for (int i = 1; i < enm.length(); i++){
+
+            char c = enm.charAt(i);
+            char letter;
+            if (c == '_') letter = ' ';
+            else letter = Character.toLowerCase(c);
+
+            output[i] = letter;
+        } // end for loop
+
+        return new String(output);
+    }
+
+    /**
+     * If an ID is < 1 (that is, invalid), return "--". Otherwise, "#<ID>", eg "#1"
+     * 
+     * @param ID
+     * @return
+     */
+    private String cleanUpID(int ID){
+
+        if (ID < 1) return "--";
+        else return "#" + ID;
+    }
+
+    /**
+     * Used to 'clean up' / format data strings such as Time Resolved, Description, etc.
+     * If null or empty, returns "--"
+     * 
+     * @param s
+     * @return
+     */
+    private String cleanUpString(String s){
+
+        if (s == null || s.equals("")) return "--";
+        else return s;
+    }
+
+    /**
+     * 123456L -> $1234.56
+     * 
+     * @param money
+     * @return
+     */
+    private String longToMoneyString(long money){
+
+        String bare = "" + money;
+        int dotPos = bare.length() - 2;
+        String result = "$" + bare.substring(0, dotPos) + "." + bare.substring(dotPos);
+        return result;
     }
 }

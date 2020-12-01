@@ -9,15 +9,12 @@
 package com.revature.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@SuppressWarnings(value="all")
 public class ResultServlet extends ERSServlet {
 
     private static final long serialVersionUID = 0L;
@@ -47,8 +44,8 @@ public class ResultServlet extends ERSServlet {
         // very clumsy
         String html = readTextFile("result.html");
 
-        html = html.replaceFirst("%MESSAGE%", message);
-        html = html.replaceFirst("%DEST%", destination);
+        html = html.replace("%MESSAGE%", message);
+        html = html.replace("%DEST%", destination);
 
         response.getWriter().write(html);
     }

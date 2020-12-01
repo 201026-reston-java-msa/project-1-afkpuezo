@@ -52,7 +52,7 @@ public class EmployeeViewPendingServlet extends ERSServlet {
         }
 
         String table 
-                = tableFromReimbursementRequests(eres.getReturnedReimbursementRequests());
+                = makeTableFromReimbursementRequests(eres.getReturnedReimbursementRequests());
         
         handleSuccess(response, request.getSession(), table, "menu");
     }
