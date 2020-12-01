@@ -1,5 +1,5 @@
 /**
- * Handles the task of an employee viewing all of their pending requests.
+ * Handles the task of an employee viewing their own user profile
  */
 package com.revature.servlets.employee;
 
@@ -24,7 +24,7 @@ public class EmployeeViewSelfServlet extends ERSServlet {
     }
 
     /**
-     * Prompts the service layer for the reimb-reqs and displays the results.
+     * Prompts the service layer for the UserProfile and displays it.
      * 
      * @param request
      * @param response
@@ -40,19 +40,16 @@ public class EmployeeViewSelfServlet extends ERSServlet {
             return;
         }
 
-        ERSRequest ereq = makeERSRequest(ERSRequestType.EMPLOYEE_VIEW_PENDING, request.getSession());
+        ERSRequest ereq = makeERSRequest(ERSRequestType.EMPLOYEE_VIEW_SELF, request.getSession());
         ERSResponse eres = getResponse(ereq);
 
-        if (isFailure(eres)){
+        if (isFailure(eres)) {
             handleProblem(response, request.getSession(), eres.getMessage(), "menu");
             return;
         }
 
-        String table 
-                = makeTableFromReimbursementRequests(eres.getReturnedReimbursementRequests());
-        
+        String table = makeTableFromUserProfiles(eres.getReturnedUserProfiles());
+
         handleSuccess(response, request.getSession(), table, "menu");
     }
-
-    
 }

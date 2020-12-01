@@ -24,7 +24,7 @@ public class EmployeeViewResolvedServlet extends ERSServlet {
     }
 
     /**
-     * Prompts the service layer for the UserProfile and displays it.
+     * Prompts the service layer for the reimb-reqs and displays the results.
      * 
      * @param request
      * @param response
@@ -40,16 +40,19 @@ public class EmployeeViewResolvedServlet extends ERSServlet {
             return;
         }
 
-        ERSRequest ereq = makeERSRequest(ERSRequestType.EMPLOYEE_VIEW_SELF, request.getSession());
+        ERSRequest ereq = makeERSRequest(ERSRequestType.EMPLOYEE_VIEW_RESOLVED, request.getSession());
         ERSResponse eres = getResponse(ereq);
 
-        if (isFailure(eres)) {
+        if (isFailure(eres)){
             handleProblem(response, request.getSession(), eres.getMessage(), "menu");
             return;
         }
 
-        String table = makeTableFromUserProfiles(eres.getReturnedUserProfiles());
-
+        String table 
+                = makeTableFromReimbursementRequests(eres.getReturnedReimbursementRequests());
+        
         handleSuccess(response, request.getSession(), table, "menu");
     }
+
+    
 }
