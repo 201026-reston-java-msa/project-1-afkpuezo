@@ -3,6 +3,8 @@
  */
 package com.revature.repository.Util;
 
+import java.util.logging.Level;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -29,6 +31,7 @@ public class HibernateConnectionUtil {
 			if (isTestMode) fileName = TEST_CONFIG_FILE_NAME;
 			else fileName = CONFIG_FILE_NAME;
 
+			java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
 			sf = new Configuration().configure(fileName).buildSessionFactory();
 			isInitialized = true;
 		}
