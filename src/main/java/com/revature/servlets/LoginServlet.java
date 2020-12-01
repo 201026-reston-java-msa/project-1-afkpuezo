@@ -56,12 +56,12 @@ public class LogInServlet extends ERSServlet {
         String password = request.getParameter("password");
 
         if (!isUsernameValid(username)){
-            handleProblem(response, session, INVALID_USERNAME_MESSAGE, "login");
+            handleProblem(response, session, INVALID_USERNAME_MESSAGE, "log_in");
             return;
         }
 
         if (!isUsernameValid(password)){
-            handleProblem(response, session, INVALID_PASSWORD_MESSAGE, "login");
+            handleProblem(response, session, INVALID_PASSWORD_MESSAGE, "log_in");
             return;
         }
 
@@ -73,7 +73,7 @@ public class LogInServlet extends ERSServlet {
 
         // was there a problem?
         if (isFailure(eres)){
-            handleProblem(response, session, eres.getMessage(), "login");
+            handleProblem(response, session, eres.getMessage(), "log_in");
             return;
         } 
 
