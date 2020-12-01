@@ -145,7 +145,9 @@ public abstract class ERSServlet extends HttpServlet{
      * Determines if the given email address is in the valid format.
      * Currently, very simple - just determines that there is some text, followed by an @,
      * followed by some text, followed by a dot, followed by some more text.
-     * Also, only one @ allowed, but multuple dots
+     * Also, only one @ allowed, but multiple dots.
+     * Also, no spaces.
+     * Also, dots must not be adjacted to another dot or the @.
      * 
      * (At some point, it's going to become worthwhile to learn regex)
      * 
@@ -154,7 +156,32 @@ public abstract class ERSServlet extends HttpServlet{
      */
     protected boolean isEmailAddressValid(String email){
         
-        boolean 
+        boolean foundText = false; // this one is re-used a few times
+        boolean foundAtSymbol = false;
+        boolean foundDotAfterAt = false;
+
+        for (char c : email.toCharArray()){
+
+            if (c == ' ') return false;
+            if (c == '@'){
+                if (foundAtSymbol) return false; // only one allowed
+                if (!foundText) return false;
+                // a permitted @
+                foundText = false;
+                foundAtSymbol = true;
+            } // end if @
+            else if (c == '.'){
+                if (!foundText) return false;
+                if (foundAtSymbol){
+                    foundText = false;
+                    foundDotAfterAt = true;
+                }
+                foundText = false;
+            } // end if .
+            else foundText = true;
+        } // end for loop
+
+        if (!foundAtSymbol || !foundDotAfterAt) return false;
 
         return true; // haven't found any problems yet
     }
@@ -541,6 +568,6 @@ public abstract class ERSServlet extends HttpServlet{
      * @return
      */
     protected boolean isStringBlank(String s){
-        return (s == null || s.equals(""))
+        return (s == null || s.equals(""));
     }
 }
