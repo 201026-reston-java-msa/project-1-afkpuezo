@@ -380,13 +380,16 @@ public abstract class ERSServlet extends HttpServlet{
 
     /**
      * 123456L -> $1234.56
+     * Assumes money is at least 0.
      * 
      * @param money
      * @return
      */
     private String longToMoneyString(long money){
 
-        // TODO FIX THIS!
+        if (money == 0L) return "$0.00";
+        if (money < 100) return "$0." + money;
+
         String bare = "" + money;
         int dotPos = bare.length() - 2;
         String result = "$" + bare.substring(0, dotPos) + "." + bare.substring(dotPos);
