@@ -37,6 +37,11 @@ public class LogOutServlet extends ERSServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
+        if (getCurrentUserRole(request) == UserRole.LOGGED_OUT){
+            redirectToMenu(response);
+            return;
+        }
+        
         HttpSession session = request.getSession();
         ERSRequest ereq = makeERSRequest(ERSRequestType.LOG_OUT, session);
         ERSResponse eres = getResponse(ereq);

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSRequest.ERSRequestType;
 import com.revature.model.UserProfile;
-
+import com.revature.model.UserProfile.UserRole;
 import com.revature.service.comms.ERSResponse;
 
 public class LogInServlet extends ERSServlet {
@@ -37,6 +37,11 @@ public class LogInServlet extends ERSServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
+        if (getCurrentUserRole(request) != UserRole.LOGGED_OUT){
+            redirectToMenu(response);
+            return;
+        }
+        
         request.getRequestDispatcher("log_in.html").forward(request, response);
     }
     
@@ -50,6 +55,11 @@ public class LogInServlet extends ERSServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+        
+        if (getCurrentUserRole(request) != UserRole.LOGGED_OUT){
+            redirectToMenu(response);
+            return;
+        }
         
         HttpSession session = request.getSession();
         String username = request.getParameter("username");

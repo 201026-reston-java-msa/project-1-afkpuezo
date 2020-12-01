@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.revature.model.UserProfile.UserRole;
+
 public class EmployeeMenuServlet extends ERSServlet {
 
     private static final long serialVersionUID = 0L;
@@ -32,6 +34,12 @@ public class EmployeeMenuServlet extends ERSServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
+        if (getCurrentUserRole(request) != UserRole.EMPLOYEE){
+            redirectToMenu(response);
+            return;
+        }
+        
+        //response.getWriter().write("DEBUG: is this changing?");
         request.getRequestDispatcher("employee_menu.html").forward(request, response);
     }
 

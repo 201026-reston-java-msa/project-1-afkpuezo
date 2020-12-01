@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.http.HttpRequest;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
@@ -87,8 +88,9 @@ public abstract class ERSServlet extends HttpServlet{
     }
 
     /**
-     * Redirects the given response to the correct landing page when there is no logged-in
-     * user.
+     * Redirects the given response to the correct landing page when they try to access a
+     * page they don't have permission to see (eg, an employee trying to view a manager
+     * action)
      * 
      * @param response
      */
