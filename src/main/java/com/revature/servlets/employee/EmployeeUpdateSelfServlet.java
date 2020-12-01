@@ -120,7 +120,7 @@ public class EmployeeUpdateSelfServlet extends ERSServlet {
         if (!hasEmailAddress) emailAddress = up.getEmailAddress();
 
         // now we can build the real request
-        ERSRequest ereq = makeERSRequest(ERSRequestType.EMPLOYEE_UPDATE_SELF, request)
+        ERSRequest ereq = makeERSRequest(ERSRequestType.EMPLOYEE_UPDATE_SELF, request);
         ereq.putParameter(ERSRequest.USERNAME_KEY, username);
         ereq.putParameter(ERSRequest.FIRST_NAME_KEY, firstName);
         ereq.putParameter(ERSRequest.LAST_NAME_KEY, lastName);

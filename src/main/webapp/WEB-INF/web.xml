@@ -149,4 +149,16 @@
     <url-pattern>/employee_view_self</url-pattern>
   </servlet-mapping>
 
+  <!-- EmployeeUpdateSelfServlet -->
+  <servlet>
+    <description></description>
+    <display-name>EmployeeUpdateSelfServlet</display-name>
+    <servlet-name>EmployeeUpdateSelfServlet</servlet-name>
+    <servlet-class>com.revature.servlets.employee.EmployeeUpdateSelfServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EmployeeUpdateSelfServlet</servlet-name>
+    <url-pattern>/employee_update_self</url-pattern>
+  </servlet-mapping>
+
 </web-app>
