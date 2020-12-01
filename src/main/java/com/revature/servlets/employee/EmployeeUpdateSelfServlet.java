@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.revature.model.UserProfile;
 import com.revature.model.UserProfile.UserRole;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSResponse;
@@ -39,7 +40,9 @@ public class EmployeeUpdateSelfServlet extends ERSServlet {
             return;
         }
 
-        request.getRequestDispatcher("submit_request.html").forward(request, response);
+        request.getRequestDispatcher("employee_update_self.html").forward(
+                request, 
+                response);
     }
 
     /**
@@ -58,36 +61,77 @@ public class EmployeeUpdateSelfServlet extends ERSServlet {
             return;
         }
 
-        // get the user's input
-        String moneyString = request.getParameter("moneyAmount");
-        String typeString = request.getParameter("type");
-        String description = request.getParameter("description");
-
-        String bareMoney = null;
-
-        // make sure inputs are valid
-        if (isMoneyStringValid(moneyString)) 
-            bareMoney = moneyStringToBareString(moneyString);
-        else{
-            handleProblem(response, request, "Invalid money format.", "submit_request");
-            return;
-        }
-
-        // now we can build the request
-        ERSRequest ereq = makeERSRequest(ERSRequestType.SUBMIT_REQUEST, request);
-        ereq.putParameter(ERSRequest.REIMBURSEMENT_TYPE_KEY, typeString);
-        ereq.putParameter(ERSRequest.MONEY_AMOUNT_KEY, "" + bareMoney);
-
-        if (description != null && !description.equals(""))
-            ereq.putParameter(ERSRequest.REIMBURSEMENT_DESCRIPTION_KEY, description);
+        // get the user's input - ignore fields that are blank
+        boolean hasUsername = true;
+        boolean hasFirstName = true;
+        boolean hasLastName = true;
+        boolean hasEmailAddress = true;
         
-        ERSResponse eres = getResponse(ereq);
-        if (isFailure(eres)){
-            handleProblem(response, request, eres.getMessage(), "submit_request");
+        String username = request.getParameter("username");
+        if (isStringBlank(username)) hasUsername = false;
+        String firstName = request.getParameter("firstName");
+        if (isStringBlank(firstName)) hasFirstName = false;
+        String lastName = request.getParameter("lastName");
+        if (isStringBlank(lastName)) hasLastName = false;
+        String emailAddress = request.getParameter("emailAddress");
+        if (isStringBlank(emailAddress)) hasEmailAddress = false;
+
+        // make sure the changed fields are valid
+        if (hasUsername && !isUsernameValid(username)){
+            handleProblem(response, request, "Invalid username.", "employee_update_self");
             return;
         }
 
-        // if successful, the response's message should include the ID of the new reimb
-        handleSuccess(response, request, eres.getMessage(), "menu");
+        if (hasFirstName && !isPersonalNameValid(firstName)){
+            handleProblem(
+                    response, request, "Invalid first name.", "employee_update_self");
+            return;
+        }
+
+        if (hasLastName && !isPersonalNameValid(lastName)){
+            handleProblem(
+                    response, request, "Invalid last name.", "employee_update_self");
+            return;
+        }
+        
+        if (hasEmailAddress && !isEmailAddressValid(emailAddress)){
+            handleProblem(
+                    response, request, "Invalid email address.", "employee_update_self");
+            return;
+        }
+
+        // if a field is not being changed, get the old value
+        ERSRequest upreq = makeERSRequest(ERSRequestType.EMPLOYEE_VIEW_SELF, request);
+        ERSResponse upres = getResponse(upreq);
+
+        if (isFailure(upres)){
+            handleProblem(
+                    response, 
+                    request, 
+                    "There was a problem making a connection to the database.", 
+                    "menu");
+            return;
+        }
+
+        UserProfile up = upres.getReturnedUserProfiles().get(0);
+        if (!hasUsername) username = up.getUsername();
+        if (!hasFirstName) firstName = up.getFirstName();
+        if (!hasLastName) lastName = up.getLastName();
+        if (!hasEmailAddress) emailAddress = up.getEmailAddress();
+
+        // now we can build the real request
+        ERSRequest ereq = makeERSRequest(ERSRequestType.EMPLOYEE_UPDATE_SELF, request)
+        ereq.putParameter(ERSRequest.USERNAME_KEY, username);
+        ereq.putParameter(ERSRequest.FIRST_NAME_KEY, firstName);
+        ereq.putParameter(ERSRequest.LAST_NAME_KEY, lastName);
+        ereq.putParameter(ERSRequest.EMAIL_ADDRESS_KEY, emailAddress);
+        ERSResponse eres = getResponse(ereq);
+
+        if (isFailure(eres)){
+            handleProblem(response, request, eres.getMessage(), "employee_update_self");
+            return;
+        }
+
+        handleSuccess(response, request, "User details successfully updated.", "menu");
     }
 }

@@ -130,6 +130,36 @@ public abstract class ERSServlet extends HttpServlet{
     }
 
     /**
+     * Determines if the given personal name is in the valid format.
+     * Currently, that just means no spaces and at least 1 letter.
+     * 
+     * @param name
+     * @return
+     */
+    protected boolean isPersonalNameValid(String name){
+
+        return isUsernameValid(name); // same requirements
+    }
+
+    /**
+     * Determines if the given email address is in the valid format.
+     * Currently, very simple - just determines that there is some text, followed by an @,
+     * followed by some text, followed by a dot, followed by some more text.
+     * Also, only one @ allowed, but multuple dots
+     * 
+     * (At some point, it's going to become worthwhile to learn regex)
+     * 
+     * @param email
+     * @return
+     */
+    protected boolean isEmailAddressValid(String email){
+        
+        boolean 
+
+        return true; // haven't found any problems yet
+    }
+
+    /**
      * Returns an ERSRequest with the given type and the info for the user currently
      * logged in to the given session.
      * 
@@ -502,5 +532,15 @@ public abstract class ERSServlet extends HttpServlet{
         html = html + "</table>";
 
         return html;
+    }
+
+    /**
+     * Determines if the given string is 'blank' - null or ""
+     * 
+     * @param s
+     * @return
+     */
+    protected boolean isStringBlank(String s){
+        return (s == null || s.equals(""))
     }
 }
