@@ -33,7 +33,7 @@ public class LogInServlet extends ERSServlet {
     }
 
     /**
-     * Determines what options to show to the current user, based on their  role.
+     * Displays the log in page.
      * 
      * @param request
      * @param response
@@ -47,7 +47,7 @@ public class LogInServlet extends ERSServlet {
     }
     
     /**
-     * DESCRIPTION
+     * Carries out the actual process of logging in.
      * 
      * @param request
      * @param response
