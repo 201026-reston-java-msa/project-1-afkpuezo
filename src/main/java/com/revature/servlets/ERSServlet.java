@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.revature.model.ReimbursementRequest;
+import com.revature.model.UserProfile;
 import com.revature.model.UserProfile.UserRole;
 import com.revature.service.BackEndUtil;
 import com.revature.service.ServiceFront;
@@ -470,5 +471,37 @@ public abstract class ERSServlet extends HttpServlet{
         if (!dotFound) bare = bare + "00"; // $5 is the same as $5.00
 
         return bare;
+    }
+
+    /**
+     * Creates an html table based on the given list of user profiles.
+     * If the list is empty, returns a text string indicating there were no matching
+     * results.
+     * 
+     * @param users
+     * @return
+     */
+    protected String makeTableFromUserProfiles(List<UserProfile> users) {
+        
+        if (users.isEmpty()) return "No matching user profiles were found.";
+
+        // start with opening the table and labeling the columns
+        // ID, username, first name, last name, email    
+        String html = "<table><tr><th>ID</th><th>Username</th><th>First Name</th>"
+                + "<th>Last Name</th><th>Email Address</th></tr>";
+
+        for (UserProfile up : users){
+
+            String row = "<tr>";
+            row = row + "<td>" + cleanUpID(up.getID()) + "</td>";
+            row = row + "<td>" + cleanUpString(up.getUsername()) + "</td>";
+            row = row + "<td>" + cleanUpString(up.getFirstName()) + "</td>";
+            row = row + "<td>" + cleanUpString(up.getLastName()) + "</td>";
+            row = row + "<td>" + cleanUpString(up.getEmailAddress()) + "</td>";
+            html = html + row + "</tr>";
+        }
+        html = html + "</table>";
+
+        return html;
     }
 }

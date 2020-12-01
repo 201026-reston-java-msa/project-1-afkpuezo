@@ -4,11 +4,13 @@
 package com.revature.servlets.employee;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.revature.model.UserProfile;
 import com.revature.model.UserProfile.UserRole;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSResponse;
@@ -24,7 +26,7 @@ public class EmployeeViewResolvedServlet extends ERSServlet {
     }
 
     /**
-     * Prompts the service layer for the reimb-reqs and displays the results.
+     * Prompts the service layer for the UserProfile and displays it.
      * 
      * @param request
      * @param response
@@ -40,19 +42,16 @@ public class EmployeeViewResolvedServlet extends ERSServlet {
             return;
         }
 
-        ERSRequest ereq = makeERSRequest(
-                ERSRequestType.EMPLOYEE_VIEW_RESOLVED, 
-                request.getSession());
+        ERSRequest ereq = makeERSRequest(ERSRequestType.EMPLOYEE_VIEW_SELF, request.getSession());
         ERSResponse eres = getResponse(ereq);
 
-        if (isFailure(eres)){
+        if (isFailure(eres)) {
             handleProblem(response, request.getSession(), eres.getMessage(), "menu");
             return;
         }
 
-        String table = makeTableFromReimbursementRequests(
-                eres.getReturnedReimbursementRequests());
-        
+        String table = makeTableFromUserProfiles(eres.getReturnedUserProfiles());
+
         handleSuccess(response, request.getSession(), table, "menu");
     }
 }

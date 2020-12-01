@@ -137,4 +137,16 @@
     <url-pattern>/employee_view_resolved</url-pattern>
   </servlet-mapping>
 
+  <!-- EmployeeViewSelfServlet -->
+  <servlet>
+    <description></description>
+    <display-name>EmployeeViewSelfServlet</display-name>
+    <servlet-name>EmployeeViewSelfServlet</servlet-name>
+    <servlet-class>com.revature.servlets.employee.EmployeeViewSelfServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EmployeeViewSelfServlet</servlet-name>
+    <url-pattern>/employee_view_self</url-pattern>
+  </servlet-mapping>
+
 </web-app>
