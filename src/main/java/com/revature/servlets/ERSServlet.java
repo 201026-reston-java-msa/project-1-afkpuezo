@@ -467,6 +467,8 @@ public abstract class ERSServlet extends HttpServlet{
      */
     protected boolean isMoneyStringValid(String moneyString){
 
+        if (moneyString == null || moneyString.length() == 0) return false;
+
         int startIndex = 0;
         if (moneyString.charAt(0) == '$') startIndex = 1;
         boolean dotFound = false;
