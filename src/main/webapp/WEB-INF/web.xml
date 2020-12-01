@@ -125,4 +125,16 @@
     <url-pattern>/employee_view_pending</url-pattern>
   </servlet-mapping>
 
+  <!-- EmployeeViewResolvedServlet -->
+  <servlet>
+    <description></description>
+    <display-name>EmployeeViewResolvedServlet</display-name>
+    <servlet-name>EmployeeViewResolvedServlet</servlet-name>
+    <servlet-class>com.revature.servlets.employee.EmployeeViewResolvedServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EmployeeViewResolvedServlet</servlet-name>
+    <url-pattern>/employee_view_resolved</url-pattern>
+  </servlet-mapping>
+
 </web-app>

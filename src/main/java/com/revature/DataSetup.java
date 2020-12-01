@@ -177,7 +177,7 @@ public class DataSetup {
         ReimbursementRequest rr3 = new ReimbursementRequest();
         rr3.setID(-1);
         rr3.setAuthor(emp1);
-        rr0.setMoneyAmount(1500L);
+        rr3.setMoneyAmount(1500L);
         rr3.setType(ReimbursementType.OTHER);
         rr3.setStatus(ReimbursementStatus.DENIED);
         rr3.setDescription("Subcribed to WOW");

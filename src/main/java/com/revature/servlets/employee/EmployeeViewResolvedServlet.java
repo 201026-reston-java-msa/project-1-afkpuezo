@@ -40,7 +40,9 @@ public class EmployeeViewResolvedServlet extends ERSServlet {
             return;
         }
 
-        ERSRequest ereq = makeERSRequest(ERSRequestType.EMPLOYEE_VIEW_PENDING, request.getSession());
+        ERSRequest ereq = makeERSRequest(
+                ERSRequestType.EMPLOYEE_VIEW_RESOLVED, 
+                request.getSession());
         ERSResponse eres = getResponse(ereq);
 
         if (isFailure(eres)){
@@ -48,11 +50,9 @@ public class EmployeeViewResolvedServlet extends ERSServlet {
             return;
         }
 
-        String table 
-                = makeTableFromReimbursementRequests(eres.getReturnedReimbursementRequests());
+        String table = makeTableFromReimbursementRequests(
+                eres.getReturnedReimbursementRequests());
         
         handleSuccess(response, request.getSession(), table, "menu");
     }
-
-    
 }

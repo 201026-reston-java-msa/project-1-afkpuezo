@@ -386,6 +386,7 @@ public abstract class ERSServlet extends HttpServlet{
      */
     private String longToMoneyString(long money){
 
+        // TODO FIX THIS!
         String bare = "" + money;
         int dotPos = bare.length() - 2;
         String result = "$" + bare.substring(0, dotPos) + "." + bare.substring(dotPos);
