@@ -135,7 +135,7 @@ public abstract class ERSServlet extends HttpServlet{
      */
     protected ERSRequest makeERSRequest(ERSRequestType type, HttpSession session){
 
-        Integer userIDInteger = (Integer)session.getAttribute("currentUserID");
+        Integer userIDInteger = (Integer)session.getAttribute("userID");
         int userID;
         if (userIDInteger == null) userID = -1;
         else userID = userIDInteger;

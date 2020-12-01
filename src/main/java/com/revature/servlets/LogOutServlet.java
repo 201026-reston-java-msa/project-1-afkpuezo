@@ -42,7 +42,7 @@ public class LogOutServlet extends ERSServlet {
         ERSResponse eres = getResponse(ereq);
 
         if (isFailure(eres)){
-            handleProblem(response, session, eres.getMessage(), "menu");
+            handleProblem(response, session, "eres type is: " + eres.getType(), "menu");
             return;
         }
 

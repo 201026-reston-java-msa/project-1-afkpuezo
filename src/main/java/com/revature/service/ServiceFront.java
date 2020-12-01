@@ -35,7 +35,8 @@ public class ServiceFront {
         ERSRequestType.EMPLOYEE_VIEW_PENDING,
         ERSRequestType.EMPLOYEE_VIEW_RESOLVED,
         ERSRequestType.EMPLOYEE_VIEW_SELF,
-        ERSRequestType.EMPLOYEE_UPDATE_SELF
+        ERSRequestType.EMPLOYEE_UPDATE_SELF,
+        ERSRequestType.LOG_OUT,
     };
     private static final ERSRequestType[] MANAGER_TYPES = {
         ERSRequestType.APPROVE_REQUEST,
@@ -43,7 +44,8 @@ public class ServiceFront {
         ERSRequestType.VIEW_ALL_PENDING,
         ERSRequestType.VIEW_ALL_RESOLVED,
         ERSRequestType.VIEW_ALL_EMPLOYEES,
-        ERSRequestType.MANAGER_VIEW_BY_EMPLOYEE
+        ERSRequestType.MANAGER_VIEW_BY_EMPLOYEE,
+        ERSRequestType.LOG_OUT,
     };
 
     // class/static variables
@@ -112,7 +114,9 @@ public class ServiceFront {
                 break;
             }
         }
-        if (!found) return new ERSResponse(ERSResponseType.FORBIDDEN);
+        if (!found) return new ERSResponse(
+                ERSResponseType.FORBIDDEN,
+                "You do not have permission to take that action.");
 
         switch(type){
 

@@ -37,7 +37,7 @@ public class LogInServlet extends ERSServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        request.getRequestDispatcher("login.html").forward(request, response);
+        request.getRequestDispatcher("log_in.html").forward(request, response);
     }
     
     /**
