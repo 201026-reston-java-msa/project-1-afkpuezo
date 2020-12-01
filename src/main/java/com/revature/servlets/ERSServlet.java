@@ -3,8 +3,12 @@
  */
 package com.revature.servlets;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -192,7 +196,43 @@ public abstract class ERSServlet extends HttpServlet{
         response.sendRedirect("success");
     }
 
+    /**
+     * Determines if the given ERSResponse indicates that the attempted action failed.
+     * 
+     * @param eres
+     * @return
+     */
     protected boolean isFailure(ERSResponse eres){
         return (eres.getType() != ERSResponseType.SUCCESS);
+    }
+
+    /**
+     * Returns the entire contents of the given text file as a single, unedited String.
+     * This is so that I can have tempalte html files that servlets modify based on data.
+     * 
+     * Based on this guide I found: 
+     *      https://kodejava.org/how-do-i-read-text-file-in-servlet/
+     * 
+     * @param filename
+     * @return
+     */
+    protected String readTextFile(String filename) throws IOException {
+        
+        ServletContext context = getServletContext();
+        InputStream is = context.getResourceAsStream(filename);
+        String text = "";
+        if (is != null) {
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader reader = new BufferedReader(isr);
+            String line;
+
+            // We read the file line by line and later will be displayed on the
+            // browser page.
+            while ((line = reader.readLine()) != null) {
+                text = text + line;
+            }
+        }
+        is.close();
+        return text;
     }
 }
