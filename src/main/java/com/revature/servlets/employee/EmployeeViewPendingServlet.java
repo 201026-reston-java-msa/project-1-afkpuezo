@@ -18,11 +18,11 @@ import com.revature.service.comms.ERSResponse;
 import com.revature.service.comms.ERSRequest.ERSRequestType;
 import com.revature.servlets.ERSServlet;
 
-public class EmployeeViewPending extends ERSServlet {
+public class EmployeeViewPendingServlet extends ERSServlet {
 
     private static final long serialVersionUID = 0L;
 
-    public EmployeeViewPending() {
+    public EmployeeViewPendingServlet() {
         super();
     }
 
@@ -51,9 +51,10 @@ public class EmployeeViewPending extends ERSServlet {
             return;
         }
 
-        displayListOfReimbursementRequests(
-                eres.getReturnedReimbursementRequests(), 
-                response);
+        String table 
+                = tableFromReimbursementRequests(eres.getReturnedReimbursementRequests());
+        
+        handleSuccess(response, request.getSession(), table, "menu");
     }
 
     

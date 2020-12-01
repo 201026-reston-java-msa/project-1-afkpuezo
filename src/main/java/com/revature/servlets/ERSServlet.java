@@ -241,17 +241,37 @@ public abstract class ERSServlet extends HttpServlet{
     }
 
     /**
-     * Sends the user to the results page, with the given list of reqs as an html table.
-     * If the list is empty, the user will be informed there were no results matching
-     * their search.
+     * Creates an html table based on the given list of reimb-reqs.
+     * If the list is empty, returns a text string indicating there were no matching
+     * results.
      * 
-     * Sends the user to the menu afterwards.
-     * 
-     * @param returnedReimbursementRequests
-     * @param response
+     * @param reimbs
+     * @return
      */
-    protected void displayListOfReimbursementRequests(
-            List<ReimbursementRequest> returnedReimbursementRequests,
-            HttpServletResponse response) {
+    protected String tableFromReimbursementRequests(List<ReimbursementRequest> reimbs) {
+        
+        if (reimbs.isEmpty()) return "No matching reimbursement requests were found.";
+
+        // start with opening the table and labeling the columns
+        // ID, Author ID, Money Amount, Type, Status, Time Submitted, Resolver ID, Time R.
+        String html = "<table><tr><th>ID</th><th>Author ID</th><th>Money Amount</th>"
+                + "<th>Type</th><th>Status</th><th>Time Submitted</th>"
+                + "<th>Resolver ID</th><th>Time Resolved</th></tr>";
+
+        for (ReimbursementRequest rr : reimbs){
+            String row = "<tr>";
+            row = row + "<td>" + rr.getID() + "</td>";
+            row = row + "<td>" + rr.getAuthorID() + "</td>";
+            row = row + "<td>" + rr.getType() + "</td>";
+            row = row + "<td>" + rr.getMoneyAmount() + "</td>";
+            row = row + "<td>" + rr.getStatus() + "</td>";
+            row = row + "<td>" + rr.getTimeSubmitted() + "</td>";
+            row = row + "<td>" + rr.getResolverID() + "</td>";
+            row = row + "<td>" + rr.getTimeResolved() + "</td>";
+            html = html + row + "</tr>";
+        }
+        html = html + "</table>";
+
+        return html;
     }
 }
