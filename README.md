@@ -7,21 +7,21 @@
 * Finance managers are authorized to approve and deny requests for expense reimbursement.
 
 #### Employee User Stories 
-- An Employee can login
-- An Employee can view the Employee Homepage
-- An Employee can logout
-- An Employee can submit a reimbursement request
+- An Employee can login [x]
+- An Employee can view the Employee Homepage [x]
+- An Employee can logout [x]
+- An Employee can submit a reimbursement request [x]
 - An Employee can upload an image of his/her receipt as part of the reimbursement request (extra credit)
-- An Employee can view their pending reimbursement requests
+- An Employee can view their pending reimbursement requests [x]
 - An Employee can view their resolved reimbursement requests
 - An Employee can view their information
 - An Employee can update their information
 - An Employee receives an email when one of their reimbursement requests is resolved (optional)
 
 #### Manager User Stories
-- A Manager can login
-- A Manager can view the Manager Homepage
-- A Manager can logout
+- A Manager can login [x]
+- A Manager can view the Manager Homepage [x]
+- A Manager can logout [x]
 - A Manager can approve/deny pending reimbursement requests
 - A Manager can view all pending requests from all employees
 - A Manager can view images of the receipts from reimbursement requests (extra credit)
