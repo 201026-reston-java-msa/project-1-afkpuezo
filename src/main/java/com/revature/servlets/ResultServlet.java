@@ -45,6 +45,7 @@ public class ResultServlet extends ERSServlet {
         if (destination == null) destination = "menu";
 
         // very clumsy
+        /*
         String html = "<!DOCTYPE html><html><head><meta charset=\"ISO-8859-1\">";
         html = html + "<title>Employee Reimbursement System</title></head><body>";
         html = html + "<h1>Employee Reimbursement System</h1>";
@@ -52,6 +53,8 @@ public class ResultServlet extends ERSServlet {
         html = html + "<form action=\"%DEST%\" method=\"get\">";
         html = html + "<input type=\"submit\" value=\"okay\"/>";
         html = html + "</form></body></html>";
+        */
+        String html = readTextFile("result.html");
 
         html = html.replaceFirst("%MESSAGE%", message);
         html = html.replaceFirst("%DEST%", destination);

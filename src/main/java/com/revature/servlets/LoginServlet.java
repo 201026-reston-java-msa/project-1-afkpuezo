@@ -88,7 +88,7 @@ public class LogInServlet extends ERSServlet {
         // remember to actually update the session...
         session.setAttribute("userID", up.getID());
         session.setAttribute("role", up.getRole());
-        
+
         String message = "Logged into " + up.getRole() + " account with username: " 
                 + up.getUsername();
         handleSuccess(response, session, message, "menu");
