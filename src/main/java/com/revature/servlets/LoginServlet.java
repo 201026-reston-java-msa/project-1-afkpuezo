@@ -7,22 +7,23 @@ package com.revature.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.ServletContext;
 
-import com.revature.service.ServiceFront;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSRequest.ERSRequestType;
+import com.revature.model.UserProfile;
+
+
 import com.revature.service.comms.ERSResponse;
 
-@SuppressWarnings(value="all")
 public class LogInServlet extends ERSServlet {
 
     private static final long serialVersionUID = 0L;
@@ -82,9 +83,14 @@ public class LogInServlet extends ERSServlet {
             return;
         } 
 
-        response.getWriter().write("login success!");
-        // TODO continue here!
-        BufferedWriter bwriter = new BufferedWriter(new FileWriter("find_this_file.txt"));
-        bwriter.close();
+        // get info about the account
+        UserProfile up = eres.getReturnedUserProfiles().get(0); // assume proper response
+        // remember to actually update the session...
+        session.setAttribute("userID", up.getID());
+        session.setAttribute("role", up.getRole());
+        
+        String message = "Logged into " + up.getRole() + " account with username: " 
+                + up.getUsername();
+        handleSuccess(response, session, message, "menu");
 	}
 }

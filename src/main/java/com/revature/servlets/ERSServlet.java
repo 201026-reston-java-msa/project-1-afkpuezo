@@ -166,9 +166,30 @@ public abstract class ERSServlet extends HttpServlet{
             String message, 
             String destination) throws IOException {
         
-        session.setAttribute("problemMessage", message);
-        session.setAttribute("problemDestination", destination);
+        session.setAttribute("resultMessage", message);
+        session.setAttribute("resultDestination", destination);
         response.sendRedirect("problem");
+    }
+
+    /**
+     * Redirects the given response to the success page, with the given message and
+     * destination.
+     * 
+     * @param response
+     * @param session
+     * @param message
+     * @param destination
+     * @throws IOException
+     */
+    protected void handleSuccess (
+            HttpServletResponse response,
+            HttpSession session, 
+            String message, 
+            String destination) throws IOException {
+    
+        session.setAttribute("resultMessage", message);
+        session.setAttribute("resultDestination", destination);
+        response.sendRedirect("success");
     }
 
     protected boolean isFailure(ERSResponse eres){

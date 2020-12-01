@@ -39,9 +39,9 @@ public class ResultServlet extends ERSServlet {
         
         // get the parameters/attributes from the page that sent the user here
         HttpSession session = request.getSession();
-        String message = (String)session.getAttribute("problemMessage");
+        String message = (String)session.getAttribute("resultMessage");
         if (message == null) message = "";
-        String destination = (String)session.getAttribute("problemDestination");
+        String destination = (String)session.getAttribute("resultDestination");
         if (destination == null) destination = "menu";
 
         // very clumsy
