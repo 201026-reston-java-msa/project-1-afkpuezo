@@ -61,15 +61,19 @@
     <url-pattern>/manager_menu</url-pattern>
   </servlet-mapping>
 
-  <!-- ProblemServlet -->
+  <!-- ResultServlet -->
   <servlet>
     <description></description>
-    <display-name>ProblemServlet</display-name>
-    <servlet-name>ProblemServlet</servlet-name>
-    <servlet-class>com.revature.servlets.ProblemServlet</servlet-class>
+    <display-name>ResultServlet</display-name>
+    <servlet-name>ResultServlet</servlet-name>
+    <servlet-class>com.revature.servlets.ResultServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ProblemServlet</servlet-name>
+    <servlet-name>ResultServlet</servlet-name>
+    <url-pattern>/success</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ResultServlet</servlet-name>
     <url-pattern>/problem</url-pattern>
   </servlet-mapping>
 

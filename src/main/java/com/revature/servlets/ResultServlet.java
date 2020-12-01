@@ -1,6 +1,6 @@
 /**
- * This servlet displays 'problem' messages to the user and then returns them to the
- * appropriate page.
+ * This servlet displays result messages (problem or success) to the user and then directs
+ * them to the appropriate page.
  * 
  * I didn't call it an error page because it seems distinct from HTTP errors.
  * 
@@ -18,11 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @SuppressWarnings(value="all")
-public class ProblemServlet extends ERSServlet {
+public class ResultServlet extends ERSServlet {
 
     private static final long serialVersionUID = 0L;
 
-    public ProblemServlet() {
+    public ResultServlet() {
         super();
     }
 

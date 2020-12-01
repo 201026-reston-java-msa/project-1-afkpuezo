@@ -8,6 +8,9 @@ package com.revature.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -81,5 +84,7 @@ public class LogInServlet extends ERSServlet {
 
         response.getWriter().write("login success!");
         // TODO continue here!
+        BufferedWriter bwriter = new BufferedWriter(new FileWriter("find_this_file.txt"));
+        bwriter.close();
 	}
 }
