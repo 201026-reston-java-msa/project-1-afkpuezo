@@ -101,6 +101,18 @@
     <url-pattern>/log_out</url-pattern>
   </servlet-mapping>
 
+  <!-- SubmitRequestServlet -->
+  <servlet>
+    <description></description>
+    <display-name>SubmitRequestServlet</display-name>
+    <servlet-name>SubmitRequestServlet</servlet-name>
+    <servlet-class>com.revature.servlets.employee.SubmitRequestServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SubmitRequestServlet</servlet-name>
+    <url-pattern>/submit_request</url-pattern>
+  </servlet-mapping>
+
   <!-- EmployeeViewPendingServlet -->
   <servlet>
     <description></description>
