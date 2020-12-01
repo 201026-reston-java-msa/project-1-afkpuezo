@@ -101,4 +101,16 @@
     <url-pattern>/log_out</url-pattern>
   </servlet-mapping>
 
+  <!-- EmployeeViewPendingServlet -->
+  <servlet>
+    <description></description>
+    <display-name>EmployeeViewPendingServlet</display-name>
+    <servlet-name>EmployeeViewPendingServlet</servlet-name>
+    <servlet-class>com.revature.servlets.employee.EmployeeViewPendingServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EmployeeViewPendingServlet</servlet-name>
+    <url-pattern>/employee_view_pending</url-pattern>
+  </servlet-mapping>
+
 </web-app>

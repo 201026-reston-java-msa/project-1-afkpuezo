@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.http.HttpRequest;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.revature.model.ReimbursementRequest;
 import com.revature.model.UserProfile.UserRole;
 import com.revature.service.BackEndUtil;
 import com.revature.service.ServiceFront;
@@ -236,5 +238,20 @@ public abstract class ERSServlet extends HttpServlet{
         }
         is.close();
         return text;
+    }
+
+    /**
+     * Sends the user to the results page, with the given list of reqs as an html table.
+     * If the list is empty, the user will be informed there were no results matching
+     * their search.
+     * 
+     * Sends the user to the menu afterwards.
+     * 
+     * @param returnedReimbursementRequests
+     * @param response
+     */
+    protected void displayListOfReimbursementRequests(
+            List<ReimbursementRequest> returnedReimbursementRequests,
+            HttpServletResponse response) {
     }
 }
