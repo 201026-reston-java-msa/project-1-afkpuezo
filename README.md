@@ -13,9 +13,9 @@
 - An Employee can submit a reimbursement request [x]
 - An Employee can upload an image of his/her receipt as part of the reimbursement request (extra credit)
 - An Employee can view their pending reimbursement requests [x]
-- An Employee can view their resolved reimbursement requests
-- An Employee can view their information
-- An Employee can update their information
+- An Employee can view their resolved reimbursement requests [x]
+- An Employee can view their information [x]
+- An Employee can update their information [x]
 - An Employee receives an email when one of their reimbursement requests is resolved (optional)
 
 #### Manager User Stories
