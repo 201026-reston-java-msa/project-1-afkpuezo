@@ -39,7 +39,7 @@ Employees must select the type of reimbursement as: LODGING, TRAVEL, FOOD, or OT
 * The application shall deploy onto a Tomcat Server. [x]
 * The middle tier shall use Servlet technology for dynamic Web application development. [x]
 * The front-end view shall use HTML/JavaScript to make an application that can call server-side components. [x]
-* Passwords shall be encrypted in Java and securely stored in the database.
+* Passwords shall be encrypted in Java and securely stored in the database. [x]
 * The middle tier shall follow proper layered architecture, have reasonable (~70%) test coverage of the service layer, and implement log4j for appropriate logging. [x]
 
 **Stretch Goals:** *These will count for extra credit and are entirely optional*
