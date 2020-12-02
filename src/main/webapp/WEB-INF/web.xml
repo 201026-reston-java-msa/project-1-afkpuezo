@@ -173,4 +173,16 @@
     <url-pattern>/approve_request</url-pattern>
   </servlet-mapping>
 
+  <!-- DenyRequestServlet -->
+  <servlet>
+    <description></description>
+    <display-name>DenyRequestServlet</display-name>
+    <servlet-name>DenyRequestServlet</servlet-name>
+    <servlet-class>com.revature.servlets.manager.DenyRequestServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DenyRequestServlet</servlet-name>
+    <url-pattern>/deny_request</url-pattern>
+  </servlet-mapping>
+
 </web-app>
