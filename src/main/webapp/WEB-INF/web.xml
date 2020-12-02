@@ -221,4 +221,15 @@
     <url-pattern>/view_all_employees</url-pattern>
   </servlet-mapping>
 
+  <!-- ManagerViewByEmployeeServlet -->
+  <servlet>
+    <description></description>
+    <display-name>ManagerViewByEmployeeServlet</display-name>
+    <servlet-name>ManagerViewByEmployeeServlet</servlet-name>
+    <servlet-class>com.revature.servlets.manager.ManagerViewByEmployeeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ManagerViewByEmployeeServlet</servlet-name>
+    <url-pattern>/manager_view_by_employee</url-pattern>
+  </servlet-mapping>
 </web-app>
