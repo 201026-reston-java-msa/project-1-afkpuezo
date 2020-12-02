@@ -238,6 +238,10 @@
 		<error-code>404</error-code>
 		<location>/404</location>
 	</error-page>
+  <error-page>
+		<error-code>500</error-code>
+		<location>/500</location>
+	</error-page>
 
   <servlet>
     <description></description>
@@ -249,4 +253,16 @@
     <servlet-name>NotFoundServlet</servlet-name>
     <url-pattern>/404</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <description></description>
+    <display-name>InternalErrorServlet</display-name>
+    <servlet-name>InternalErrorServlet</servlet-name>
+    <servlet-class>com.revature.servlets.error.InternalErrorServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InternalErrorServlet</servlet-name>
+    <url-pattern>/500</url-pattern>
+  </servlet-mapping>
+
 </web-app>
