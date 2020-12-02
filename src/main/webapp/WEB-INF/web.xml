@@ -161,4 +161,16 @@
     <url-pattern>/employee_update_self</url-pattern>
   </servlet-mapping>
 
+  <!-- ApproveRequestServlet -->
+  <servlet>
+    <description></description>
+    <display-name>ApproveRequestServlet</display-name>
+    <servlet-name>ApproveRequestServlet</servlet-name>
+    <servlet-class>com.revature.servlets.manager.ApproveRequestServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ApproveRequestServlet</servlet-name>
+    <url-pattern>/approve_request</url-pattern>
+  </servlet-mapping>
+
 </web-app>
