@@ -232,4 +232,21 @@
     <servlet-name>ManagerViewByEmployeeServlet</servlet-name>
     <url-pattern>/manager_view_by_employee</url-pattern>
   </servlet-mapping>
+
+  <!-- Error Servlets -->
+  <error-page>
+		<error-code>404</error-code>
+		<location>/404</location>
+	</error-page>
+
+  <servlet>
+    <description></description>
+    <display-name>NotFoundServlet</display-name>
+    <servlet-name>NotFoundServlet</servlet-name>
+    <servlet-class>com.revature.servlets.error.NotFoundServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>NotFoundServlet</servlet-name>
+    <url-pattern>/404</url-pattern>
+  </servlet-mapping>
 </web-app>
