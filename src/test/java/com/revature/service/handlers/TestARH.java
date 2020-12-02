@@ -21,6 +21,7 @@ import com.revature.model.UserProfile.UserRole;
 import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO;
 import com.revature.repository.DAO.interfaces.UserProfileDAO;
+import com.revature.service.PasswordUtil;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSResponse;
 import com.revature.service.comms.ERSRequest.ERSRequestType;
@@ -175,7 +176,7 @@ public class TestARH extends TestRequestHandler{
      * TODO: actual encryption
      */
     private String encryptPassword(String password){
-        return password;
+        return PasswordUtil.hash(password);
     }
 
     // --------------------------------------------------------------------------
