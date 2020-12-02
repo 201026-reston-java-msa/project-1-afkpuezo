@@ -197,4 +197,16 @@
     <url-pattern>/view_all_pending</url-pattern>
   </servlet-mapping>
 
+  <!-- ViewAllResolvedServlet -->
+  <servlet>
+    <description></description>
+    <display-name>ViewAllResolvedServlet</display-name>
+    <servlet-name>ViewAllResolvedServlet</servlet-name>
+    <servlet-class>com.revature.servlets.manager.ViewAllResolvedServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ViewAllResolvedServlet</servlet-name>
+    <url-pattern>/view_all_resolved</url-pattern>
+  </servlet-mapping>
+
 </web-app>
