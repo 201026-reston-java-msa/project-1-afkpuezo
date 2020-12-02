@@ -209,4 +209,16 @@
     <url-pattern>/view_all_resolved</url-pattern>
   </servlet-mapping>
 
+  <!-- ViewAllEmployeesServlet -->
+  <servlet>
+    <description></description>
+    <display-name>ViewAllEmployeesServlet</display-name>
+    <servlet-name>ViewAllEmployeesServlet</servlet-name>
+    <servlet-class>com.revature.servlets.manager.ViewAllEmployeesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ViewAllEmployeesServlet</servlet-name>
+    <url-pattern>/view_all_employees</url-pattern>
+  </servlet-mapping>
+
 </web-app>
