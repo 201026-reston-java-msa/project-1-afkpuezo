@@ -22,7 +22,7 @@ public class ManagerMenuServlet extends ERSServlet {
     }
 
     /**
-     * Determines what options to show to the current user, based on their  role.
+     * Serves the manager_menu.html
      * 
      * @param request
      * @param response

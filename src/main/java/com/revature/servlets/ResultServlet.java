@@ -2,7 +2,8 @@
  * This servlet displays result messages (problem or success) to the user and then directs
  * them to the appropriate page.
  * 
- * I didn't call it an error page because it seems distinct from HTTP errors.
+ * I didn't call it an error page to distinguish between Http errors and things like
+ * invalid user IDs.
  * 
  * @author Andrew Curry
  */
@@ -24,7 +25,7 @@ public class ResultServlet extends ERSServlet {
     }
 
     /**
-     * Display the problem message and the okay button.
+     * Display the message and the okay button.
      * 
      * @param request
      * @param response
@@ -41,7 +42,6 @@ public class ResultServlet extends ERSServlet {
         String destination = (String)session.getAttribute("resultDestination");
         if (destination == null) destination = "menu";
 
-        // very clumsy
         String html = readTextFile("result.html");
 
         html = html.replace("%MESSAGE%", message);

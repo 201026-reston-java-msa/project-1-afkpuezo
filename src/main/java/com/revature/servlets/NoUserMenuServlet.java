@@ -18,7 +18,7 @@ public class NoUserMenuServlet extends ERSServlet {
     }
 
     /**
-     * Determines what options to show to the current user, based on their  role.
+     * Serves up no_user_menu.html
      * 
      * @param request
      * @param response
@@ -30,17 +30,4 @@ public class NoUserMenuServlet extends ERSServlet {
         
         request.getRequestDispatcher("no_user_menu.html").forward(request, response);
     }
-    
-    /**
-     * DESCRIPTION
-     * 
-     * @param request
-     * @param response
-     * @throws ServletException, IOException
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-		
-	}
 }

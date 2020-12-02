@@ -1,5 +1,5 @@
 /**
- * Handles the task of a manager viewing all of the pending requests.
+ * Handles the task of a manager viewing all of employee profiles.
  */
 package com.revature.servlets.manager;
 
@@ -24,7 +24,7 @@ public class ViewAllEmployeesServlet extends ERSServlet {
     }
 
     /**
-     * Prompts the service layer for the reimb-reqs and displays the results.
+     * Prompts the service layer for the user profiles and displays the results.
      * 
      * @param request
      * @param response

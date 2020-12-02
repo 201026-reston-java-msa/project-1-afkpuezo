@@ -1,5 +1,5 @@
 /**
- * Handles the task of a manager viewing all of the pending requests.
+ * Handles the task of a manager viewing all pending reimb-reqs.
  */
 package com.revature.servlets.manager;
 

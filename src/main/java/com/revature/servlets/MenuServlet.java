@@ -20,7 +20,8 @@ public class MenuServlet extends ERSServlet {
     }
 
     /**
-     * DESCRIPTION
+     * Detemrines the role of the user currently logged in (if any), and sends them to the
+     * appropriate menu page.
      * 
      * @param request
      * @param response

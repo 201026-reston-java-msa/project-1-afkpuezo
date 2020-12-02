@@ -22,7 +22,7 @@ public class ServletTemplate extends ERSServlet {
     }
 
     /**
-     * Determines what options to show to the current user, based on their  role.
+     * DESCRIPTION
      * 
      * @param request
      * @param response

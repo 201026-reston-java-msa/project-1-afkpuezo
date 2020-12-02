@@ -22,7 +22,7 @@ public class EmployeeMenuServlet extends ERSServlet {
     }
 
     /**
-     * Determines what options to show to the current user, based on their  role.
+     * Serves up the employee_menu.html file
      * 
      * @param request
      * @param response
