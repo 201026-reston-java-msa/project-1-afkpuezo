@@ -25,10 +25,15 @@ import com.revature.service.comms.ERSResponse;
 import com.revature.service.comms.ERSResponse.ERSResponseType;
 import com.revature.service.comms.ERSRequest.ERSRequestType;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
   
 public abstract class ERSServlet extends HttpServlet{
 
     private static final long serialVersionUID = 0L;
+
+    // logger
+    private static Logger log = Logger.getLogger(ServiceFront.class);
 
     // constants
     protected static final String INVALID_USERNAME_MESSAGE
@@ -224,6 +229,7 @@ public abstract class ERSServlet extends HttpServlet{
      * @returns
      */
     protected ERSResponse getResponse(ERSRequest req){
+        log.log(Level.INFO, "ERSServlet receiving response of type: " + req.getType());
         ServiceFront sf = BackEndUtil.getBackEnd();
         return sf.handleERSRequest(req);
     }

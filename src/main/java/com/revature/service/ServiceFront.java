@@ -21,10 +21,16 @@ import com.revature.service.handlers.AuthRequestHandler;
 import com.revature.service.handlers.ModifyRequestHandler;
 import com.revature.service.handlers.ViewRequestHandler;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 public class ServiceFront {
     
-    // constants
+    // logger
+    private static Logger log = Logger.getLogger(ServiceFront.class);
 
+    // constants
+    
     // these arrays control what actions each user role can make
     private static final ERSRequestType[] NONE_TYPES = {};
     private static final ERSRequestType[] LOGGED_OUT_TYPES = {
@@ -102,9 +108,11 @@ public class ServiceFront {
      * @return
      */
     public ERSResponse handleERSRequest(ERSRequest req){
+
         
         ERSRequestType type = req.getType();
-
+        log.log(Level.INFO, "ServiceFront recieving ERSRequest of type: " + type);
+        
         // can the current user do this action?
         ERSRequestType[] permitted = getPossibleRequestTypes(req.getUserRole());
         boolean found = false;
