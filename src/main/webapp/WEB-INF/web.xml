@@ -185,4 +185,16 @@
     <url-pattern>/deny_request</url-pattern>
   </servlet-mapping>
 
+  <!-- ViewAllPendingServlet -->
+  <servlet>
+    <description></description>
+    <display-name>ViewAllPendingServlet</display-name>
+    <servlet-name>ViewAllPendingServlet</servlet-name>
+    <servlet-class>com.revature.servlets.manager.ViewAllPendingServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ViewAllPendingServlet</servlet-name>
+    <url-pattern>/view_all_pending</url-pattern>
+  </servlet-mapping>
+
 </web-app>
