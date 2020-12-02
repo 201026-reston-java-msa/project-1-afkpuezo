@@ -29,34 +29,18 @@
 - A Manager can view all Employees [x]
 - A Manager can view reimbursement requests from a single Employee [x]
 
-
-**State-chart Diagram (Reimbursement Statuses)** 
-![](./imgs/state-chart.jpg)
-
 **Reimbursement Types**
 
 Employees must select the type of reimbursement as: LODGING, TRAVEL, FOOD, or OTHER.
 
-**Logical Model**
-![](./imgs/logical.jpg)
-
-**Physical Model**
-![](./imgs/physical.jpg)
-
-**Use Case Diagram**
-![](./imgs/use-case.jpg)
-
-**Activity Diagram**
-![](./imgs/activity.jpg)
-
 ## Technical Requirements
 
-* The back-end system shall use **Hibernate** to connect to an **AWS RDS Postgres database**. 
-* The application shall deploy onto a Tomcat Server. 
-* The middle tier shall use Servlet technology for dynamic Web application development. 
-* The front-end view shall use HTML/JavaScript to make an application that can call server-side components. 
-* Passwords shall be encrypted in Java and securely stored in the database. 
-* The middle tier shall follow proper layered architecture, have reasonable (~70%) test coverage of the service layer, and implement log4j for appropriate logging. 
+* The back-end system shall use **Hibernate** to connect to an **AWS RDS Postgres database**.  [x]
+* The application shall deploy onto a Tomcat Server. [x]
+* The middle tier shall use Servlet technology for dynamic Web application development. [x]
+* The front-end view shall use HTML/JavaScript to make an application that can call server-side components. [x]
+* Passwords shall be encrypted in Java and securely stored in the database.
+* The middle tier shall follow proper layered architecture, have reasonable (~70%) test coverage of the service layer, and implement log4j for appropriate logging. [x]
 
 **Stretch Goals:** *These will count for extra credit and are entirely optional*
 * Replace HTML/JavaScript with an Angular single page application. (We will learn Angular in Week 5)
