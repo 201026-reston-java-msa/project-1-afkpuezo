@@ -572,4 +572,36 @@ public abstract class ERSServlet extends HttpServlet{
     protected boolean isStringBlank(String s){
         return (s == null || s.equals(""));
     }
+
+    /**
+     * Determines if the given ID string is in the valid format.
+     * This must be a positive integer, optionally starting with #.
+     * 
+     * @param idString
+     * @return
+     */
+    protected boolean isIDStringValid(String idString){
+
+        int startIndex = 0;
+        if (idString.charAt(0) == '#') startIndex = 1;
+
+        for (int i = startIndex; i < idString.length(); i++){
+            if (!Character.isDigit(idString.charAt(i))) return false;
+        }
+
+        return true; // no problems found
+    }
+
+    /**
+     * If there is a # at the start of the string, remove it.
+     * 
+     * @param idString
+     * @return
+     */
+    protected String cleanIDString(String idString){
+
+        int startIndex = 0;
+        if (idString.charAt(0) == '#') startIndex = 1;
+        return idString.substring(startIndex);
+    }
 }

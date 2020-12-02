@@ -72,6 +72,6 @@ public abstract class RequestHandler {
     protected ERSResponse getReimbursementRequestDoesNotExistResponse(int reimbID) {
         return new ERSResponse(ERSResponseType.INVALID_PARAMETER,
                 String.format(
-                        "No reimbursement request with id '%n' was found.", reimbID));
+                        "No reimbursement request with id %d was found.", reimbID));
     }
 }
