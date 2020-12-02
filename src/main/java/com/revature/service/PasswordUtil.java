@@ -15,7 +15,7 @@ public class PasswordUtil {
      * @return
      */
     public static String hash(String password) {
-        return BCrypt.hashpw(password, BCrypt.gensalt(17));
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
     /**

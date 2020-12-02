@@ -1,13 +1,14 @@
 package com.revature;
 
+import com.revature.service.PasswordUtil;
+
 public class Driver {
 
 	public static void main(String[] args) {
 		
-		int reimbID = 2;
-		String text = String.format(
-                            "Successfully submitted new reimbursement request with ID %d", 
-							reimbID);
-		System.out.println(text);
+		String pass = "password";
+		String hash = PasswordUtil.hash(pass);
+
+		System.out.println(PasswordUtil.checkPassword(pass, hash));
 	}
 }
