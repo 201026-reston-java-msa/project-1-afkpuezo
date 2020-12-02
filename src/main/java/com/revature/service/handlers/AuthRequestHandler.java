@@ -14,6 +14,7 @@ import com.revature.model.UserProfile.UserRole;
 import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.interfaces.ReimbursementRequestDAO;
 import com.revature.repository.DAO.interfaces.UserProfileDAO;
+import com.revature.service.PasswordUtil;
 import com.revature.service.comms.ERSRequest;
 import com.revature.service.comms.ERSResponse;
 import com.revature.service.comms.ERSResponse.ERSResponseType;
@@ -111,7 +112,7 @@ public class AuthRequestHandler extends RequestHandler {
     private boolean checkPassword(String username, String password) throws DAOException{
         
         String truePassword = updao.getPassword(username);
-        return password.equals(truePassword);
+        return PasswordUtil.checkPassword(password, truePassword);
     }
 
     /**

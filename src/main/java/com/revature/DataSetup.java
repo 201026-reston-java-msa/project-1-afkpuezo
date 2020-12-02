@@ -24,6 +24,7 @@ import com.revature.repository.DAO.exceptions.DAOException;
 import com.revature.repository.DAO.impl.UserProfileDAOImpl;
 import com.revature.repository.DAO.interfaces.UserProfileDAO;
 import com.revature.repository.Util.HibernateConnectionUtil;
+import com.revature.service.PasswordUtil;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -60,7 +61,7 @@ public class DataSetup {
 
         UserPassword man0Pass = new UserPassword();
         man0Pass.setUser(man0);
-        man0Pass.setPass("admin");
+        man0Pass.setPass(PasswordUtil.hash("admin"));
         tx = session.beginTransaction();
         session.save(man0Pass);
         tx.commit();
@@ -81,7 +82,7 @@ public class DataSetup {
 
         UserPassword man1Pass = new UserPassword();
         man1Pass.setUser(man1);
-        man1Pass.setPass("manager");
+        man1Pass.setPass(PasswordUtil.hash("manager"));
         tx = session.beginTransaction();
         session.save(man1Pass);
         tx.commit();
@@ -102,7 +103,7 @@ public class DataSetup {
 
         UserPassword emp0Pass = new UserPassword();
         emp0Pass.setUser(emp0);
-        emp0Pass.setPass("password");
+        emp0Pass.setPass(PasswordUtil.hash("password"));
         tx = session.beginTransaction();
         session.save(emp0Pass);
         tx.commit();
@@ -123,7 +124,7 @@ public class DataSetup {
 
         UserPassword emp1Pass = new UserPassword();
         emp1Pass.setUser(emp1);
-        emp1Pass.setPass("password");
+        emp1Pass.setPass(PasswordUtil.hash("password"));
         tx = session.beginTransaction();
         session.save(emp1Pass);
         tx.commit();
